@@ -68,7 +68,7 @@ class RootLayout extends Component {
           </Sider>
           <Layout>
             <Header style={{ background: '#49ACF1' }}>
-              <div style={{ position: 'absolute', left: '85%' }}>
+              <div style={{ position: 'absolute', right: 32 }}>
                 <span style={{ padding: 20 }}>
                   <Icon type="user" />
                   {''}
