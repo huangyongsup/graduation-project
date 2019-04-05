@@ -1,10 +1,14 @@
 import React, {Component} from 'react'
-import { Form, Modal, Input, Icon } from 'antd'
+import { Form, Modal, Input } from 'antd'
 
 class Register extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      pattern: {
+        pattern: /^[0-9a-zA-Z]+$/,
+        message: '用户名只能由字母和数字组成'
+      }
     }
   }
 
@@ -37,28 +41,22 @@ class Register extends Component {
       >
         <Form>
           <Form.Item label="用户名">
-            {getFieldDecorator('user', {
-              rules: [{
-                pattern: /^[0-9a-zA-Z]+$/, message: '用户名只能由字母和数字组成'
-              }]
+            {getFieldDecorator('userName', {
+              rules: [this.state.pattern]
             })(
               <Input autoComplete="username" allowClear={true}/>
             )}
           </Form.Item>
           <Form.Item label={'密码'}>
             {getFieldDecorator('password', {
-              rules: [{
-                pattern: /^[0-9a-zA-Z]+$/, message: '用户名只能由字母和数字组成'
-              }]
+              rules: [this.state.pattern]
             })(
               <Input.Password autoComplete="new-password" allowClear={true} />
             )}
           </Form.Item>
           <Form.Item label={'确认密码'}>
             {getFieldDecorator('confirm', {
-              rules: [{
-                pattern: /^[0-9a-zA-Z]+$/, message: '用户名只能由字母和数字组成',
-              }, {
+              rules: [this.state.pattern, {
                 validator: this.compareToFirstPassword
               }]
             })(
