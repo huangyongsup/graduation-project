@@ -1,0 +1,49 @@
+{
+  "subMenu": {
+    "admin": {
+      "key": "admin",
+      "title": "管理员模块",
+      "iconType": "appstore",
+      "menuItem": [
+        {
+          "key": "/admin/testManage",
+          "option": "考试管理"
+        },
+        {
+          "key": "/admin/teacherManage",
+          "option": "教师管理"
+        },
+        {
+          "key": "/admin/studentManage",
+          "option": "学生管理"
+        }
+      ]
+    },
+    "teacher": {
+      "key": "teacher",
+      "title": "教师模块",
+      "iconType": "appstore",
+      "menuItem": [
+        {
+          "key": "/teacher/testpaperManage",
+          "option": "试卷管理"
+        },
+        {
+          "key": "/teacher/studentTestManage",
+          "option": "学生管理"
+        }
+      ]
+    },
+    "student": {
+      "key": "student",
+      "title": "学生模块",
+      "iconType": "appstore",
+      "menuItem": [
+        {
+          "key": "/student/myTest",
+          "option": "我的测试"
+        }
+      ]
+    }
+  }
+}
