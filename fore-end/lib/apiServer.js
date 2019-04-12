@@ -1,20 +1,22 @@
 import axios from 'axios'
-import {message, Modal} from 'antd'
+import { message } from 'antd'
 import Config from '../config/config'
-const qs = require('qs')
+import qs from 'qs'
 
 // axios设置---------------------------------------
 // 设置请求超时时间（ms）
 axios.defaults.timeout = 600000
 // 设置axios的基地址
-axios.defaults.baseURL = `http://${Config.baseUrl}`
+axios.defaults.baseURL = Config.baseURL
 // 带上cookies
 axios.defaults.withCredentials = true
 // 跨域
 axios.defaults.crossDomain = true
+
 axios.interceptors.request.use(config => config, error => Promise.reject(error))
 
 axios.interceptors.response.use((response) => {
+  console.log(response)
   let config = response.config || {}
   let data = response.data || {}
   let errorMsg = null
@@ -28,10 +30,6 @@ axios.interceptors.response.use((response) => {
   } else {
     return response.data
   }
-  // if (!config.hideMsg) {
-  //   message.error(errorMsg, 2)
-  // }
-  // throw data
 }, (error) => {
   console.log(error)
   return message.error('网络故障或请求被阻止')

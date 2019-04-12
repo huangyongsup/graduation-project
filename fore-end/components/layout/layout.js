@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Redirect,Link, withRouter } from 'react-router-dom'
-import { Button, Layout, Menu, Icon } from 'antd'
+import { connect } from 'react-redux'
+import { Redirect, Link, withRouter } from 'react-router-dom'
+import { message, Button, Layout, Menu, Icon } from 'antd'
 
 import menus from './menus.json'
 
@@ -14,6 +15,14 @@ class RootLayout extends Component {
       arr: [menus.subMenu.admin, menus.subMenu.teacher, menus.subMenu.student],
       collapsed: false,
     }
+  }
+
+  componentWillMount() {
+    const { userInfo } = this.props
+    if(!userInfo.userType){
+      location.href = 'http://localhost:1234/#/login'
+    }
+    console.log(this.props);
   }
 
   renderMenu = () => {
@@ -48,6 +57,10 @@ class RootLayout extends Component {
     )
   }
 
+  signOut = () => {
+    
+  }
+
   onCollapse = (collapsed) => {
     this.setState({
       collapsed
@@ -69,11 +82,11 @@ class RootLayout extends Component {
           <Layout>
             <Header style={{ background: '#49ACF1' }}>
               <div style={{ position: 'absolute', right: 32 }}>
-                <span style={{ padding: 20 }}>
+                <span style={{ padding: 10 }}>
                   <Icon type="user" />
-                  {''}
+                  {` ${this.props.userInfo.userType}`}
                 </span>
-                <Button type="danger">
+                <Button type="danger" onClick={this.signOut}>
                   <Link to="/login">注销</Link>
                 </Button>
               </div>
@@ -86,4 +99,6 @@ class RootLayout extends Component {
   }
 }
 
-export default withRouter(RootLayout)
+const mapStateToProps = state => state.loginReducer
+
+export default connect(mapStateToProps)(RootLayout)
