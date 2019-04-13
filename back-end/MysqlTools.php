@@ -18,7 +18,7 @@ class MysqlTools
   }
 
   //连接数据库
-  function connect()
+  private function connect()
   {
     try {
       $this->pdo = new PDO($this->dsn, $this->username, $this->password);

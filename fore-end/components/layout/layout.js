@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Link, withRouter } from 'react-router-dom'
 import { message, Button, Layout, Menu, Icon } from 'antd'
-
+import { bindActionCreators } from 'redux'
+import * as actions from '../loginModule/action'
 import menus from './menus.json'
 
 const { Header, Content, Sider, Footer } = Layout
@@ -19,10 +20,10 @@ class RootLayout extends Component {
 
   componentWillMount() {
     const { userInfo } = this.props
+    console.log(userInfo);
     if(!userInfo.userType){
       location.href = 'http://localhost:1234/#/login'
     }
-    console.log(this.props);
   }
 
   renderMenu = () => {
@@ -57,10 +58,6 @@ class RootLayout extends Component {
     )
   }
 
-  signOut = () => {
-    
-  }
-
   onCollapse = (collapsed) => {
     this.setState({
       collapsed
@@ -86,7 +83,7 @@ class RootLayout extends Component {
                   <Icon type="user" />
                   {` ${this.props.userInfo.userType}`}
                 </span>
-                <Button type="danger" onClick={this.signOut}>
+                <Button type="danger" onClick={this.props.signOut}>
                   <Link to="/login">注销</Link>
                 </Button>
               </div>
@@ -100,5 +97,6 @@ class RootLayout extends Component {
 }
 
 const mapStateToProps = state => state.loginReducer
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 
-export default connect(mapStateToProps)(RootLayout)
+export default connect(mapStateToProps, mapDispatchToProps)(RootLayout)

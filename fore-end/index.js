@@ -9,7 +9,7 @@ import Admin from './components/adminModule/admin'
 import Student from './components/studentModule/student'
 import Teacher from './components/teacherModule/teacher'
 import Login from './components/loginModule/login'
-import TestpaperManage from './components/teacherModule/testpaperManage'
+import TestPaperManage from './components/teacherModule/testPaperManage'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -20,7 +20,7 @@ ReactDOM.render(
           <Route exact path="/admin/testManage" component={Admin} />
           <Route exact path="teacher" component={Teacher} />
           <Route exact path="student" component={Student} />
-          <Route exact path={'/teacher/testpaperManage'} component={TestpaperManage} />
+          <Route exact path={'/teacher/testpaperManage'} component={TestPaperManage} />
         </Layout>
       </Switch>
     </HashRouter>

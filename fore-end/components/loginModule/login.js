@@ -18,21 +18,15 @@ class Login extends Component{
   handleSubmit = (e) => {
     e.preventDefault()
     const { getFieldValue } = this.props.form
-    const { getUserInfo, userInfo } = this.props
+    const { getUserInfo } = this.props
     const userName = getFieldValue('userName')
     const password = getFieldValue('password')
-    console.log(getUserInfo({userName, password}))
+    getUserInfo({userName, password})
     this.setState({loading: true})
-    console.log(this.props)
-    console.log(userInfo);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
       const { userInfo } = this.props
-    console.log(prevProps);
-    console.log(prevState);
-    console.log(snapshot);
-    console.log(userInfo);
       if(userInfo.userType){
         location.href = 'http://localhost:1234/#/'
       }
@@ -49,6 +43,19 @@ class Login extends Component{
 
   render(){
     const { getFieldDecorator } = this.props.form
+    const formItemLayout = {
+      labelCol: {
+        sm: {
+          span: 8
+        }
+      },
+      wrapperCol: {
+        sm: {
+          span: 16,
+          offset: 0
+        }
+      }
+    }
     return (
       <div style={{ maxWidth: '26%', margin: '10px 37%' }}>
        <Card title={'登陆'}>
@@ -88,8 +95,8 @@ class Login extends Component{
   }
 }
 
-const mapStateToProps = (state) => state.loginReducer
-const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch)
+const mapStateToProps = state => state.loginReducer
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 Login = Form.create()(Login)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

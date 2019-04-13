@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal } from "antd";
 
-class TestpaperModal extends React.Component {
+class TestPaperModal extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -17,4 +17,4 @@ class TestpaperModal extends React.Component {
   }
 }
 
-export default TestpaperModal
+export default TestPaperModal

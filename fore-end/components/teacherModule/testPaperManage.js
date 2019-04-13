@@ -1,8 +1,8 @@
 import React from 'react'
 import { Button, Row, Col } from 'antd'
-import TestpaperModal from "./testpaperModal";
+import TestPaperModal from "./testPaperModal";
 
-class TestpaperManage extends React.Component {
+class TestPaperManage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -10,7 +10,7 @@ class TestpaperManage extends React.Component {
     }
   }
 
-  showTestpaperModal = () => {
+  showTestPaperModal = () => {
     this.setState({visible: true})
   }
 
@@ -22,7 +22,7 @@ class TestpaperManage extends React.Component {
       <div>
         <Row>
           <Button type={'primary'} onClick={this.showTestpaperModal}>新增试卷</Button>
-          <TestpaperModal visible={this.state.visible} onCancel={this.onCancel}/>
+          <TestPaperModal visible={this.state.visible} onCancel={this.onCancel}/>
           <Col span={12}>col-12</Col>
           <Col span={12}>col-12</Col>
         </Row>
@@ -31,4 +31,4 @@ class TestpaperManage extends React.Component {
   }
 }
 
-export default TestpaperManage
+export default TestPaperManage
