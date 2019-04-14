@@ -19,9 +19,9 @@ class Login extends Component{
     e.preventDefault()
     const { getFieldValue } = this.props.form
     const { getUserInfo } = this.props
-    const userName = getFieldValue('userName')
+    const username = getFieldValue('username')
     const password = getFieldValue('password')
-    getUserInfo({userName, password})
+    getUserInfo({username, password})
     this.setState({loading: true})
   }
 
@@ -43,25 +43,12 @@ class Login extends Component{
 
   render(){
     const { getFieldDecorator } = this.props.form
-    const formItemLayout = {
-      labelCol: {
-        sm: {
-          span: 8
-        }
-      },
-      wrapperCol: {
-        sm: {
-          span: 16,
-          offset: 0
-        }
-      }
-    }
     return (
       <div style={{ maxWidth: '26%', margin: '10px 37%' }}>
        <Card title={'登陆'}>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item>
-            {getFieldDecorator('userName', {
+            {getFieldDecorator('username', {
               rules: [{
                 pattern: /^[0-9a-zA-Z]+$/, message: '用户名只能由字母和数字组成'
               }]

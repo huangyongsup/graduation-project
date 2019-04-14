@@ -25,7 +25,7 @@
       "iconType": "appstore",
       "menuItem": [
         {
-          "key": "/teacher/testpaperManage",
+          "key": "/teacher/testPaperManage",
           "option": "试卷管理"
         },
         {

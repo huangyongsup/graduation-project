@@ -12,7 +12,7 @@ export const USER = keyMirror({
 }, 'USER')
 
 export const getUserInfo = createAction(USER.GET_USER_INFO,(params) =>
-  ApiService.get(`${host}/api/login/loginProcess.php`, params, false)
+  ApiService.get(`${host}/api/login/loginProcess.php`, params)
 )
 
 export const signOut = createAction(USER.SIGN_OUT)

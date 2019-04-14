@@ -48,7 +48,7 @@ class ApiService {
   }
 
   post(uri, data, config) {
-    let ContentType = 'application/json',
+    let ContentType = 'application/json;charset:UTF-8',
       _config
     if (config && config.isFormData === true) {
       // 增加formdata方式提交
@@ -71,20 +71,20 @@ class ApiService {
       _config = Object.assign({
         method: 'POST',
         headers: {
-          'Content-Type': ContentType
+          'Content-Type': ContentType,
         },
         withCredentials: 'include',
         params: this.handleStringData(data)
       }, config)
     } else {
-      _config = Object.assign({
-        method: 'POST',
+      _config = {
+        method: 'post',
         headers: {
-          'Content-Type': ContentType
+          'Content-Type': ContentType,
         },
         withCredentials: 'include',
-        data: this.handleStringData(data)
-      }, config)
+        data: this.handleStringData(data),
+          ...config }
     }
     return axios(uri, _config)
   }

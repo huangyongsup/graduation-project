@@ -20,7 +20,7 @@ ReactDOM.render(
           <Route exact path="/admin/testManage" component={Admin} />
           <Route exact path="teacher" component={Teacher} />
           <Route exact path="student" component={Student} />
-          <Route exact path={'/teacher/testpaperManage'} component={TestPaperManage} />
+          <Route exact path={'/teacher/testPaperManage'} component={TestPaperManage} />
         </Layout>
       </Switch>
     </HashRouter>
