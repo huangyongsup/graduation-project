@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Card, Form, Icon, Input, Button, Checkbox } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
-import { Redirect } from 'react-router-dom'
 import * as actions from './action'
 import RegisterModal from './register'
 
@@ -17,12 +16,12 @@ class Login extends Component{
 
   handleSubmit = (e) => {
     e.preventDefault()
+    this.setState({loading: true})
     const { getFieldValue } = this.props.form
     const { getUserInfo } = this.props
     const username = getFieldValue('username')
     const password = getFieldValue('password')
     getUserInfo({username, password})
-    this.setState({loading: true})
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

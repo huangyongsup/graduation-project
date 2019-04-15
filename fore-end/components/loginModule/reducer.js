@@ -1,15 +1,19 @@
 import { handleActions } from 'redux-actions'
-import { USER } from './action'
+import { CONSTANTS } from './action'
 
 const initState = {
   userInfo: {},
+  isLoading: false,
 }
 
 export default handleActions({
-  [`${USER.GET_USER_INFO}_FULFILLED`](state, action){
-    return { ...state, userInfo: action.payload }
+  [`${CONSTANTS.GET_USER_INFO}_FULFILLED`](state, action){
+    return { ...state, userInfo: action.payload, isLoading: false }
   },
-  [USER.SIGN_OUT](state){
+  [CONSTANTS.SIGN_OUT](state){
     return Object.assign({}, state, { userInfo: {} })
+  },
+  [CONSTANTS.SET_LOADING](state){
+    return { ...state, isLoading: true }
   }
 }, initState)

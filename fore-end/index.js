@@ -3,7 +3,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { HashRouter, Switch, Route } from 'react-router-dom'
-import store from './store'
+import { PersistGate } from 'redux-persist/integration/react'
+import { store, persistor } from './store'
 import Layout from './components/layout/layout'
 import Admin from './components/adminModule/admin'
 import Student from './components/studentModule/student'
@@ -13,6 +14,7 @@ import TestPaperManage from './components/teacherModule/testPaperManage'
 
 ReactDOM.render(
   <Provider store={store}>
+    <PersistGate persistor={persistor} loading={null}>
     <HashRouter>
       <Switch>
         <Route exact path="/login" component={Login} />
@@ -24,6 +26,7 @@ ReactDOM.render(
         </Layout>
       </Switch>
     </HashRouter>
+    </PersistGate>
   </Provider>
   , document.getElementById('root')
 )
