@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from "redux"
 import promiseMiddleware from 'redux-promise-middleware'
-import loginReducer from './components/loginModule/reducer'
-import teacherReducer from './components/teacherModule/reducer'
+import loginReducer from './containers/loginModule/reducer'
+import teacherReducer from './containers/teacherModule/reducer'
 import { persistStore, persistReducer } from 'redux-persist'
 // import storage from 'redux-persist/lib/storage'
 import hardSet from 'redux-persist/lib/stateReconciler/hardSet'

@@ -17,24 +17,11 @@ axios.interceptors.request.use(config => config, error => Promise.reject(error))
 
 axios.interceptors.response.use((response) => {
   console.log(response)
-  let config = response.config || {}
-  let data = response.data || {}
-  let errorMsg = null
-  if (data.errorCode && data.errorCode === -103) { // 没有的登录，去登录
-    window.location = `${Config.baseURL}/#/login`
-    return false
-  } else if (data.errorCode && data.errorCode === -208) {
-    errorMsg = data.error
-  } else if(config.responseType === 'arraybuffer'){ // 如果是arraybuffer格式，说明是文件下载，则把整个response返回
-    return response
-  } else {
     return response.data
-  }
 }, (error) => {
   console.log(error)
   return message.error('网络故障或请求被阻止')
 })
-
 
 class ApiService {
   get(url, params, config) {

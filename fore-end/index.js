@@ -5,12 +5,12 @@ import { Provider } from 'react-redux'
 import { HashRouter, Switch, Route } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from './store'
-import Layout from './components/layout/layout'
-import Admin from './components/adminModule/admin'
-import Student from './components/studentModule/student'
-import Teacher from './components/teacherModule/teacher'
-import Login from './components/loginModule/login'
-import TestPaperManage from './components/teacherModule/testPaperManage'
+import Layout from './containers/layout/layout'
+import Admin from './containers/adminModule/admin'
+import Student from './containers/studentModule/student'
+import Teacher from './containers/teacherModule/teacher'
+import Login from './containers/loginModule/login'
+import TestPaperManage from './containers/teacherModule/testPaperManage'
 
 ReactDOM.render(
   <Provider store={store}>
