@@ -11,7 +11,6 @@ const initState = {
 
 export default handleActions({
   [`${CONSTANTS.GET_SINGLE_CHOICE_QUESTION_BANK}_FULFILLED`](state, action){
-    console.log(action);
     return { ...state, singleChoiceQuestionBankData: action.payload }
   },
   [`${CONSTANTS.GET_MULTI_CHOICE_QUESTION_BANK}_FULFILLED`](state, action){

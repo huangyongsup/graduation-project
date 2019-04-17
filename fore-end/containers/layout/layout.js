@@ -20,7 +20,6 @@ class RootLayout extends Component {
 
   componentWillMount() {
     const { userInfo } = this.props
-    console.log(userInfo);
     if(!userInfo.userType){
       location.href = 'http://localhost:1234/#/login'
     }

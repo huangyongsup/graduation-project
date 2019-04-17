@@ -8,9 +8,9 @@ import { store, persistor } from './store'
 import Layout from './containers/layout/layout'
 import Admin from './containers/adminModule/admin'
 import Student from './containers/studentModule/student'
-import Teacher from './containers/teacherModule/teacher'
+import singleChoice from './containers/teacherModule/singleChoice'
+import createTestPaper from './containers/teacherModule/createTestPaper'
 import Login from './containers/loginModule/login'
-import TestPaperManage from './containers/teacherModule/testPaperManage'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -20,9 +20,9 @@ ReactDOM.render(
         <Route exact path="/login" component={Login} />
         <Layout>
           <Route exact path="/admin/testManage" component={Admin} />
-          <Route exact path="teacher" component={Teacher} />
+          <Route exact path="/teacher/singleChoice" component={singleChoice} />
           <Route exact path="student" component={Student} />
-          <Route exact path={'/teacher/testPaperManage'} component={TestPaperManage} />
+          <Route exact path={'/teacher/createTestPaper'} component={createTestPaper} />
         </Layout>
       </Switch>
     </HashRouter>

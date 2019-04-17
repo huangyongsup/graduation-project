@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as actions from './action'
 import QuestionBank from '../../components/questionBank'
-class TestPaperManage extends React.Component {
+class SingleChoice extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -47,4 +47,4 @@ class TestPaperManage extends React.Component {
 const mapStateToProps = state => state.teacherReducer
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestPaperManage)
+export default connect(mapStateToProps, mapDispatchToProps)(SingleChoice)
