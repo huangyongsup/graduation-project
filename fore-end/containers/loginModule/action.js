@@ -16,6 +16,6 @@ export const getUserInfo = createAction(CONSTANTS.GET_USER_INFO,(params) =>
   ApiService.get(`${host}/api/login/loginProcess.php`, params)
 )
 
-export const signOut = createAction(CONSTANTS.SIGN_OUT, () => window.sessionStorage.clear() )
+export const signOut = createAction(CONSTANTS.SIGN_OUT)
 
 export const setLoading = createAction(CONSTANTS.SET_LOADING)

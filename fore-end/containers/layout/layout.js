@@ -25,10 +25,6 @@ class RootLayout extends Component {
     }
   }
 
-  logOut = () => {
-
-  }
-
   renderMenu = () => {
     return (
       <Menu

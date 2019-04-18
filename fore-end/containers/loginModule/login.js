@@ -16,11 +16,12 @@ class Login extends Component{
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.setState({loading: true})
+    // this.setState({loading: true})
     const { getFieldValue } = this.props.form
-    const { getUserInfo } = this.props
+    const { getUserInfo, setLoading } = this.props
     const username = getFieldValue('username')
     const password = getFieldValue('password')
+    setLoading()
     getUserInfo({username, password})
   }
 
@@ -61,7 +62,7 @@ class Login extends Component{
             )}
           </Form.Item>
           <Form.Item>
-            <Button loading={this.state.loading} htmlType="submit" type="primary" block>登陆</Button>
+            <Button loading={this.props.isLoading} htmlType="submit" type="primary" block>登陆</Button>
             {getFieldDecorator('remember', {
               valuePropName: 'checked',
               initialValue: true
