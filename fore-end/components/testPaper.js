@@ -16,7 +16,7 @@ class TestPaper extends React.Component {
     if(singleChoiceData){
       return singleChoiceData.map((value, index) => {
         return (
-          <Form.Item key={value.singleChoiceId} {...formItemLayout} label={`${++index}、${value.question}`}>
+          <Form.Item key={value.singleChoiceId} label={`${++index}、${value.question}`}>
             { getFieldDecorator(`singleChoice${value.singleChoiceId}`)(
               <Radio.Group>
                 <Radio value={'A'}>{ value.answerA }</Radio>

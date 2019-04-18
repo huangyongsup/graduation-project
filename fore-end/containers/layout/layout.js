@@ -7,13 +7,11 @@ import * as actions from '../loginModule/action'
 import menus from './menus.json'
 
 const { Header, Content, Sider, Footer } = Layout
-const { SubMenu } = Menu
 
 class RootLayout extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      arr: [menus.subMenu.admin, menus.subMenu.teacher, menus.subMenu.student],
       collapsed: false,
     }
   }
@@ -25,36 +23,22 @@ class RootLayout extends Component {
     }
   }
 
-  logOut = () => {
-
-  }
-
   renderMenu = () => {
+    const { userInfo } = this.props
+    const { userType } = userInfo
     return (
       <Menu
         mode="inline"
         theme="dark"
       >
-        {this.state.arr.map(subMenu => {
+        { menus[userType].menuItem.map( menuItem => {
           return (
-            <SubMenu key={subMenu.key} title={
-              <span>
-                <Icon type={subMenu.iconType} />
-                <span>{subMenu.title}</span>
-              </span>
-            }>
-              {
-                subMenu.menuItem.map(menuItem => {
-                  return (
-                    <Menu.Item key={menuItem.key}>
-                      <Link to={menuItem.key}>
-                        {menuItem.option}
-                      </Link>
-                    </Menu.Item>
-                  )
-                })
-              }
-            </SubMenu>
+            <Menu.Item key={ menuItem.key }>
+              <Link to={menuItem.key}>
+                <Icon type={menus[userType].iconType} />
+                { menuItem.option }
+              </Link>
+            </Menu.Item>
           )
         })}
       </Menu>
