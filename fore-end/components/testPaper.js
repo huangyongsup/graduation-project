@@ -9,14 +9,13 @@ class TestPaper extends React.Component {
   renderSingleChoice = () => {
     const { getFieldDecorator } = this.props.form
     const { singleChoiceData } = this.props
-    const formItemLayout = {
-      labelCol: { span: 20, offset: 4 },
-      wrapperCol: { span: 20, offset: 4 }
-    }
     if(singleChoiceData){
       return singleChoiceData.map((value, index) => {
         return (
-          <Form.Item key={value.singleChoiceId} {...formItemLayout} label={`${++index}、${value.question}`}>
+          <Form.Item
+            key={value.singleChoiceId}
+            label={`${++index}、${value.question}`}
+          >
             { getFieldDecorator(`singleChoice${value.singleChoiceId}`)(
               <Radio.Group>
                 <Radio value={'A'}>{ value.answerA }</Radio>
@@ -35,9 +34,15 @@ class TestPaper extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
+    const formItemLayout = {
+      labelCol: { span: 23, offset: 1 },
+      wrapperCol: { span: 20, offset: 2 },
+      labelAlign: 'left',
+      colon: false,
+    }
     return (
-      <Form>
-        <Form.Item key={'title'}>
+      <Form { ...formItemLayout }>
+        <Form.Item key={'title'} wrapperCol={{ span: 5, offset: 1 }}>
           { getFieldDecorator('title', {
             rules: [{
               required: true,
