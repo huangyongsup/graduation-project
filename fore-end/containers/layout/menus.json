@@ -23,9 +23,6 @@
       "iconType": "appstore",
       "menuItem": [
         {
-          "key": "/teacher/testPaperManage",
-          "option": "试卷管理"
-        }, {
           "key": "/teacher/singleChoice",
           "option": "添加单选题"
         }, {

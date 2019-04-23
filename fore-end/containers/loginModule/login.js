@@ -16,7 +16,6 @@ class Login extends Component{
 
   handleSubmit = (e) => {
     e.preventDefault()
-    // this.setState({loading: true})
     const { getFieldValue } = this.props.form
     const { getUserInfo, setLoading } = this.props
     const username = getFieldValue('username')

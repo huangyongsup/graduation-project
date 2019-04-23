@@ -40,8 +40,8 @@ class SessionStorage {
     }
   }
   getObject(key) {
-    let obj = window.sessionStorage[key];
     try {
+      let obj = window.sessionStorage[key];
       return obj ? JSON.parse(obj) : null;
     } catch (e) {
       return null;

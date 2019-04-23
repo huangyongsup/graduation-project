@@ -21,7 +21,7 @@ export default handleActions({
     // return Object.assign({}, state, { makeTestPaperDone: action.payload })
   },
   [`${CONSTANTS.SINGLE_CHOICE_SELECTED_ROW_KEYS}`](state, action){
-    return { ...state, singleChoiceSelectedRowKeys: [...action.payload] }
+    return { ...state, singleChoiceSelectedRowKeys: action.payload }
   },
   [`${CONSTANTS.MULTI_CHOICE_SELECTED_ROW_KEYS}`](state, action){
     return { ...state, multiChoiceSelectedRowKeys: action.payload }

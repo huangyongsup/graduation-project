@@ -7,8 +7,8 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from './store'
 import Layout from './containers/layout/layout'
 import Admin from './containers/adminModule/admin'
-import Student from './containers/studentModule/student'
-import singleChoice from './containers/teacherModule/singleChoice'
+import SingleChoice from './containers/teacherModule/singleChoice'
+import MultiChoice from './containers/teacherModule/multiChoice'
 import createTestPaper from './containers/teacherModule/createTestPaper'
 import Login from './containers/loginModule/login'
 
@@ -20,8 +20,8 @@ ReactDOM.render(
         <Route exact path="/login" component={Login} />
         <Layout>
           <Route exact path="/admin/testManage" component={Admin} />
-          <Route exact path="/teacher/singleChoice" component={singleChoice} />
-          <Route exact path="student" component={Student} />
+          <Route exact path="/teacher/singleChoice" component={SingleChoice} />
+          <Route exact path="/teacher/multiChoice" component={MultiChoice} />
           <Route exact path={'/teacher/createTestPaper'} component={createTestPaper} />
         </Layout>
       </Switch>

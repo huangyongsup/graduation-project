@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as actions from './action'
 import QuestionBank from '../../components/questionBank'
-class SingleChoice extends React.Component {
+class MultiChoice extends React.Component {
   constructor(props) {
     super(props)
-    this.props.getSingleChoiceQuestionBank({ tableName: 'single_choice_question' })
+    this.props.getMultiChoiceQuestionBank({ tableName: 'multi_choice_question' })
   }
 
   render() {
@@ -28,8 +28,8 @@ class SingleChoice extends React.Component {
     }]
     return (
       <QuestionBank
-        dataSource={this.props.singleChoiceQuestionBankData}
-        primaryKey={'singleChoiceId'}
+        dataSource={this.props.multiChoiceQuestionBankData}
+        primaryKey={'multiChoiceId'}
         columns={columns}
       />
     )
@@ -39,4 +39,4 @@ class SingleChoice extends React.Component {
 const mapStateToProps = state => state.teacherReducer
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleChoice)
+export default connect(mapStateToProps, mapDispatchToProps)(MultiChoice)
