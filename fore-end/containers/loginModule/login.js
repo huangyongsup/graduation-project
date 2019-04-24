@@ -16,12 +16,16 @@ class Login extends Component{
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { getFieldValue } = this.props.form
+    const { getFieldValue, validateFields } = this.props.form
     const { getUserInfo, setLoading } = this.props
-    const username = getFieldValue('username')
-    const password = getFieldValue('password')
-    setLoading()
-    getUserInfo({username, password})
+    validateFields(err => {
+      if(!err) {
+        const username = getFieldValue('username')
+        const password = getFieldValue('password')
+        setLoading()
+        getUserInfo({username, password})
+      }
+    })
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -32,7 +36,6 @@ class Login extends Component{
   }
 
   showModal = () => {
-    console.log(this.props.userInfo);
     this.setState({visible: true})
   }
 
@@ -50,13 +53,21 @@ class Login extends Component{
             {getFieldDecorator('username', {
               rules: [{
                 pattern: /^[0-9a-zA-Z]+$/, message: '用户名只能由字母和数字组成'
+              }, {
+                required: true, message: '请输入用户名'
               }]
             })(
               <Input prefix={<Icon type="user" />} placeholder="用户名" autoComplete="username" allowClear={true} />
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator('password')(
+            {getFieldDecorator('password', {
+              rules: [{
+                pattern: /^[0-9a-zA-Z]+$/, message: '密码只能由字母和数字组成'
+              }, {
+                required: true, message: '请输入密码'
+              }]
+            })(
               <Input.Password prefix={<Icon type="lock" />} placeholder="密码" autoComplete="current-password" allowClear={true} />
             )}
           </Form.Item>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checkbox, Button, Card, Radio, Form, Input } from 'antd'
+import { Select, Row, Col, Checkbox, Button, Card, Radio, Form, Input } from 'antd'
 
 class TestPaper extends React.Component {
   constructor(props) {
@@ -7,22 +7,40 @@ class TestPaper extends React.Component {
   }
 
   renderTitle = () => {
-    const { getFieldDecorator } = this.props.form
-    const { handleSubmit } = this.props
+    const { userInfo } = this.props
     return (
-      <div>
-        <Form.Item key={'title'} wrapperCol={{ span: 5, offset: 1 }}>
+      <Row gutter={16}>
+        <Col span={6}>{userInfo.username}</Col>
+        <Col span={6}>{userInfo.classNo}</Col>
+        <Col span={6}>
+          <Button htmlType={'submit'} type={'primary'}>提交</Button>
+        </Col>
+      </Row>
+    )
+  }
+
+  renderTeacherTitle = () => {
+    const { getFieldDecorator } = this.props.form
+    return (
+      <Row gutter={16}>
+        <Col span={6}>
+        <Form.Item key={'title'}>
           { getFieldDecorator('title', {
-            rules: [{
-              required: true,
-              message: '试卷名不能为空'
-            }]
+            rules: [{ required: true, message: '试卷名不能为空' }]
           })(
             <Input placeholder={'请输入试卷名'}/>
           )}
         </Form.Item>
-        <Button onClick={() => handleSubmit} type={'primary'}>提交</Button>
-      </div>
+        </Col>
+        <Col span={6}>
+          <Select defaultValue={'allClass'}>
+            <Select.Option value={'allClass'}>所有班级</Select.Option>
+          </Select>
+        </Col>
+        <Col span={6}>
+          <Button htmlType={'submit'} type={'primary'}>提交</Button>
+        </Col>
+      </Row>
     )
   }
 
@@ -93,10 +111,10 @@ class TestPaper extends React.Component {
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { editable, handleSubmit } = this.props
     return (
-      <Form>
-        <Card title={this.renderTitle()}>
+      <Form onSubmit={handleSubmit.bind(this)}>
+        <Card title={ editable ? this.renderTeacherTitle() : this.renderTitle() }>
           { this.renderSingleChoice() }
           { this.renderMultiChoice() }
         </Card>

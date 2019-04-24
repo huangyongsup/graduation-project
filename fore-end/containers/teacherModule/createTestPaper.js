@@ -1,5 +1,8 @@
 import React from 'react'
 import { message } from "antd";
+import { connect } from 'react-redux'
+import { bindActionCreators } from "redux";
+import * as actions from './action'
 import TestPaper from '../../components/testPaper'
 import { SessionStorage } from "../../lib/utilService";
 
@@ -34,11 +37,14 @@ class CreateTestPaper extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    console.log("ad");
-    // console.log(this.props, 'sskjkl');
-    // const { getFieldsValue } = this.props.form
-    // const data = getFieldsValue()
-    // console.log(data);
+    const { form, makeTestPaper } = this.props
+    form.validateFields(err => {
+      if(!err) {
+        const data = form.getFieldsValue()
+        makeTestPaper(data)
+        console.log(data);
+      }
+    })
   }
 
   render() {
@@ -48,9 +54,12 @@ class CreateTestPaper extends React.Component {
         multiChoiceData={this.state.multiChoiceData}
         editable={true}
         handleSubmit={this.handleSubmit}
+        makeTestPaper={this.props.makeTestPaper}
       />
     )
   }
 }
 
-export default CreateTestPaper
+const mapStateToProps = store => store.teacherReducer
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTestPaper)

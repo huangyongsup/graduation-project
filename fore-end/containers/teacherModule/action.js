@@ -25,10 +25,6 @@ export const makeTestPaper = createAction(CONSTANTS.MAKE_TEST_PAPER, (params) =>
   ApiService.post(`${host}/api/teacher/makeTestPaper.php`, params)
 )
 
-export const setSingleChoiceSelectedRowKeys = createAction(CONSTANTS.SINGLE_CHOICE_SELECTED_ROW_KEYS, params => {
-  console.log(params);
-  return params
-
-} )
+export const setSingleChoiceSelectedRowKeys = createAction(CONSTANTS.SINGLE_CHOICE_SELECTED_ROW_KEYS, params => params )
 
 export const setMultiChoiceSelectedRowKeys = createAction(CONSTANTS.MULTI_CHOICE_SELECTED_ROW_KEYS, params => params )
