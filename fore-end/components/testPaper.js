@@ -21,6 +21,7 @@ class TestPaper extends React.Component {
 
   renderTeacherTitle = () => {
     const { getFieldDecorator } = this.props.form
+    const { classInfo } = this.props
     return (
       <Row gutter={16}>
         <Col span={6}>
