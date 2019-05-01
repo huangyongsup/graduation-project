@@ -1,5 +1,8 @@
 import React from 'react'
 import { Select, Row, Col, Checkbox, Button, Card, Radio, Form, Input } from 'antd'
+import {bindActionCreators} from "redux";
+import { connect } from 'react-redux'
+import * as actions from './action'
 
 class TestPaper extends React.Component {
   constructor(props) {
@@ -85,7 +88,7 @@ class TestPaper extends React.Component {
   }
 
   handleSubmit = () => {
-    
+
   }
 
   render() {
@@ -100,4 +103,6 @@ class TestPaper extends React.Component {
   }
 }
 
-export default Form.create()(TestPaper)
+const mapStateToProps = state => ({ ...state.loginReducer, ...state.studentReducer })
+const mpaDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+export default connect(mapStateToProps, mpaDispatchToProps)(Form.create()(TestPaper))

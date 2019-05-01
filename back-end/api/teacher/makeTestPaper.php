@@ -1,5 +1,11 @@
 <?php
 require_once '../../mysqlTools.php';
+$mysqlTools = new MysqlTools();
+
 $data = file_get_contents('php://input');
-echo json_encode($data);
-echo "true";
+echo $data;
+
+$statementFirst = "insert into testpaper values(default, '{$data['title']}')";
+
+
+

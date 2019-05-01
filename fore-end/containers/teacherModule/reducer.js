@@ -7,7 +7,7 @@ const initState = {
   singleChoiceSelectedRowKeys: [],
   multiChoiceSelectedRowKeys: [],
   makeTestPaperDone: false,
-  classInfo: {},
+  classInfo: [],
 }
 
 export default handleActions({

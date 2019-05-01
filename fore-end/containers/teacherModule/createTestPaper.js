@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Card, Checkbox, Col, Form, Input, message, Radio, Row, Select} from "antd";
+import { Tooltip, Button, Card, Checkbox, Col, Form, Input, message, Radio, Row, Select} from "antd";
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import * as actions from './action'
@@ -64,6 +64,7 @@ class CreateTestPaper extends React.Component {
 
   renderTitle = () => {
     const { classInfo, form: { getFieldDecorator } } = this.props
+    console.log(classInfo);
     return (
       <Row gutter={16}>
         <Col span={8}>
@@ -76,11 +77,12 @@ class CreateTestPaper extends React.Component {
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label={'将此试卷分发给'}>
+          <Form.Item>
             { getFieldDecorator('classNo', {
-              initialValue: 'allClass'
+              // initialValue: 'allClass'
+              rules: [{required: true, message: '请选择此试卷的目标班级'}]
             })(
-              <Select>
+              <Select placeholder={'将此试卷分发给'}>
                 <Select.Option value={'allClass'}>所有班级</Select.Option>
                 {classInfo.map((value) => {
                   return (
@@ -108,10 +110,10 @@ class CreateTestPaper extends React.Component {
             return (
               <Card
                 title={`${++index}、${value.question}`}
-                extra={<Button
+                extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'singleChoice')}
                   shape={'circle'} icon={'close'}
-                />}
+                /></Tooltip>}
                 key={value.singleChoiceId}
               >
                 <Form.Item >
@@ -144,10 +146,10 @@ class CreateTestPaper extends React.Component {
             return (
               <Card
                 title={`${++index}、${value.question}`}
-                extra={<Button
+                extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'multiChoice')}
                   shape={'circle'} icon={'close'}
-                />}
+                /></Tooltip>}
                 key={value.multiChoiceId}
               >
                 <Form.Item>
@@ -173,10 +175,11 @@ class CreateTestPaper extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { form: { validateFields, getFieldsValue }, makeTestPaper } = this.props
+    const { singleSelectedId, multiSelectedId } = this.getQuestionInfo()
     validateFields(err => {
       if(!err) {
         const data = getFieldsValue()
-        makeTestPaper(data)
+        makeTestPaper({ ...data, singleSelectedId, multiSelectedId })
         console.log(data);
       }
     })
