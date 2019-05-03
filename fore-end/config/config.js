@@ -1,5 +1,5 @@
 const Config = Object.freeze({
-  baseURL: 'localhost'
+  baseURL: 'http://localhost'
 })
 
 export default Config

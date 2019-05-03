@@ -41,7 +41,7 @@ class Register extends Component {
       >
         <Form>
           <Form.Item label="用户名">
-            {getFieldDecorator('userName', {
+            {getFieldDecorator('username', {
               rules: [this.state.pattern]
             })(
               <Input autoComplete="username" allowClear={true}/>
