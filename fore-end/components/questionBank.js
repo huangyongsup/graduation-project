@@ -12,6 +12,7 @@ class QuestionBank extends React.Component {
   saveState = () => {
     const { primaryKey } = this.props
     const { selectedRowKeys } = this.state
+    console.log(selectedRowKeys);
     SessionStorage.setObject(primaryKey, selectedRowKeys)
   }
 

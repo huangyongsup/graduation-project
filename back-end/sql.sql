@@ -24,33 +24,46 @@ create table multi_choice_question(
   answerD text not null ,
   correctAnswer varchar(4) not null
 );
-
 #试题表
 create table testpaper(
-  testPaperId int(4) auto_increment primary key ,
+  testPaperId int(4) primary key ,
   testPaperTitle varchar(32) not null ,
-  singleChoiceId int(8),
-  multiChoiceId int(8),
-  foreign key (singleChoiceId) references single_choice_question(singleChoiceId) on delete cascade on update cascade ,
-  foreign key (multiChoiceId) references multi_choice_question(multiChoiceId) on update cascade on delete cascade
+  singleChoiceId varchar(128),
+  multiChoiceId varchar(128)
 );
 
 #班级表
 create table class(
-  classNo varchar(8) primary key ,
+  classNo varchar(8) ,
   className varchar(8) not null ,
   testPaperId int(4),
   foreign key (testPaperId) references testpaper(testPaperId) on delete cascade on  update cascade
 );
 
+drop table user;
+drop table class;
 #用户表
 create table user(
   username varchar(16) primary key ,
   password varchar(16) not null ,
   userType enum('admin', 'teacher', 'student') not null ,
-  classNo varchar(8) ,
-  foreign key (classNo) references class(classNo) on update cascade on delete cascade
+  classNo varchar(8)
 );
 
+insert into testpaper values(default, '测试试卷', '1,2,3', '2,3,4');
+
+insert into class values('CS01', '计算机一班', 1);
+insert into class values('CS02', '计算机二班', NULL);
+insert into class values('CS03', '计算机三班', NULL);
+
 select * from class;
+
+insert into user values('admin', 'admin', 'admin', NULL);
+insert into user values('teacher', 'teacher', 'teacher', NULL);
+insert into user values('student', 'student', 'student', 'CS01');
+
+select * from user;
+
+delete from testpaper where testPaperId between 2 and 10;
 select * from testpaper;
+

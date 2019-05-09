@@ -17,6 +17,13 @@ axios.interceptors.request.use(config => config, error => Promise.reject(error))
 
 axios.interceptors.response.use((response) => {
   console.log(response)
+  const data = response.data
+  if(data.errorMsg){
+    return message.error(data.errorMsg)
+  }
+  if(data.successMsg){
+    message.success(data.successMsg)
+  }
     return response.data
 }, (error) => {
   console.log(error)

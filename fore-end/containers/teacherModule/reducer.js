@@ -21,7 +21,7 @@ export default handleActions({
     return { ...state, classInfo: action.payload }
   },
   [`${CONSTANTS.MAKE_TEST_PAPER}_FULFILLED`](state, action){
-    return { ...state, makeTestPaperDone: action.payload }
+    return { ...state, makeTestPaperDone: action.payload.makeTestPaperDone }
     // return Object.assign({}, state, { makeTestPaperDone: action.payload })
   },
   [`${CONSTANTS.SINGLE_CHOICE_SELECTED_ROW_KEYS}`](state, action){

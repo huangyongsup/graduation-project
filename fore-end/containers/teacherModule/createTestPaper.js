@@ -78,12 +78,16 @@ class CreateTestPaper extends React.Component {
         </Col>
         <Col span={8}>
           <Form.Item>
-            { getFieldDecorator('classNo', {
+            { getFieldDecorator('class', {
               // initialValue: 'allClass'
               rules: [{required: true, message: '请选择此试卷的目标班级'}]
             })(
-              <Select placeholder={'将此试卷分发给'}>
-                <Select.Option value={'allClass'}>所有班级</Select.Option>
+              <Select
+                placeholder={'将此试卷分发给'}
+                mode={'multiple'}
+                showArrow={true}
+                labelInValue={true}
+              >
                 {classInfo.map((value) => {
                   return (
                     <Select.Option key={value.classNo} value={value.classNo}>{value.className}</Select.Option>
