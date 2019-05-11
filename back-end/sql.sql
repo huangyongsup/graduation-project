@@ -55,6 +55,7 @@ create table submit_log(
   username varchar(16),
   testPaperId int(4)
 );
+select * from submit_log;
 #提交单选题
 create table single_answer(
   testPaperId int(4),
@@ -74,9 +75,15 @@ create table multi_answer(
   correctAnswer varchar(4) not null ,
   score tinyint(1) not null
 );
+desc multi_answer;
+delete from submit_log;
+delete from single_answer;
+delete from multi_answer;
+select * from submit_log;
+select * from single_answer;
 select * from multi_answer;
-insert into testpaper values(default, '测试试卷', '1,2,3', '2,3,4');
-
+select * from testpaper;
+delete from testpaper where testPaperId < 1557318241;
 insert into class values('CS01', '计算机一班', 1);
 insert into class values('CS02', '计算机二班', NULL);
 insert into class values('CS03', '计算机三班', NULL);

@@ -11,8 +11,8 @@ class MyTestList extends React.Component {
   }
 
   componentWillMount() {
-    const { getTestPaperList, initialize, userInfo: { classNo } } = this.props
-    getTestPaperList({ type: 'getTestPaperList', classNo})
+    const { getTestPaperList, initialize, userInfo: { classNo, username } } = this.props
+    getTestPaperList({ type: 'getTestPaperList', classNo, username})
     initialize()
   }
 
@@ -22,13 +22,31 @@ class MyTestList extends React.Component {
       title: '试卷名',
       dataIndex: 'testPaperTitle',
     }, {
-      title: '操作',
+      title: '答题',
       dataIndex: 'testPaperId',
-      render: testPaperId => <Button type={'primary'}><Link to={{
-           pathname: '/student/myTest',
-           search: `${testPaperId}`
-         }}>去答题
-      </Link></Button>
+      render: (text, record, index) => {
+        if(!record.analysis){
+          return (
+            <Button type={'primary'}><Link to={{
+              pathname: '/student/myTest',
+              search: `${record.testPaperId}`
+            }}>去答题</Link></Button>
+          )
+        }
+      }
+    }, {
+      title: '答案解析',
+      dataIndex: 'analysis',
+      render: (text, record) => {
+        if(record.analysis) {
+          return (
+            <Button type={'primary'}><Link to={{
+              pathname: '/student/analysis',
+              search: `${record.testPaperId}`
+            }}>答案解析</Link></Button>
+          )
+        }
+      }
     }]
 
     return (
@@ -36,7 +54,7 @@ class MyTestList extends React.Component {
         columns={columns}
         dataSource={testPaperList}
         rowKey={'testPaperId'}
-        />
+      />
     )
   }
 }

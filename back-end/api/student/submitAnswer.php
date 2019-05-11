@@ -2,7 +2,6 @@
 require_once '../../MysqlTools.php';
 $mysqlTools = new MysqlTools();
 $data = json_decode(file_get_contents('php://input'));
-
 if(submitLog() && singleAnswer() && multiAnswer()){
   echo json_encode((object)[
     'submitAnswerDone' => true,
@@ -30,13 +29,13 @@ function singleAnswer(){
     if($arr[0] === 'singleChoice'){
       $query = "select correctAnswer, score from single_choice_question where singleChoiceId = '{$arr[1]}'";
       if($res = $mysqlTools->executeDQL($query)){
-        $isCorrect = false;
+        $isCorrect = 0;
         $score = 0;
         if($res[0]['correctAnswer'] === $value){
-          $isCorrect = true;
+          $isCorrect = 1;
           $score = $res[0]['score'];
         }
-       $statement = "insert into single_answer values('{$data->testPaperId}', '{$arr[1]}', '{$value}', '{$isCorrect}', '{$res[0]['correctAnswer']}', {$score})";
+       $statement = "insert into single_answer values('{$data->testPaperId}', '{$arr[1]}', '{$value}', {$isCorrect}, '{$res[0]['correctAnswer']}', {$score})";
         if(!$mysqlTools->executeDML($statement)){
           return false;
         }
@@ -54,14 +53,14 @@ function multiAnswer(){
     if($arr[0] === 'multiChoice'){
       $query = "select correctAnswer, score from multi_choice_question where multiChoiceId = '{$arr[1]}'";
       if($res = $mysqlTools->executeDQL($query)){
-        $isCorrect = false;
+        $isCorrect = 0;
         $score = 0;
         if(compareWithCorrectAnswer($value,str_split( $res[0]['correctAnswer'])) === 0){
-          $isCorrect = true;
+          $isCorrect = 1;
           $score = $res[0]['score'];
         }
         $value = implode("", $value);
-        $statement = "insert into multi_answer values('{$data->testPaperId}', '{$arr[1]}', '{$value}', '{$isCorrect}', '{$res[0]['correctAnswer']}', {$score})";
+        $statement = "insert into multi_answer values('{$data->testPaperId}', '{$arr[1]}', '{$value}', {$isCorrect}, '{$res[0]['correctAnswer']}', {$score})";
         if(!$mysqlTools->executeDML($statement)){
           return false;
         }

@@ -9,6 +9,7 @@ export const CONSTANTS = keyMirror({
   GET_TEST_PAPER_LIST: 'GET_TEST_PAPER_LIST',
   GET_TEST_PAPER_INFO: 'GET_TEST_PAPER_INFO',
   SUBMIT_ANSWER: 'SUBMIT_ANSWER',
+  ANALYSIS: 'ANALYSIS',
   INITIALIZE: 'INITIALIZE',
 }, 'STUDENT')
 
@@ -17,6 +18,8 @@ export const getTestPaperList = createAction(CONSTANTS.GET_TEST_PAPER_LIST, para
 export const getTestPaperInfo = createAction(CONSTANTS.GET_TEST_PAPER_INFO, params => ApiService.get(`${host}/api/student/getTestPaper.php`, params))
 
 export const submitAnswer = createAction(CONSTANTS.SUBMIT_ANSWER, params => ApiService.post(`${host}/api/student/submitAnswer.php`, params))
+
+export const analysis = createAction(CONSTANTS.ANALYSIS, params => ApiService.get(`${host}/api/student/getTestPaper.php`, params))
 
 export const initialize = createAction(CONSTANTS.INITIALIZE)
 
