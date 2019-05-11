@@ -123,10 +123,10 @@ class CreateTestPaper extends React.Component {
                 <Form.Item >
                   { getFieldDecorator(`singleChoice${value.singleChoiceId}`)(
                     <Radio.Group>
-                      <Radio value={'A'}>{ value.answerA }</Radio>
-                      <Radio value={'B'}>{ value.answerB }</Radio>
-                      <Radio value={'C'}>{ value.answerC }</Radio>
-                      <Radio value={'D'}>{ value.answerD }</Radio>
+                      {'A、'}<Radio value={'A'}>{ value.answerA }</Radio>
+                      {'B、'}<Radio value={'B'}>{ value.answerB }</Radio>
+                      {'C、'}<Radio value={'C'}>{ value.answerC }</Radio>
+                      {'D、'}<Radio value={'D'}>{ value.answerD }</Radio>
                     </Radio.Group>
                   )}
                 </Form.Item>
@@ -159,10 +159,10 @@ class CreateTestPaper extends React.Component {
                 <Form.Item>
                   { getFieldDecorator(`multiChoice${value.multiChoiceId}`)(
                     <Checkbox.Group>
-                      <Checkbox value={'A'}>{ value.answerA }</Checkbox>
-                      <Checkbox value={'B'}>{ value.answerB }</Checkbox>
-                      <Checkbox value={'C'}>{ value.answerC }</Checkbox>
-                      <Checkbox value={'D'}>{ value.answerD }</Checkbox>
+                      {'A、'}<Checkbox value={'A'}>{ value.answerA }</Checkbox>
+                      {'B、'}<Checkbox value={'B'}>{ value.answerB }</Checkbox>
+                      {'C、'}<Checkbox value={'C'}>{ value.answerC }</Checkbox>
+                      {'D、'}<Checkbox value={'D'}>{ value.answerD }</Checkbox>
                     </Checkbox.Group>
                   )}
                 </Form.Item>
@@ -184,7 +184,6 @@ class CreateTestPaper extends React.Component {
       if(!err) {
         const data = getFieldsValue()
         makeTestPaper({ ...data, singleSelectedId, multiSelectedId })
-        console.log(data);
       }
     })
   }

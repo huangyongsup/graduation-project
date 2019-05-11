@@ -18,6 +18,9 @@ axios.interceptors.request.use(config => config, error => Promise.reject(error))
 axios.interceptors.response.use((response) => {
   console.log(response)
   const data = response.data
+  if(!data){
+    return message.error('请求结果为空，请联系管理员')
+  }
   if(data.errorMsg){
     return message.error(data.errorMsg)
   }

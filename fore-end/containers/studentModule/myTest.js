@@ -9,22 +9,36 @@ class TestPaper extends React.Component {
     super(props)
   }
 
+  componentWillMount() {
+    const { getTestPaperInfo } = this.props
+    const hash = location.hash
+    const index = hash.lastIndexOf('?')
+    const testPaperId = hash.slice(index + 1)
+    getTestPaperInfo({ type: 'getTestPaperInfo', testPaperId })
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const { submitAnswerDone } = this.props
+    if(submitAnswerDone){
+       location.href = 'http://localhost:1234/#/student/myTestList'
+    }
+  }
+
   renderTitle = () => {
     const { userInfo } = this.props
     return (
       <Row gutter={16}>
-        <Col span={6}>{userInfo.username}</Col>
-        <Col span={6}>{userInfo.classNo}</Col>
+        <Col span={6}>{`姓名：${userInfo.username}`}</Col>
+        <Col span={6}>{`班级：${userInfo.className}`}</Col>
         <Col span={6}>
-          <Button htmlType={'submit'} type={'primary'}>提交</Button>
+          <Button htmlType={'submit'} type={'primary'}>交卷</Button>
         </Col>
       </Row>
     )
   }
 
   renderSingleChoice = () => {
-    const { getFieldDecorator } = this.props.form
-    const { singleChoiceData, editable } = this.props
+    const { testPaperInfo: { singleChoiceData }, form: { getFieldDecorator } } = this.props
     if(singleChoiceData){
       return (
         <Card title={'单选题'}>
@@ -35,12 +49,12 @@ class TestPaper extends React.Component {
                 key={value.singleChoiceId}
               >
                 <Form.Item key={value.singleChoiceId}>
-                  { getFieldDecorator(`singleChoice${value.singleChoiceId}`)(
+                  { getFieldDecorator(`singleChoice-${value.singleChoiceId}`)(
                     <Radio.Group>
-                      <Radio value={'A'}>{ value.answerA }</Radio>
-                      <Radio value={'B'}>{ value.answerB }</Radio>
-                      <Radio value={'C'}>{ value.answerC }</Radio>
-                      <Radio value={'D'}>{ value.answerD }</Radio>
+                      {'A、'}<Radio value={'A'}>{ value.answerA }</Radio>
+                      {'B、'}<Radio value={'B'}>{ value.answerB }</Radio>
+                      {'C、'}<Radio value={'C'}>{ value.answerC }</Radio>
+                      {'D、'}<Radio value={'D'}>{ value.answerD }</Radio>
                     </Radio.Group>
                   )}
                 </Form.Item>
@@ -55,8 +69,7 @@ class TestPaper extends React.Component {
   }
 
   renderMultiChoice = () => {
-    const { getFieldDecorator } = this.props.form
-    const { multiChoiceData, editable } = this.props
+    const {testPaperInfo: { multiChoiceData }, form: { getFieldDecorator } } = this.props
     if(multiChoiceData){
       return (
         <Card title={'多选题'}>
@@ -64,16 +77,15 @@ class TestPaper extends React.Component {
             return (
               <Card
                 title={`${++index}、${value.question}`}
-                extra={editable && <Button shape={'circle'} icon={'close'} />}
                 key={value.multiChoiceId}
               >
                 <Form.Item key={value.multiChoiceId}>
-                  { getFieldDecorator(`multiChoice${value.multiChoiceId}`)(
+                  { getFieldDecorator(`multiChoice-${value.multiChoiceId}`)(
                     <Checkbox.Group>
-                      <Checkbox value={'A'}>{ value.answerA }</Checkbox>
-                      <Checkbox value={'B'}>{ value.answerB }</Checkbox>
-                      <Checkbox value={'C'}>{ value.answerC }</Checkbox>
-                      <Checkbox value={'D'}>{ value.answerD }</Checkbox>
+                      {'A、'}<Checkbox value={'A'}>{ value.answerA }</Checkbox>
+                      {'B、'}<Checkbox value={'B'}>{ value.answerB }</Checkbox>
+                      {'C、'}<Checkbox value={'C'}>{ value.answerC }</Checkbox>
+                      {'D、'}<Checkbox value={'D'}>{ value.answerD }</Checkbox>
                     </Checkbox.Group>
                   )}
                 </Form.Item>
@@ -87,8 +99,19 @@ class TestPaper extends React.Component {
     }
   }
 
-  handleSubmit = () => {
-
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { form: { validateFields, getFieldsValue },
+      userInfo: { username }, submitAnswer} = this.props
+    validateFields(err => {
+      if(!err){
+        const hash = location.hash
+        const index = hash.lastIndexOf('?')
+        const testPaperId = hash.slice(index + 1)
+        const answer = getFieldsValue()
+        submitAnswer({ answer, username, testPaperId })
+      }
+    })
   }
 
   render() {
@@ -104,5 +127,5 @@ class TestPaper extends React.Component {
 }
 
 const mapStateToProps = state => ({ ...state.loginReducer, ...state.studentReducer })
-const mpaDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
-export default connect(mapStateToProps, mpaDispatchToProps)(Form.create()(TestPaper))
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(TestPaper))

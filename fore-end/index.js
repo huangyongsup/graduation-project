@@ -11,6 +11,8 @@ import SingleChoice from './containers/teacherModule/singleChoice'
 import MultiChoice from './containers/teacherModule/multiChoice'
 import createTestPaper from './containers/teacherModule/createTestPaper'
 import Login from './containers/loginModule/login'
+import MyTestList from './containers/studentModule/myTestList'
+import MyTest from './containers/studentModule/myTest'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -23,6 +25,8 @@ ReactDOM.render(
           <Route exact path="/teacher/singleChoice" component={SingleChoice} />
           <Route exact path="/teacher/multiChoice" component={MultiChoice} />
           <Route exact path={'/teacher/createTestPaper'} component={createTestPaper} />
+          <Route exact path={'/student/myTestList'} component={MyTestList} />
+          <Route exact path={'/student/myTest'} component={MyTest} />
         </Layout>
       </Switch>
     </HashRouter>
