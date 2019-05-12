@@ -71,12 +71,42 @@ function analysis(){
   $res1 = $mysqlTools->executeDQL($singleQuery);
   $res2 = $mysqlTools->executeDQL($multiQuery);
   if($res1 && $res2){
+    $totalScore = 0;
+    foreach ($res1 as $key => $value) {
+      $totalScore += $value['score'];
+    }
+    foreach ($res2 as $index => $item) {
+      $totalScore += $item['score'];
+    }
+      return json_encode(
+        (object)[
+          "singleAnswer" => $res1,
+          "multiAnswer" => $res2,
+          "totalScore" => $totalScore,
+        ]);
+  } else if($res1){
+    $totalScore = 0;
+    foreach ($res1 as $key => $value) {
+      $totalScore += $value['score'];
+    }
     return json_encode(
       (object)[
         "singleAnswer" => $res1,
         "multiAnswer" => $res2,
+        "totalScore" => $totalScore,
       ]);
-  } else {
+  } else if($res2){
+    $totalScore = 0;
+    foreach ($res2 as $index => $item) {
+      $totalScore += $item['score'];
+    }
+    return json_encode(
+      (object)[
+        "singleAnswer" => $res1,
+        "multiAnswer" => $res2,
+        "totalScore" => $totalScore,
+      ]);
+  }else{
     return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
   }
 }

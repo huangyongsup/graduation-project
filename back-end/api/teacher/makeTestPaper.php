@@ -3,19 +3,20 @@ require_once '../../mysqlTools.php';
 $mysqlTools = new MysqlTools();
 
 $data = json_decode(file_get_contents('php://input'));
-//echo json_encode($data);
 if($data) {
   $singleSelectedId = '';
   $multiSelectedId = '';
   $testPaperId= time();
-  foreach ($data->singleSelectedId as $value) {
-    $singleSelectedId .= $value . ',';
+  if($data->singleSelectedId) {
+    foreach ($data->singleSelectedId as $value) {
+      $singleSelectedId .= $value . ',';
+    }
   }
-
-  foreach ($data->multiSelectedId as $value) {
-    $multiSelectedId .= $value . ',';
+  if($data->multiSelectedId) {
+    foreach ($data->multiSelectedId as $value) {
+      $multiSelectedId .= $value . ',';
+    }
   }
-
   $statementFirst = "insert into testpaper values($testPaperId, '{$data->title}', '{$singleSelectedId}', '{$multiSelectedId}')";
 
 

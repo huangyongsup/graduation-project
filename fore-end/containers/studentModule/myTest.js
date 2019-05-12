@@ -24,6 +24,10 @@ class TestPaper extends React.Component {
     }
   }
 
+  handleClick = () => {
+    location.href = 'http://localhost:1234/#/student/myTestList'
+  }
+
   renderTitle = () => {
     const { userInfo } = this.props
     return (
@@ -32,6 +36,9 @@ class TestPaper extends React.Component {
         <Col span={6}>{`班级：${userInfo.className}`}</Col>
         <Col span={6}>
           <Button htmlType={'submit'} type={'primary'}>交卷</Button>
+        </Col>
+        <Col span={6}>
+          <Button type={'primary'} onClick={this.handleClick}>返回</Button>
         </Col>
       </Row>
     )
@@ -129,6 +136,6 @@ class TestPaper extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state.loginReducer, ...state.studentReducer })
+const mapStateToProps = state => ({ userInfo: state.loginReducer.userInfo, ...state.studentReducer })
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(TestPaper))

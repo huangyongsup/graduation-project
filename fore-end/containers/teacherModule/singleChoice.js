@@ -6,10 +6,16 @@ import QuestionBank from '../../components/questionBank'
 class SingleChoice extends React.Component {
   constructor(props) {
     super(props)
-    this.props.getSingleChoiceQuestionBank({ tableName: 'single_choice_question' })
+  }
+
+  componentWillMount() {
+    const { getSingleChoiceQuestionBank, setLoading } = this.props
+    setLoading()
+    getSingleChoiceQuestionBank({ tableName: 'single_choice_question' })
   }
 
   render() {
+    const { isLoading, singleChoiceQuestionBankData } = this.props
     const columns = [{
       title: '题目',
       dataIndex: 'question'
@@ -28,7 +34,8 @@ class SingleChoice extends React.Component {
     }]
     return (
       <QuestionBank
-        dataSource={this.props.singleChoiceQuestionBankData}
+        isLoading={isLoading}
+        dataSource={singleChoiceQuestionBankData}
         primaryKey={'singleChoiceId'}
         columns={columns}
       />

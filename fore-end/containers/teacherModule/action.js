@@ -12,6 +12,7 @@ export const CONSTANTS = keyMirror({
   MULTI_CHOICE_SELECTED_ROW_KEYS: 'MULTI_CHOICE_SELECTED_ROW_KEYS',
   MAKE_TEST_PAPER: 'MAKE_TEST_PAPER',
   GET_CLASS_INFO: 'GET_CLASS_INFO',
+  SET_LOADING: 'SET_LOADING',
 }, 'TEACHER')
 
 export const getSingleChoiceQuestionBank = createAction(CONSTANTS.GET_SINGLE_CHOICE_QUESTION_BANK, (params) =>
@@ -33,3 +34,5 @@ export const makeTestPaper = createAction(CONSTANTS.MAKE_TEST_PAPER, (params) =>
 export const setSingleChoiceSelectedRowKeys = createAction(CONSTANTS.SINGLE_CHOICE_SELECTED_ROW_KEYS, params => params )
 
 export const setMultiChoiceSelectedRowKeys = createAction(CONSTANTS.MULTI_CHOICE_SELECTED_ROW_KEYS, params => params )
+
+export const setLoading = createAction(CONSTANTS.SET_LOADING)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tooltip, Button, Card, Checkbox, Col, Form, Input, message, Radio, Row, Select} from "antd";
+import { BackTop, Skeleton, Tooltip, Button, Card, Checkbox, Col, Form, Input, message, Radio, Row, Select} from "antd";
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import * as actions from './action'
@@ -8,7 +8,6 @@ import { SessionStorage } from "../../lib/utilService";
 class CreateTestPaper extends React.Component {
   constructor(props) {
     super(props)
-    this.props.getClassInfo({ tableName: 'class' })
     this.state = {
       singleChoiceData: [],
       multiChoiceData: [],
@@ -16,6 +15,9 @@ class CreateTestPaper extends React.Component {
   }
 
   componentWillMount() {
+    const { getClassInfo, setLoading } = this.props
+    setLoading()
+    getClassInfo({ tableName: 'class' })
     this.initQuestionInfo()
   }
 
@@ -64,7 +66,6 @@ class CreateTestPaper extends React.Component {
 
   renderTitle = () => {
     const { classInfo, form: { getFieldDecorator } } = this.props
-    console.log(classInfo);
     return (
       <Row gutter={16}>
         <Col span={8}>
@@ -123,10 +124,10 @@ class CreateTestPaper extends React.Component {
                 <Form.Item >
                   { getFieldDecorator(`singleChoice${value.singleChoiceId}`)(
                     <Radio.Group>
-                      {'A、'}<Radio value={'A'}>{ value.answerA }</Radio>
-                      {'B、'}<Radio value={'B'}>{ value.answerB }</Radio>
-                      {'C、'}<Radio value={'C'}>{ value.answerC }</Radio>
-                      {'D、'}<Radio value={'D'}>{ value.answerD }</Radio>
+                      {'A.'}<Radio value={'A'}>{ value.answerA }</Radio>
+                      {'B.'}<Radio value={'B'}>{ value.answerB }</Radio>
+                      {'C.'}<Radio value={'C'}>{ value.answerC }</Radio>
+                      {'D.'}<Radio value={'D'}>{ value.answerD }</Radio>
                     </Radio.Group>
                   )}
                 </Form.Item>
@@ -159,10 +160,10 @@ class CreateTestPaper extends React.Component {
                 <Form.Item>
                   { getFieldDecorator(`multiChoice${value.multiChoiceId}`)(
                     <Checkbox.Group>
-                      {'A、'}<Checkbox value={'A'}>{ value.answerA }</Checkbox>
-                      {'B、'}<Checkbox value={'B'}>{ value.answerB }</Checkbox>
-                      {'C、'}<Checkbox value={'C'}>{ value.answerC }</Checkbox>
-                      {'D、'}<Checkbox value={'D'}>{ value.answerD }</Checkbox>
+                      {'A.'}<Checkbox value={'A'}>{ value.answerA }</Checkbox>
+                      {'B.'}<Checkbox value={'B'}>{ value.answerB }</Checkbox>
+                      {'C.'}<Checkbox value={'C'}>{ value.answerC }</Checkbox>
+                      {'D.'}<Checkbox value={'D'}>{ value.answerD }</Checkbox>
                     </Checkbox.Group>
                   )}
                 </Form.Item>
@@ -189,13 +190,17 @@ class CreateTestPaper extends React.Component {
   }
 
   render() {
+    const { isLoading } = this.props
     return (
+      <Skeleton loading={isLoading} active={true}>
       <Form onSubmit={ this.handleSubmit } onClick={this.handleClick}>
-        <Card title={ this.renderTitle() }>
+        <Card title={ this.renderTitle() } loading={isLoading}>
           { this.renderSingleChoice() }
           { this.renderMultiChoice() }
         </Card>
       </Form>
+        <BackTop />
+  </Skeleton>
     )
   }
 }

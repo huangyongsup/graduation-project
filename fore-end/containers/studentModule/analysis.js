@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, BackTop, Row, Col, Checkbox, Button, Card, Radio, Form } from 'antd'
+import { Skeleton, Icon, BackTop, Row, Col, Checkbox, Button, Card, Radio, Form } from 'antd'
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux'
 import * as actions from './action'
@@ -10,7 +10,8 @@ class TestPaper extends React.Component {
   }
 
   componentWillMount() {
-    const { analysis, getTestPaperInfo } = this.props
+    const { analysis, getTestPaperInfo, setLoading } = this.props
+    setLoading()
     const hash = location.hash
     const index = hash.lastIndexOf('?')
     const testPaperId = hash.slice(index + 1)
@@ -22,17 +23,11 @@ class TestPaper extends React.Component {
     location.href = 'http://localhost:1234/#/student/myTestList'
   }
 
-  getTotalScore = () => {
-    const { analysisInfo: { singleAnswer, multiAnswer } } = this.props
-    let totalScore = 0
-    console.log(singleAnswer);
-    singleAnswer.forEach(element => totalScore += parseInt(element.score))
-    multiAnswer.forEach(element => totalScore += parseInt(element.score))
-    return totalScore
-  }
-
   actionForSingle = singleChoiceId => {
     const { analysisInfo: { singleAnswer }} = this.props
+    if(!singleAnswer){
+      return
+    }
     const target = singleAnswer.filter(element => element.singleChoiceId === singleChoiceId )[0]
     const choice = `这道题正确答案是：${target.correctAnswer}，你选择的是：${target.singleAnswer}`
     if(parseInt(target.isCorrect)){
@@ -44,6 +39,9 @@ class TestPaper extends React.Component {
 
   actionForMulti = multiChoiceId => {
     const { analysisInfo: { multiAnswer }} = this.props
+    if(!multiAnswer) {
+      return
+    }
     const target = multiAnswer.filter(element => element.multiChoiceId === multiChoiceId )[0]
     const choice = `这道题正确答案是：${target.correctAnswer}，你选择的是：${target.multiAnswer}`
     if(parseInt(target.isCorrect)){
@@ -54,12 +52,12 @@ class TestPaper extends React.Component {
   }
 
   renderTitle = () => {
-    const { userInfo } = this.props
+    const { userInfo, analysisInfo } = this.props
     return (
       <Row gutter={16}>
         <Col span={6}>{`姓名：${userInfo.username}`}</Col>
         <Col span={6}>{`班级：${userInfo.className}`}</Col>
-        <Col span={6}>{`得分：${this.getTotalScore()}`}</Col>
+        <Col span={6}>{`得分：${analysisInfo.totalScore}`}</Col>
         <Col span={6}>
           <Button type={'primary'} onClick={this.handleClick}>返回</Button>
         </Col>
@@ -80,12 +78,12 @@ class TestPaper extends React.Component {
                 title={`${++index}、${value.question}`}
                 key={value.singleChoiceId}
               >
-                    <Radio.Group disabled={true}>
-                      {'A.'}<Radio value={'A'}>{ value.answerA }</Radio>
-                      {'B.'}<Radio value={'B'}>{ value.answerB }</Radio>
-                      {'C.'}<Radio value={'C'}>{ value.answerC }</Radio>
-                      {'D.'}<Radio value={'D'}>{ value.answerD }</Radio>
-                    </Radio.Group>
+                <Radio.Group disabled={true}>
+                  {'A.'}<Radio value={'A'}>{ value.answerA }</Radio>
+                  {'B.'}<Radio value={'B'}>{ value.answerB }</Radio>
+                  {'C.'}<Radio value={'C'}>{ value.answerC }</Radio>
+                  {'D.'}<Radio value={'D'}>{ value.answerD }</Radio>
+                </Radio.Group>
               </Card>
             )
           })}
@@ -109,12 +107,12 @@ class TestPaper extends React.Component {
                 actions={this.actionForMulti(value.multiChoiceId)}
                 key={value.multiChoiceId}
               >
-                    <Checkbox.Group disabled={true}>
-                      {'A.'}<Checkbox value={'A'}>{ value.answerA }</Checkbox>
-                      {'B.'}<Checkbox value={'B'}>{ value.answerB }</Checkbox>
-                      {'C.'}<Checkbox value={'C'}>{ value.answerC }</Checkbox>
-                      {'D.'}<Checkbox value={'D'}>{ value.answerD }</Checkbox>
-                    </Checkbox.Group>
+                <Checkbox.Group disabled={true}>
+                  {'A.'}<Checkbox value={'A'}>{ value.answerA }</Checkbox>
+                  {'B.'}<Checkbox value={'B'}>{ value.answerB }</Checkbox>
+                  {'C.'}<Checkbox value={'C'}>{ value.answerC }</Checkbox>
+                  {'D.'}<Checkbox value={'D'}>{ value.answerD }</Checkbox>
+                </Checkbox.Group>
               </Card>
             )
           })}
@@ -126,20 +124,22 @@ class TestPaper extends React.Component {
   }
 
   render() {
+    const { isLoading } = this.props
+    console.log(isLoading);
     return (
-      <div>
+        <Skeleton loading={isLoading} active={true}>
         <Form>
-        <Card title={ this.renderTitle() }>
-          { this.renderSingleChoice() }
-          { this.renderMultiChoice() }
-        </Card>
-      </Form>
+          <Card title={ this.renderTitle() } >
+            { this.renderSingleChoice() }
+            { this.renderMultiChoice() }
+          </Card>
+        </Form>
         <BackTop />
-      </div>
+        </Skeleton>
     )
   }
 }
 
-const mapStateToProps = state =>  ({ ...state.loginReducer, ...state.studentReducer })
+const mapStateToProps = state =>  ({ userInfo: state.loginReducer.userInfo, ...state.studentReducer })
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(TestPaper)

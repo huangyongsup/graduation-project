@@ -32,7 +32,8 @@ create table testpaper(
   singleChoiceId varchar(128),
   multiChoiceId varchar(128)
 );
-
+select * from testpaper;
+delete from testpaper where testPaperId = 1557638363;
 #班级表
 create table class(
   classNo varchar(8) ,

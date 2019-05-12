@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Button } from 'antd'
+import { Table, Button, Skeleton } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom'
@@ -11,19 +11,20 @@ class MyTestList extends React.Component {
   }
 
   componentWillMount() {
-    const { getTestPaperList, initialize, userInfo: { classNo, username } } = this.props
-    getTestPaperList({ type: 'getTestPaperList', classNo, username})
+    const { getTestPaperList, initialize, setLoading, userInfo: { classNo, username } } = this.props
+    setLoading()
     initialize()
+    getTestPaperList({ type: 'getTestPaperList', classNo, username})
   }
 
   render() {
-    const { testPaperList } = this.props
+    const { testPaperList, isLoading } = this.props
     const columns = [{
       title: '试卷名',
       dataIndex: 'testPaperTitle',
     }, {
       title: '答题',
-      dataIndex: 'testPaperId',
+      key: 'testPaperId',
       render: (text, record, index) => {
         if(!record.analysis){
           return (
@@ -36,7 +37,7 @@ class MyTestList extends React.Component {
       }
     }, {
       title: '答案解析',
-      dataIndex: 'analysis',
+      key: 'singleChoiceId',
       render: (text, record) => {
         if(record.analysis) {
           return (
@@ -48,9 +49,9 @@ class MyTestList extends React.Component {
         }
       }
     }]
-
     return (
       <Table
+        loading={isLoading}
         columns={columns}
         dataSource={testPaperList}
         rowKey={'testPaperId'}
@@ -59,6 +60,6 @@ class MyTestList extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state.loginReducer, ...state.studentReducer })
+const mapStateToProps = state => ({ userInfo: state.loginReducer.userInfo, ...state.studentReducer })
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(MyTestList)

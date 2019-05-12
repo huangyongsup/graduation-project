@@ -6,10 +6,16 @@ import QuestionBank from '../../components/questionBank'
 class MultiChoice extends React.Component {
   constructor(props) {
     super(props)
-    this.props.getMultiChoiceQuestionBank({ tableName: 'multi_choice_question' })
+  }
+
+  componentWillMount() {
+    const { getMultiChoiceQuestionBank, setLoading } = this.props
+    setLoading()
+    getMultiChoiceQuestionBank({ tableName: 'multi_choice_question' })
   }
 
   render() {
+    const { isLoading, multiChoiceQuestionBankData } = this.props
     const columns = [{
       title: '题目',
       dataIndex: 'question'
@@ -28,7 +34,8 @@ class MultiChoice extends React.Component {
     }]
     return (
       <QuestionBank
-        dataSource={this.props.multiChoiceQuestionBankData}
+        isLoading={isLoading}
+        dataSource={multiChoiceQuestionBankData}
         primaryKey={'multiChoiceId'}
         columns={columns}
       />
