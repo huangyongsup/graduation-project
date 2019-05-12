@@ -57,7 +57,7 @@ class Login extends Component{
                 required: true, message: '请输入用户名'
               }]
             })(
-              <Input prefix={<Icon type="user" />} placeholder="用户名" autoComplete="username" allowClear={true} />
+              <Input prefix={<Icon type="user" />} placeholder="用户名" autoComplete="username" allowClear={true} autoFocus={true} />
             )}
           </Form.Item>
           <Form.Item>

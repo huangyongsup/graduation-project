@@ -37,25 +37,25 @@ class MysqlTools
   //执行数据查询语言
   function executeDQL($query)
   {
-    if ($result = $this->pdo->query($query)) {
-      $arr = [];
-      while($rows = $result->fetch(PDO::FETCH_ASSOC)){
-        array_push($arr, $rows);
+      if ($result = $this->pdo->query($query)) {
+        $arr = [];
+        while ($rows = $result->fetch(PDO::FETCH_ASSOC)) {
+          array_push($arr, $rows);
+        }
+        return $arr;
+      } else {
+        return false;
       }
-      return $arr;
-    }
   }
 
   //执行数据操作语言
   function executeDML($statement)
   {
-    if($this->pdo->exec($statement))
-    {
-      return true;
-    }
-    else{
-      return false;
-    }
+      if ($this->pdo->exec($statement)) {
+        return true;
+      } else {
+        return false;
+      }
   }
 
 }

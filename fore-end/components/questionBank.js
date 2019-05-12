@@ -12,6 +12,7 @@ class QuestionBank extends React.Component {
   saveState = () => {
     const { primaryKey } = this.props
     const { selectedRowKeys } = this.state
+    console.log(selectedRowKeys);
     SessionStorage.setObject(primaryKey, selectedRowKeys)
   }
 
@@ -38,7 +39,7 @@ class QuestionBank extends React.Component {
   }
 
   render() {
-    const { dataSource, columns, primaryKey } = this.props
+    const { dataSource, columns, primaryKey, isLoading } = this.props
     const { selectedRowKeys } = this.state
     const rowSelection = {
       selectedRowKeys,
@@ -46,6 +47,7 @@ class QuestionBank extends React.Component {
     }
     return (
         <Table
+          loading={isLoading}
           rowKey={primaryKey}
           dataSource={dataSource}
           columns={columns}
