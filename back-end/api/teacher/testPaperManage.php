@@ -8,9 +8,9 @@ function getClassInfo(){
   global $mysqlTools;
   $query = "select classNo, className from class group by classNo";
   if($res = $mysqlTools->executeDQL($query)){
-    echo json_encode($res);
+    return json_encode($res);
   } else {
-    json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
+    return json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
   }
 }
 
@@ -18,9 +18,9 @@ function getSingleChoiceQuestion(){
   global $mysqlTools;
   $query = "select * from single_choice_question";
   if($res = $mysqlTools->executeDQL($query)){
-    echo json_encode($res);
+    return json_encode($res);
   } else {
-    json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
+    return json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
   }
 }
 
@@ -28,21 +28,34 @@ function getMultiChoiceQuestion(){
   global $mysqlTools;
   $query = "select * from multi_choice_question";
   if($res = $mysqlTools->executeDQL($query)){
-    echo json_encode($res);
+    return json_encode($res);
   } else {
-    json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
+    return json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
+  }
+}
+
+function getShortAnswerQuestion(){
+  global $mysqlTools;
+  $query = "select * from short_answer_question";
+  if($res = $mysqlTools->executeDQL($query)){
+    return json_encode($res);
+  } else {
+    return json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
   }
 }
 
 switch ($tableName){
   case 'single_choice_question':
-    getSingleChoiceQuestion();
+    echo getSingleChoiceQuestion();
     break;
   case 'multi_choice_question':
-    getMultiChoiceQuestion();
+    echo getMultiChoiceQuestion();
     break;
   case 'class':
-    getClassInfo();
+    echo getClassInfo();
+    break;
+  case 'short_answer_question':
+    echo getShortAnswerQuestion();
     break;
   default:
     echo json_encode((object)['errorMsg' => '请求参数有误']);

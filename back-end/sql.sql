@@ -1,6 +1,7 @@
 #作业报告在线管理系统
 create database if not exists graduation_project;
 use graduation_project;
+drop database graduation_project;
 #单选题表
 create table single_choice_question(
   singleChoiceId int(8) auto_increment primary key ,
@@ -10,7 +11,8 @@ create table single_choice_question(
   answerB text not null ,
   answerC text not null ,
   answerD text not null ,
-  correctAnswer enum('A', 'B', 'C', 'D') not null
+  correctAnswer enum('A', 'B', 'C', 'D') not null,
+  teacher varchar(16)
 );
 
 #多选题表
@@ -22,15 +24,26 @@ create table multi_choice_question(
   answerB text not null ,
   answerC text not null ,
   answerD text not null ,
-  correctAnswer varchar(4) not null
+  correctAnswer varchar(4) not null,
+  teacher varchar(16)
 );
 select * from multi_choice_question;
+#简答题表
+create table short_answer_question(
+  shortAnswerId int(8) auto_increment primary key ,
+  score tinyint(1) not null ,
+  question text not null ,
+  correctAnswer text not null ,
+  teacher varchar(16)
+);
 #试题表
 create table testpaper(
   testPaperId int(4) primary key ,
   testPaperTitle varchar(32) not null ,
+  teacher varchar(16),
   singleChoiceId varchar(128),
-  multiChoiceId varchar(128)
+  multiChoiceId varchar(128),
+  shortAnswerId varchar(128)
 );
 select * from testpaper;
 delete from testpaper where testPaperId = 1557638363;

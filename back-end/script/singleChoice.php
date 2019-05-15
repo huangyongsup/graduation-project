@@ -1,7 +1,7 @@
 <?php
-require_once 'MysqlTools.php';
+require_once '../MysqlTools.php';
 $mysqlTools = new MysqlTools();
-for($i = 0; $i < 35; ++$i){
+for($i = 0; $i < 10; ++$i){
   $res = $i % 4;
   $score = 2;
   switch ($res){
@@ -14,7 +14,7 @@ for($i = 0; $i < 35; ++$i){
     case 3:
       $correctAnswer = 'D';break;
   }
-  $statement = "insert into single_choice_question values(default, 2, '测试用例，这道题选{$correctAnswer}, 分值：{$score}', '正确答案是{$correctAnswer}','正确答案是{$correctAnswer}', '正确答案是{$correctAnswer}',   '正确答案是{$correctAnswer}', '{$correctAnswer}'
+  $statement = "insert into single_choice_question values(default, 2, '测试用例，这道题选{$correctAnswer}, 分值：{$score}', '正确答案是{$correctAnswer}','正确答案是{$correctAnswer}', '正确答案是{$correctAnswer}',   '正确答案是{$correctAnswer}', '{$correctAnswer}', 'teacher'
   )";
   if($mysqlTools->executeDML($statement)){
     echo '测试用例插入成功';

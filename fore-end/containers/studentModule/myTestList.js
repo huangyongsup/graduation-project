@@ -23,6 +23,9 @@ class MyTestList extends React.Component {
       title: '试卷名',
       dataIndex: 'testPaperTitle',
     }, {
+      title: '命题教师',
+      dataIndex: 'teacher',
+    }, {
       title: '答题',
       key: 'testPaperId',
       render: (text, record, index) => {

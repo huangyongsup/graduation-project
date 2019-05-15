@@ -20,7 +20,7 @@ class TestPaper extends React.Component {
   }
 
   handleClick = () => {
-    location.href = 'http://localhost:1234/#/student/myTestList'
+    location.hash = '#/student/myTestList'
   }
 
   actionForSingle = singleChoiceId => {
@@ -125,9 +125,8 @@ class TestPaper extends React.Component {
 
   render() {
     const { isLoading } = this.props
-    console.log(isLoading);
     return (
-        <Skeleton loading={isLoading} active={true}>
+      <Skeleton loading={isLoading} active={true}>
         <Form>
           <Card title={ this.renderTitle() } >
             { this.renderSingleChoice() }
@@ -135,7 +134,7 @@ class TestPaper extends React.Component {
           </Card>
         </Form>
         <BackTop />
-        </Skeleton>
+      </Skeleton>
     )
   }
 }

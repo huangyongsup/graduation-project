@@ -17,6 +17,9 @@ class MultiChoice extends React.Component {
   render() {
     const { isLoading, multiChoiceQuestionBankData } = this.props
     const columns = [{
+      title: '命题教师',
+      dataIndex: 'teacher',
+    }, {
       title: '题目',
       dataIndex: 'question'
     }, {

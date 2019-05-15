@@ -8,6 +8,7 @@ const host = Config.baseURL
 export const CONSTANTS = keyMirror({
   GET_SINGLE_CHOICE_QUESTION_BANK: 'GET_SINGLE_CHOICE_QUESTION_BANK',
   GET_MULTI_CHOICE_QUESTION_BANK: 'GET_MULTI_CHOICE_QUESTION_BANK',
+  GET_SHORT_ANSWER: 'GET_SHORT_ANSWER',
   SINGLE_CHOICE_SELECTED_ROW_KEYS: 'SINGLE_CHOICE_SELECTED_ROW_KEYS',
   MULTI_CHOICE_SELECTED_ROW_KEYS: 'MULTI_CHOICE_SELECTED_ROW_KEYS',
   MAKE_TEST_PAPER: 'MAKE_TEST_PAPER',
@@ -21,6 +22,9 @@ export const getSingleChoiceQuestionBank = createAction(CONSTANTS.GET_SINGLE_CHO
 
 export const getMultiChoiceQuestionBank = createAction(CONSTANTS.GET_MULTI_CHOICE_QUESTION_BANK, (params) =>
   ApiService.get(`${host}/api/teacher/testPaperManage.php`, params)
+)
+
+export const getShortAnswer = createAction(CONSTANTS.GET_SHORT_ANSWER, params => ApiService.get(`${host}/api/teacher/testPaperManage.php`, params)
 )
 
 export const getClassInfo = createAction(CONSTANTS.GET_CLASS_INFO, (params) =>

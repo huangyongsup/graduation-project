@@ -3,19 +3,19 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as actions from './action'
 import QuestionBank from '../../components/questionBank'
-class SingleChoice extends React.Component {
+class ShortAnswer extends React.Component {
   constructor(props) {
     super(props)
   }
 
   componentWillMount() {
-    const { getSingleChoiceQuestionBank, setLoading } = this.props
+    const { getShortAnswer, setLoading } = this.props
     setLoading()
-    getSingleChoiceQuestionBank({ tableName: 'single_choice_question' })
+    getShortAnswer({ tableName: 'short_answer_question' })
   }
 
   render() {
-    const { isLoading, singleChoiceQuestionBankData } = this.props
+    const { isLoading, shortAnswerQuestionBankData } = this.props
     const columns = [{
       title: '命题教师',
       dataIndex: 'teacher',
@@ -23,23 +23,14 @@ class SingleChoice extends React.Component {
       title: '题目',
       dataIndex: 'question'
     }, {
-      title: 'A',
-      dataIndex: 'answerA'
-    }, {
-      title: 'B',
-      dataIndex: 'answerB'
-    }, {
-      title: 'C',
-      dataIndex: 'answerC'
-    }, {
-      title: 'D',
-      dataIndex: 'answerD'
+      title: '参考答案',
+      dataIndex: 'answer'
     }]
     return (
       <QuestionBank
         isLoading={isLoading}
-        dataSource={singleChoiceQuestionBankData}
-        primaryKey={'singleChoiceId'}
+        dataSource={shortAnswerQuestionBankData}
+        primaryKey={'shortAnswerId'}
         columns={columns}
       />
     )
@@ -49,4 +40,4 @@ class SingleChoice extends React.Component {
 const mapStateToProps = state => state.teacherReducer
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleChoice)
+export default connect(mapStateToProps, mapDispatchToProps)(ShortAnswer)

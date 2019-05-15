@@ -1,9 +1,10 @@
 import React from 'react'
-import { BackTop, Skeleton, Tooltip, Button, Card, Checkbox, Col, Form, Input, message, Radio, Row, Select} from "antd";
+import { DatePicker, BackTop, Skeleton, Tooltip, Button, Card, Checkbox, Col, Form, Input, message, Radio, Row, Select} from "antd";
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import * as actions from './action'
 import { SessionStorage } from "../../lib/utilService";
+import shortAnswer from "./shortAnswer";
 
 class CreateTestPaper extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class CreateTestPaper extends React.Component {
     this.state = {
       singleChoiceData: [],
       multiChoiceData: [],
+      shortAnswerData: [],
     }
   }
 
@@ -22,17 +24,28 @@ class CreateTestPaper extends React.Component {
   }
 
   initQuestionInfo = () => {
-    const { root, singleSelectedId, multiSelectedId } = this.getQuestionInfo()
+    const { root, singleSelectedId, multiSelectedId, shortSelectedId } = this.getQuestionInfo()
     if (root) {
       const single = root.singleChoiceQuestionBankData
       const multi = root.multiChoiceQuestionBankData
+      const shortAnswer = root.shortAnswerQuestionBankData
       if (singleSelectedId) {
         const selectedSingleData = single.filter(value => singleSelectedId.indexOf(value.singleChoiceId) !== -1)
         this.setState({singleChoiceData: selectedSingleData})
+      } else {
+        message.warn('未选择任何单选题目')
       }
       if(multiSelectedId) {
         const selectedMultiData = multi.filter(value => multiSelectedId.indexOf(value.multiChoiceId) !== -1)
         this.setState({ multiChoiceData: selectedMultiData })
+      } else {
+        message.warn('未选择任何多选题目')
+      }
+      if (shortSelectedId) {
+        const selectedShortAnswerData = shortAnswer.filter(value => shortSelectedId.indexOf(value.shortAnswerId) !== -1)
+        this.setState({shortAnswerData: selectedShortAnswerData})
+      } else {
+        message.warn('未选择任何简答题目')
       }
     } else {
       message.warn('获取数据失败，请稍后再试或与管理员联系')
@@ -43,11 +56,12 @@ class CreateTestPaper extends React.Component {
     const root = JSON.parse(SessionStorage.getObject('persist:root').teacherReducer) || {}
     const singleSelectedId = SessionStorage.getObject('singleChoiceId')
     const multiSelectedId = SessionStorage.getObject('multiChoiceId')
-    return { root, singleSelectedId, multiSelectedId }
+    const shortSelectedId = SessionStorage.getObject('shortAnswerId')
+    return { root, singleSelectedId, multiSelectedId, shortSelectedId }
   }
 
   deleteQuestion = (index, type) => {
-    const { singleSelectedId, multiSelectedId } = this.getQuestionInfo()
+    const { singleSelectedId, multiSelectedId, shortSelectedId } = this.getQuestionInfo()
     switch (type) {
       case 'singleChoice':
         singleSelectedId.splice(index, 1)
@@ -59,6 +73,11 @@ class CreateTestPaper extends React.Component {
         SessionStorage.setObject('multiChoiceId', multiSelectedId)
         this.initQuestionInfo()
         break
+      case 'shortAnswer':
+        shortSelectedId.splice(index, 1)
+        SessionStorage.setObject('shortAnswer', shortSelectedId)
+        this.initQuestionInfo()
+        break
       default:
         break
     }
@@ -68,7 +87,7 @@ class CreateTestPaper extends React.Component {
     const { classInfo, form: { getFieldDecorator } } = this.props
     return (
       <Row gutter={16}>
-        <Col span={8}>
+        <Col span={6}>
           <Form.Item>
             { getFieldDecorator('title', {
               rules: [{ required: true, message: '试卷名不能为空' }]
@@ -77,10 +96,9 @@ class CreateTestPaper extends React.Component {
             )}
           </Form.Item>
         </Col>
-        <Col span={8}>
+        <Col span={6}>
           <Form.Item>
             { getFieldDecorator('class', {
-              // initialValue: 'allClass'
               rules: [{required: true, message: '请选择此试卷的目标班级'}]
             })(
               <Select
@@ -98,7 +116,19 @@ class CreateTestPaper extends React.Component {
             )}
           </Form.Item>
         </Col>
-        <Col span={8}>
+        <Col span={6}>
+          <Form.Item>
+            {getFieldDecorator('date', {
+              rules: [{required: true, message: '请选择作业的开始与截止日期'}]
+            })(
+              <DatePicker.RangePicker
+                format={'YYYY/MM/DD'}
+                placeholder={['作业开始日期', '作业截止日期']}
+              />
+            )}
+          </Form.Item>
+        </Col>
+        <Col span={6}>
           <Button htmlType={'submit'} type={'primary'}>提交</Button>
         </Col>
       </Row>
@@ -106,7 +136,6 @@ class CreateTestPaper extends React.Component {
   }
 
   renderSingleChoice = () => {
-    const { getFieldDecorator } = this.props.form
     const { singleChoiceData } = this.state
     if(singleChoiceData){
       return (
@@ -121,16 +150,12 @@ class CreateTestPaper extends React.Component {
                 /></Tooltip>}
                 key={value.singleChoiceId}
               >
-                <Form.Item >
-                  { getFieldDecorator(`singleChoice${value.singleChoiceId}`)(
                     <Radio.Group>
                       {'A.'}<Radio value={'A'}>{ value.answerA }</Radio>
                       {'B.'}<Radio value={'B'}>{ value.answerB }</Radio>
                       {'C.'}<Radio value={'C'}>{ value.answerC }</Radio>
                       {'D.'}<Radio value={'D'}>{ value.answerD }</Radio>
                     </Radio.Group>
-                  )}
-                </Form.Item>
               </Card>
             )
           })}
@@ -142,7 +167,6 @@ class CreateTestPaper extends React.Component {
   }
 
   renderMultiChoice = () => {
-    const { getFieldDecorator } = this.props.form
     const { multiChoiceData } = this.state
     if(multiChoiceData){
       return (
@@ -157,16 +181,38 @@ class CreateTestPaper extends React.Component {
                 /></Tooltip>}
                 key={value.multiChoiceId}
               >
-                <Form.Item>
-                  { getFieldDecorator(`multiChoice${value.multiChoiceId}`)(
                     <Checkbox.Group>
                       {'A.'}<Checkbox value={'A'}>{ value.answerA }</Checkbox>
                       {'B.'}<Checkbox value={'B'}>{ value.answerB }</Checkbox>
                       {'C.'}<Checkbox value={'C'}>{ value.answerC }</Checkbox>
                       {'D.'}<Checkbox value={'D'}>{ value.answerD }</Checkbox>
                     </Checkbox.Group>
-                  )}
-                </Form.Item>
+              </Card>
+            )
+          })}
+        </Card>
+      )
+    } else {
+      return false
+    }
+  }
+
+  renderShortAnswer = () => {
+    const { shortAnswerData } = this.state
+    if(shortAnswerData){
+      return (
+        <Card title={'简答题'}>
+          {shortAnswerData.map((value, index) => {
+            return (
+              <Card
+                title={`${++index}、${value.question}`}
+                extra={<Tooltip title={'点击删除此题目'}><Button
+                  onClick={(e) => this.deleteQuestion(--index, 'shortAnswer')}
+                  shape={'circle'} icon={'close'}
+                /></Tooltip>}
+                key={value.multiChoiceId}
+              >
+                {value.correctAnswer}
               </Card>
             )
           })}
@@ -179,12 +225,13 @@ class CreateTestPaper extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    const { form: { validateFields, getFieldsValue }, makeTestPaper } = this.props
-    const { singleSelectedId, multiSelectedId } = this.getQuestionInfo()
+    const { form: { validateFields, getFieldsValue }, makeTestPaper, userInfo: { username } } = this.props
+    const { singleSelectedId, multiSelectedId, shortSelectedId } = this.getQuestionInfo()
     validateFields(err => {
       if(!err) {
         const data = getFieldsValue()
-        makeTestPaper({ ...data, singleSelectedId, multiSelectedId })
+        console.log(data);
+        // makeTestPaper({ ...data, singleSelectedId, multiSelectedId, shortSelectedId, username })
       }
     })
   }
@@ -197,6 +244,7 @@ class CreateTestPaper extends React.Component {
         <Card title={ this.renderTitle() } loading={isLoading}>
           { this.renderSingleChoice() }
           { this.renderMultiChoice() }
+          { this.renderShortAnswer() }
         </Card>
       </Form>
         <BackTop />
@@ -205,6 +253,6 @@ class CreateTestPaper extends React.Component {
   }
 }
 
-const mapStateToProps = store => store.teacherReducer
+const mapStateToProps = state => ({ ...state.loginReducer.userInfo, ...state.teacherReducer })
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(CreateTestPaper))

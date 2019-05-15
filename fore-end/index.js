@@ -14,6 +14,9 @@ import Login from './containers/loginModule/login'
 import MyTestList from './containers/studentModule/myTestList'
 import MyTest from './containers/studentModule/myTest'
 import Analysis from './containers/studentModule/analysis'
+import BuildQuestionBank from "./containers/teacherModule/buildQuestionBank";
+import ShortAnswer from './containers/teacherModule/shortAnswer'
+import Correction from './containers/teacherModule/correction'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -25,7 +28,10 @@ ReactDOM.render(
           <Route exact path="/admin/testManage" component={Admin} />
           <Route exact path="/teacher/singleChoice" component={SingleChoice} />
           <Route exact path="/teacher/multiChoice" component={MultiChoice} />
+          <Route exact path={'/teacher/shortAnswer'} component={ShortAnswer} />
           <Route exact path={'/teacher/createTestPaper'} component={createTestPaper} />
+          <Route exact path={'/teacher/buildQuestionBank'} component={BuildQuestionBank} />
+          <Route exact path={'/teacher/correction'} component={Correction} />
           <Route exact path={'/student/myTestList'} component={MyTestList} />
           <Route exact path={'/student/myTest'} component={MyTest} />
           <Route exact path={'/student/analysis'} component={Analysis} />

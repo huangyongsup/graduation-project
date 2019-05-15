@@ -20,12 +20,12 @@ class TestPaper extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     const { submitAnswerDone } = this.props
     if(submitAnswerDone){
-      location.href = 'http://localhost:1234/#/student/myTestList'
+      location.hash= '#/student/myTestList'
     }
   }
 
   handleClick = () => {
-    location.href = 'http://localhost:1234/#/student/myTestList'
+    location.hash= '#/student/myTestList'
   }
 
   renderTitle = () => {
@@ -56,7 +56,9 @@ class TestPaper extends React.Component {
                 key={value.singleChoiceId}
               >
                 <Form.Item key={value.singleChoiceId}>
-                  { getFieldDecorator(`singleChoice-${value.singleChoiceId}`)(
+                  { getFieldDecorator(`singleChoice-${value.singleChoiceId}`, {
+                    rules: [{ required: true, message: '请务必填选答案'}]
+                  })(
                     <Radio.Group>
                       {'A.'}<Radio value={'A'}>{ value.answerA }</Radio>
                       {'B.'}<Radio value={'B'}>{ value.answerB }</Radio>
@@ -87,7 +89,9 @@ class TestPaper extends React.Component {
                 key={value.multiChoiceId}
               >
                 <Form.Item key={value.multiChoiceId}>
-                  { getFieldDecorator(`multiChoice-${value.multiChoiceId}`)(
+                  { getFieldDecorator(`multiChoice-${value.multiChoiceId}`, {
+                    rules: [{ required: true, message: '请务必填选答案'}]
+                  })(
                     <Checkbox.Group>
                       {'A.'}<Checkbox value={'A'}>{ value.answerA }</Checkbox>
                       {'B.'}<Checkbox value={'B'}>{ value.answerB }</Checkbox>

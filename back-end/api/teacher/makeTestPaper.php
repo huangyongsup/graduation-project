@@ -6,6 +6,7 @@ $data = json_decode(file_get_contents('php://input'));
 if($data) {
   $singleSelectedId = '';
   $multiSelectedId = '';
+  $shortSelectedId = '';
   $testPaperId= time();
   if($data->singleSelectedId) {
     foreach ($data->singleSelectedId as $value) {
@@ -17,7 +18,12 @@ if($data) {
       $multiSelectedId .= $value . ',';
     }
   }
-  $statementFirst = "insert into testpaper values($testPaperId, '{$data->title}', '{$singleSelectedId}', '{$multiSelectedId}')";
+  if($data->shortSelectedId) {
+    foreach ($data->shortSelectedId as $value) {
+      $shortSelectedId .= $value . ',';
+    }
+  }
+  $statementFirst = "insert into testpaper values($testPaperId, '{$data->title}', '{$data->username}','{$singleSelectedId}', '{$multiSelectedId}', '{$shortSelectedId}')";
 
 
   if($mysqlTools->executeDML($statementFirst)){
@@ -25,7 +31,7 @@ if($data) {
     foreach ($data->class as $class) {
       $statementSecond = "insert into class values('{$class->key}', '{$class->label}', $testPaperId)";
       if (!$mysqlTools->executeDML($statementSecond)) {
-        json_encode((object)['errorMsg' => '试卷生成失败，请稍后再试']);
+       echo json_encode((object)['errorMsg' => '试卷生成失败，请稍后再试']);
         $flag = false;
       }
     }
@@ -33,6 +39,6 @@ if($data) {
       echo json_encode((object)['makeTestPaperDone' => true, 'successMsg' => '生成试卷成功']);
     }
   } else {
-    json_encode((object)['errorMsg' => '试卷生成失败，请稍后再试']);
+    echo json_encode((object)['errorMsg' => '试卷生成失败，请稍后再试']);
   }
 }
