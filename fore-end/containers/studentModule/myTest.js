@@ -110,6 +110,34 @@ class TestPaper extends React.Component {
     }
   }
 
+  renderShortAnswer = () => {
+    const {testPaperInfo: { shortAnswerData }, form: { getFieldDecorator } } = this.props
+    if(shortAnswerData){
+      return (
+        <Card title={'简答题'}>
+          {shortAnswerData.map((value, index) => {
+            return (
+              <Card
+                title={`${++index}、${value.question}`}
+                key={value.shortAnswerId}
+              >
+                <Form.Item key={value.shortAnswerId}>
+                  { getFieldDecorator(`shortAnswer-${value.shortAnswerId}`, {
+                    rules: [{ required: true, message: '请务必填选答案'}]
+                  })(
+                    <Input.TextArea />
+                  )}
+                </Form.Item>
+              </Card>
+            )
+          })}
+        </Card>
+      )
+    } else {
+      return false
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     const { form: { validateFields, getFieldsValue },
@@ -132,6 +160,7 @@ class TestPaper extends React.Component {
           <Card title={ this.renderTitle() }>
             { this.renderSingleChoice() }
             { this.renderMultiChoice() }
+            { this.renderShortAnswer() }
           </Card>
         </Form>
         <BackTop />

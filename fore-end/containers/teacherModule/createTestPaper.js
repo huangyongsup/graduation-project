@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import * as actions from './action'
 import { SessionStorage } from "../../lib/utilService";
-import shortAnswer from "./shortAnswer";
 
 class CreateTestPaper extends React.Component {
   constructor(props) {
@@ -122,7 +121,6 @@ class CreateTestPaper extends React.Component {
               rules: [{required: true, message: '请选择作业的开始与截止日期'}]
             })(
               <DatePicker.RangePicker
-                format={'YYYY/MM/DD'}
                 placeholder={['作业开始日期', '作业截止日期']}
               />
             )}
@@ -210,7 +208,7 @@ class CreateTestPaper extends React.Component {
                   onClick={(e) => this.deleteQuestion(--index, 'shortAnswer')}
                   shape={'circle'} icon={'close'}
                 /></Tooltip>}
-                key={value.multiChoiceId}
+                key={value.shortAnswerId}
               >
                 {value.correctAnswer}
               </Card>
@@ -253,6 +251,6 @@ class CreateTestPaper extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state.loginReducer.userInfo, ...state.teacherReducer })
+const mapStateToProps = state => ({ userInfo: state.loginReducer.userInfo, ...state.teacherReducer })
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(CreateTestPaper))

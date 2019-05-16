@@ -43,10 +43,13 @@ create table testpaper(
   teacher varchar(16),
   singleChoiceId varchar(128),
   multiChoiceId varchar(128),
-  shortAnswerId varchar(128)
+  shortAnswerId varchar(128),
+  beginTime int(4),
+  endTime int(4)
 );
 select * from testpaper;
-delete from testpaper where testPaperId = 1557638363;
+alter table testpaper modify column beginTime int(4) not null ;
+desc testpaper;
 #班级表
 create table class(
   classNo varchar(8) ,
@@ -98,7 +101,7 @@ select * from single_answer;
 select * from multi_answer;
 select * from testpaper;
 delete from testpaper where testPaperId < 1557318241;
-insert into class values('CS01', '计算机一班', 1);
+insert into class values('CS01', '计算机一班', NULL);
 insert into class values('CS02', '计算机二班', NULL);
 insert into class values('CS03', '计算机三班', NULL);
 insert into class values('admin', '管理员', NULL);
@@ -114,7 +117,4 @@ select * from user natural join class where username='student' and password='stu
 
 select * from class natural join testpaper where classNo = 'CS01';
 select * from class;
-select * from testpaper where testPaperId = '1557555916';
-delete from class where testPaperId = '1557318152';
-select * from multi_choice_question where multiChoiceId = '3';
 select * from class natural join testpaper where classNo = 'admin';

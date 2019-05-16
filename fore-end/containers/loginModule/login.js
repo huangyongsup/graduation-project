@@ -3,14 +3,13 @@ import { Card, Form, Icon, Input, Button, Checkbox } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import * as actions from './action'
-import RegisterModal from './register'
+import RegisterModal from '../../components/register'
 
 class Login extends Component{
   constructor(props){
     super(props)
     this.state = {
       visible: false,
-      loading: false,
     }
   }
 
@@ -31,7 +30,7 @@ class Login extends Component{
   componentDidUpdate(prevProps, prevState, snapshot) {
       const { userInfo } = this.props
       if(userInfo.userType){
-        location.href = 'http://localhost:1234/#/'
+        location.hash = '#/'
       }
   }
 

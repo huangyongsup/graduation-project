@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Form, Modal, Input } from 'antd'
+import { Form, Modal, Input } from 'antd/lib/index'
 
 class Register extends Component {
   constructor(props) {
