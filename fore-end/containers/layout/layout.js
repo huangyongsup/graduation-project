@@ -62,13 +62,13 @@ class RootLayout extends Component {
           menuItem: [
             {
               key: "/teacher/singleChoice",
-              option: "添加单选题"
+              option: "选择单选题"
             }, {
               key: "/teacher/multiChoice",
-              option: "添加多选题"
+              option: "选择多选题"
             }, {
               key: "/teacher/shortAnswer",
-              option: "添加简答题"
+              option: "选择简答题"
             }, {
               key: "/teacher/createTestPaper",
               option: "生成作业"

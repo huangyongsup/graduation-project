@@ -24,7 +24,7 @@ class ShortAnswer extends React.Component {
       dataIndex: 'question'
     }, {
       title: '参考答案',
-      dataIndex: 'answer'
+      dataIndex: 'correctAnswer'
     }]
     return (
       <QuestionBank

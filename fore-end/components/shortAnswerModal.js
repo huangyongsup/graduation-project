@@ -6,37 +6,26 @@ class ShortAnswerModal extends React.Component {
     super(props)
   }
 
-  onOk = () => {
-    const { form: { validateFields, getFieldsValue }, username } = this.props
-    validateFields(err => {
-      if(!err) {
-        const data = getFieldsValue()
-        console.log(data);
-        // makeTestPaper({ ...data, singleSelectedId, multiSelectedId, shortSelectedId, username })
-      }
-    })
-  }
-
   render() {
-    const { form: { getFieldDecorator }, visible, onCancel } = this.props
+    const { form: { getFieldDecorator }, question, actions, handleSubmit, extra } = this.props
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 4 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 14 },
+      },
+    }
     return (
-      <Modal
-        visible={visible}
-        onOk={this.onOk}
-        onCancel={onCancel}
-        destroyOnClose={true}
-      >
-        <Form>
+      <Form onSubmit={() => handleSubmit.call(this)}>
           <Card
-            title={<Form.Item label={'题目内容'}>
-              {getFieldDecorator('question', {
-                rules: [{ required: true, message: '题目内容不可为空'}]
-              })(
-                <Input.TextArea />
-              )}
-            </Form.Item>}
+            title={question.call(this)}
+            extra={extra.call(this)}
+            actions={actions.call(this)}
           >
-            <Form.Item>
+            <Form.Item label={'参考答案'} {...formItemLayout}>
               { getFieldDecorator('correctAnswer',{
                 rules: [{ required: true, message: '请填写参考答案'}]
               })(
@@ -45,7 +34,6 @@ class ShortAnswerModal extends React.Component {
             </Form.Item>
           </Card>
         </Form>
-      </Modal>
     )
   }
 }

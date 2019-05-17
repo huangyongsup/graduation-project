@@ -36,6 +36,7 @@ create table short_answer_question(
   correctAnswer text not null ,
   teacher varchar(16)
 );
+select * from short_answer_question;
 #试题表
 create table testpaper(
   testPaperId int(4) primary key ,

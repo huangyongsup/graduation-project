@@ -8,6 +8,7 @@ const initState = {
   singleChoiceSelectedRowKeys: [],
   multiChoiceSelectedRowKeys: [],
   makeTestPaperDone: false,
+  setQuestionDone: false,
   classInfo: [],
   isLoading: false,
 }
@@ -27,6 +28,9 @@ export default handleActions({
   },
   [`${CONSTANTS.MAKE_TEST_PAPER}_FULFILLED`](state, action){
     return { ...state, makeTestPaperDone: action.payload.makeTestPaperDone }
+  },
+  [`${CONSTANTS.SET_QUESTION}_FULFILLED`](state, action){
+    return { ...state, setQuestionDone: action.payload.setQuestionDone }
   },
   [`${CONSTANTS.SINGLE_CHOICE_SELECTED_ROW_KEYS}`](state, action){
     return { ...state, singleChoiceSelectedRowKeys: action.payload }

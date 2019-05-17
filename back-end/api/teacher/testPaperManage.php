@@ -30,7 +30,7 @@ function getMultiChoiceQuestion(){
   if($res = $mysqlTools->executeDQL($query)){
     return json_encode($res);
   } else {
-    return json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
+    return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
   }
 }
 
@@ -40,7 +40,7 @@ function getShortAnswerQuestion(){
   if($res = $mysqlTools->executeDQL($query)){
     return json_encode($res);
   } else {
-    return json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
+    return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
   }
 }
 

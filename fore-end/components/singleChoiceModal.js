@@ -1,41 +1,21 @@
 import React from 'react'
-import {Modal, Form, Input, Card, Button, Radio} from "antd";
+import {Row, Form, Input, Card, Radio} from "antd";
 
 class SingleChoiceModal extends React.Component {
   constructor(props) {
     super(props)
   }
 
-  onOk = () => {
-    const { form: { validateFields, getFieldsValue }, username } = this.props
-    validateFields(err => {
-      if(!err) {
-        const data = getFieldsValue()
-        console.log(data);
-        // makeTestPaper({ ...data, singleSelectedId, multiSelectedId, shortSelectedId, username })
-      }
-    })
-  }
-
   render() {
-    const { form: { getFieldDecorator }, visible, onCancel } = this.props
+    const { form: { getFieldDecorator }, question, actions, handleSubmit, extra } = this.props
     return (
-      <Modal
-        visible={visible}
-        onOk={this.onOk}
-        destroyOnClose={true}
-        onCancel={onCancel}
-      >
-        <Form>
+      <Form onSubmit={e => handleSubmit.call(this) }>
           <Card
-            title={<Form.Item label={'题目内容'}>
-                {getFieldDecorator('question', {
-                  rules: [{ required: true, message: '题目内容不可为空'}]
-                })(
-                  <Input.TextArea />
-                )}
-              </Form.Item>}
+            title={question.call(this)}
+            extra={extra.call(this)}
+            actions={actions.call(this)}
           >
+            <Row type="flex" justify="space-around" gutter={16}>
             <Form.Item>
               { getFieldDecorator('correctAnswer',{
                 rules: [{ required: true, message: '请标记出正确答案'}]
@@ -45,7 +25,7 @@ class SingleChoiceModal extends React.Component {
                     return (
                       <Radio value={value} key={value}>
                         <Form.Item label={value}>
-                          {getFieldDecorator(`answer-${value}`, {
+                          {getFieldDecorator(value,{
                             rules: [{ required: true, message: '答案内容不可为空'}]
                           })(
                             <Input.TextArea />
@@ -57,9 +37,9 @@ class SingleChoiceModal extends React.Component {
                 </Radio.Group>
               )}
             </Form.Item>
+            </Row>
           </Card>
         </Form>
-      </Modal>
     )
   }
 }
