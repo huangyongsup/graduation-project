@@ -2,13 +2,13 @@
 require_once '../../MysqlTools.php';
 $mysqlTools = new MysqlTools();
 $data = json_decode(file_get_contents('php://input'));
-if(submitLog() && singleAnswer() && multiAnswer()){
+if(submitLog() && singleAnswer() && multiAnswer() && shortAnswer()){
   echo json_encode((object)[
     'submitAnswerDone' => true,
-    'successMsg' => '试卷提交成功',
+    'successMsg' => '交卷成功',
     ]);
 } else {
-  echo json_encode((object)['errorMsg' => '试卷提交失败，请联系管理员']);
+  echo json_encode((object)['errorMsg' => '交卷失败，请联系管理员']);
 }
 
 function submitLog(){
@@ -35,7 +35,7 @@ function singleAnswer(){
           $isCorrect = 1;
           $score = $res[0]['score'];
         }
-       $statement = "insert into single_answer values('{$data->testPaperId}', '{$arr[1]}', '{$value}', {$isCorrect}, '{$res[0]['correctAnswer']}', {$score})";
+       $statement = "insert into single_answer values($data->testPaperId, $arr[1], '{$value}', {$isCorrect}, '{$res[0]['correctAnswer']}', {$score})";
         if(!$mysqlTools->executeDML($statement)){
           return false;
         }
@@ -60,7 +60,25 @@ function multiAnswer(){
           $score = $res[0]['score'];
         }
         $value = implode("", $value);
-        $statement = "insert into multi_answer values('{$data->testPaperId}', '{$arr[1]}', '{$value}', {$isCorrect}, '{$res[0]['correctAnswer']}', {$score})";
+        $statement = "insert into multi_answer values($data->testPaperId, $arr[1], '{$value}', {$isCorrect}, '{$res[0]['correctAnswer']}', {$score})";
+        if(!$mysqlTools->executeDML($statement)){
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
+
+function shortAnswer(){
+  global $data, $mysqlTools;
+  $arrayData = (Array)$data->answer;
+  foreach ($arrayData as $key => $value) {
+    $arr = explode('-',$key);
+    if($arr[0] === 'shortAnswer'){
+      $query = "select correctAnswer, score from short_answer_question where shortAnswerId = '{$arr[1]}'";
+      if($res = $mysqlTools->executeDQL($query)){
+        $statement = "insert into short_answer values($data->testPaperId, $arr[1], '{$value}', '{$res[0]['correctAnswer']}', 0)";
         if(!$mysqlTools->executeDML($statement)){
           return false;
         }

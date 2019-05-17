@@ -3,6 +3,7 @@ require_once '../../mysqlTools.php';
 $mysqlTools = new MysqlTools();
 
 $data = json_decode(file_get_contents('php://input'));
+//print_r($data);
 if($data) {
   $singleSelectedId = '';
   $multiSelectedId = '';
@@ -23,7 +24,7 @@ if($data) {
       $shortSelectedId .= $value . ',';
     }
   }
-  $statementFirst = "insert into testpaper values($testPaperId, '{$data->title}', '{$data->username}','{$singleSelectedId}', '{$multiSelectedId}', '{$shortSelectedId}')";
+  $statementFirst = "insert into testpaper values($testPaperId, '{$data->title}', '{$data->username}','{$singleSelectedId}', '{$multiSelectedId}', '{$shortSelectedId}', '{$data->date->beginTime}', '{$data->date->endTime}')";
 
 
   if($mysqlTools->executeDML($statementFirst)){
@@ -31,7 +32,7 @@ if($data) {
     foreach ($data->class as $class) {
       $statementSecond = "insert into class values('{$class->key}', '{$class->label}', $testPaperId)";
       if (!$mysqlTools->executeDML($statementSecond)) {
-       echo json_encode((object)['errorMsg' => '试卷生成失败，请稍后再试']);
+       echo json_encode((object)['errorMsg' => '试卷分发失败，请稍后再试']);
         $flag = false;
       }
     }

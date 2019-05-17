@@ -2,6 +2,7 @@ import React from 'react'
 import { DatePicker, BackTop, Skeleton, Tooltip, Button, Card, Checkbox, Col, Form, Input, message, Radio, Row, Select} from "antd";
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
+import moment from 'moment'
 import * as actions from './action'
 import { SessionStorage } from "../../lib/utilService";
 
@@ -74,7 +75,7 @@ class CreateTestPaper extends React.Component {
         break
       case 'shortAnswer':
         shortSelectedId.splice(index, 1)
-        SessionStorage.setObject('shortAnswer', shortSelectedId)
+        SessionStorage.setObject('shortAnswerId', shortSelectedId)
         this.initQuestionInfo()
         break
       default:
@@ -121,6 +122,7 @@ class CreateTestPaper extends React.Component {
               rules: [{required: true, message: '请选择作业的开始与截止日期'}]
             })(
               <DatePicker.RangePicker
+                format={'YYYY-MM-DD'}
                 placeholder={['作业开始日期', '作业截止日期']}
               />
             )}
@@ -229,7 +231,11 @@ class CreateTestPaper extends React.Component {
       if(!err) {
         const data = getFieldsValue()
         console.log(data);
-        // makeTestPaper({ ...data, singleSelectedId, multiSelectedId, shortSelectedId, username })
+        makeTestPaper({ ...data,
+          date: {
+            beginTime: moment(data.date[0]).format('YYYY-MM-DD'),
+            endTime: moment(data.date[1]).format('YYYY-MM-DD')
+          }, singleSelectedId, multiSelectedId, shortSelectedId, username })
       }
     })
   }

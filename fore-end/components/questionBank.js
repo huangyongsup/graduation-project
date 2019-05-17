@@ -34,7 +34,6 @@ class QuestionBank extends React.Component {
   }
 
   onSelectedRowKeysChange = (selectedRowKeys) => {
-    console.log(selectedRowKeys);
     this.setState({ selectedRowKeys }, () => this.saveState() )
   }
 

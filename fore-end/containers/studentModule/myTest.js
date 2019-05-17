@@ -2,6 +2,7 @@ import React from 'react'
 import { BackTop, Row, Col, Checkbox, Button, Card, Radio, Form, Input } from 'antd'
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux'
+import moment from 'moment'
 import * as actions from './action'
 
 class TestPaper extends React.Component {

@@ -45,11 +45,12 @@ create table testpaper(
   singleChoiceId varchar(128),
   multiChoiceId varchar(128),
   shortAnswerId varchar(128),
-  beginTime int(4),
-  endTime int(4)
+  beginTime date,
+  endTime date
 );
+delete from testpaper where testPaperId = 3;
 select * from testpaper;
-alter table testpaper modify column beginTime int(4) not null ;
+alter table testpaper modify column endTime date not null ;
 desc testpaper;
 #班级表
 create table class(
@@ -93,15 +94,19 @@ create table multi_answer(
   correctAnswer varchar(4) not null ,
   score tinyint(1) not null
 );
-desc multi_answer;
-delete from submit_log;
-delete from single_answer;
-delete from multi_answer;
+#提交简答题
+create table short_answer(
+  testPaperId int(4),
+  shortAnswerId int(8),
+  shortAnswer text,
+  correctAnswer text not null,
+  score tinyint(1)
+);
 select * from submit_log;
 select * from single_answer;
 select * from multi_answer;
+select * from short_answer;
 select * from testpaper;
-delete from testpaper where testPaperId < 1557318241;
 insert into class values('CS01', '计算机一班', NULL);
 insert into class values('CS02', '计算机二班', NULL);
 insert into class values('CS03', '计算机三班', NULL);

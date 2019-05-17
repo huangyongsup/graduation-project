@@ -32,8 +32,10 @@ function getTestPaperInfo(){
   if($res = $mysqlTools->executeDQL($query)){
     $singleChoice = explode(',' , $res[0]['singleChoiceId']);
     $multiChoice = explode(',' , $res[0]['multiChoiceId']);
+    $shortAnswer = explode(',' , $res[0]['shortAnswerId']);
     $singleChoiceData = [];
     $multiChoiceData = [];
+    $shortAnswerData = [];
     foreach ($singleChoice as $key => $value){
       if($value){
         $singleQuery = "select * from single_choice_question where singleChoiceId = '{$value}'";
@@ -54,12 +56,23 @@ function getTestPaperInfo(){
         }
       }
     }
+    foreach ($shortAnswer as $key => $value){
+      if($value){
+        $shortQuery = "select * from short_answer_question where shortAnswerId = '{$value}'";
+        if($short = $mysqlTools->executeDQL($shortQuery)){
+          array_push($shortAnswerData, $short[0]);
+        } else {
+          return json_encode((object)['errorMsg' => '简答题数据请求失败，请联系管理员']);
+        }
+      }
+    }
   } else {
     return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
   }
   return json_encode((object)[
     'singleChoiceData' => $singleChoiceData,
-    'multiChoiceData' => $multiChoiceData
+    'multiChoiceData' => $multiChoiceData,
+    'shortAnswerData' => $shortAnswerData,
   ]);
 }
 
@@ -68,47 +81,32 @@ function analysis(){
   $testPaperId = $_GET['testPaperId'];
   $singleQuery = "select * from single_answer where testPaperId = '{$testPaperId}'";
   $multiQuery = "select * from multi_answer where testPaperId = '{$testPaperId}'";
+  $shortQuery = "select * from short_answer where testPaperId = '{$testPaperId}'";
   $res1 = $mysqlTools->executeDQL($singleQuery);
   $res2 = $mysqlTools->executeDQL($multiQuery);
-  if($res1 && $res2){
-    $totalScore = 0;
+  $res3 = $mysqlTools->executeDQL($shortQuery);
+  $totalScore = 0;
+  $result = (object)[];
+  if($res1){
     foreach ($res1 as $key => $value) {
       $totalScore += $value['score'];
     }
-    foreach ($res2 as $index => $item) {
-      $totalScore += $item['score'];
-    }
-      return json_encode(
-        (object)[
-          "singleAnswer" => $res1,
-          "multiAnswer" => $res2,
-          "totalScore" => $totalScore,
-        ]);
-  } else if($res1){
-    $totalScore = 0;
-    foreach ($res1 as $key => $value) {
-      $totalScore += $value['score'];
-    }
-    return json_encode(
-      (object)[
-        "singleAnswer" => $res1,
-        "multiAnswer" => $res2,
-        "totalScore" => $totalScore,
-      ]);
-  } else if($res2){
-    $totalScore = 0;
-    foreach ($res2 as $index => $item) {
-      $totalScore += $item['score'];
-    }
-    return json_encode(
-      (object)[
-        "singleAnswer" => $res1,
-        "multiAnswer" => $res2,
-        "totalScore" => $totalScore,
-      ]);
-  }else{
-    return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
+    $result->singleAnswer = $res1;
   }
+  if($res2){
+    foreach ($res2 as $index => $item) {
+      $totalScore += $item['score'];
+    }
+    $result->multiAnswer = $res2;
+  }
+  if($res3) {
+    foreach ($res3 as $index => $item) {
+      $totalScore += $item['score'];
+    }
+    $result->shortAnswer = $res3;
+  }
+  $result->totalScore = $totalScore;
+  return json_encode($result);
 }
 
 switch ($type){

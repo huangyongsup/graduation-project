@@ -31,9 +31,9 @@ class TestPaper extends React.Component {
     const target = singleAnswer.filter(element => element.singleChoiceId === singleChoiceId )[0]
     const choice = `这道题正确答案是：${target.correctAnswer}，你选择的是：${target.singleAnswer}`
     if(parseInt(target.isCorrect)){
-      return [<div><Icon type="check" />{choice}</div>]
+      return [<h3><Icon type="check" />{choice}</h3>]
     } else {
-      return [<div><Icon type="close" />{choice}</div>]
+      return [<h3><Icon type="close" />{choice}</h3>]
     }
   }
 
@@ -45,10 +45,20 @@ class TestPaper extends React.Component {
     const target = multiAnswer.filter(element => element.multiChoiceId === multiChoiceId )[0]
     const choice = `这道题正确答案是：${target.correctAnswer}，你选择的是：${target.multiAnswer}`
     if(parseInt(target.isCorrect)){
-      return [<div><Icon type="check" />{choice}</div>]
+      return [<h3><Icon type="check" />{choice}</h3>]
     } else {
-      return [<div><Icon type="close" />{choice}</div>]
+      return [<h3><Icon type="close" />{choice}</h3>]
     }
+  }
+
+  actionForShort = shortAnswerId => {
+    const { analysisInfo: { shortAnswer }} = this.props
+    if(!shortAnswer ){
+      return
+    }
+    const target = shortAnswer.filter(element => element.shortAnswerId === shortAnswerId )[0]
+    const choice = `这道题参考答案是：${target.correctAnswer}，你的答案是：${target.shortAnswer}`
+    return [<h3>{choice}</h3>]
   }
 
   renderTitle = () => {
@@ -57,7 +67,7 @@ class TestPaper extends React.Component {
       <Row gutter={16}>
         <Col span={6}>{`姓名：${userInfo.username}`}</Col>
         <Col span={6}>{`班级：${userInfo.className}`}</Col>
-        <Col span={6}>{`得分：${analysisInfo.totalScore}`}</Col>
+        {/*<Col span={6}>{`得分：${analysisInfo.totalScore}`}</Col>*/}
         <Col span={6}>
           <Button type={'primary'} onClick={this.handleClick}>返回</Button>
         </Col>
@@ -123,6 +133,29 @@ class TestPaper extends React.Component {
     }
   }
 
+  renderShortAnswer = () => {
+    const {testPaperInfo: { shortAnswerData }} = this.props
+    if(shortAnswerData){
+      return (
+        <Card title={'多选题'}>
+          {shortAnswerData.map((value, index) => {
+            return (
+              <Card
+                title={`${++index}、${value.question}`}
+                hoverable={true}
+                key={value.shortAnswerId}
+              >
+                {this.actionForShort(value.shortAnswerId)}
+              </Card>
+            )
+          })}
+        </Card>
+      )
+    } else {
+      return false
+    }
+  }
+
   render() {
     const { isLoading } = this.props
     return (
@@ -131,6 +164,7 @@ class TestPaper extends React.Component {
           <Card title={ this.renderTitle() } >
             { this.renderSingleChoice() }
             { this.renderMultiChoice() }
+            { this.renderShortAnswer() }
           </Card>
         </Form>
         <BackTop />

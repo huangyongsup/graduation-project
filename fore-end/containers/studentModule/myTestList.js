@@ -3,6 +3,7 @@ import { Table, Button, Skeleton } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 import * as actions from './action'
 
 class MyTestList extends React.Component {
@@ -30,8 +31,9 @@ class MyTestList extends React.Component {
       key: 'testPaperId',
       render: (text, record, index) => {
         if(!record.analysis){
+          const disabled = moment().isBetween(record.beginTime, record.endTime) || moment(moment().format('YYYY-MM-DD')).isSame(record.beginTime, record.endTime)
           return (
-            <Button type={'primary'}><Link to={{
+            <Button type={'primary'} disabled={!disabled}><Link to={{
               pathname: '/student/myTest',
               search: `${record.testPaperId}`
             }}>去答题</Link></Button>
