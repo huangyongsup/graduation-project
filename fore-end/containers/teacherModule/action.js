@@ -13,6 +13,7 @@ export const CONSTANTS = keyMirror({
   MULTI_CHOICE_SELECTED_ROW_KEYS: 'MULTI_CHOICE_SELECTED_ROW_KEYS',
   MAKE_TEST_PAPER: 'MAKE_TEST_PAPER',
   GET_CLASS_INFO: 'GET_CLASS_INFO',
+  GET_TEST_PAPER_LIST: 'GET_TEST_PAPER_LIST',
   SET_QUESTION: 'SET_QUESTION',
   SET_LOADING: 'SET_LOADING',
 }, 'TEACHER')
@@ -31,6 +32,8 @@ export const getShortAnswer = createAction(CONSTANTS.GET_SHORT_ANSWER, params =>
 export const getClassInfo = createAction(CONSTANTS.GET_CLASS_INFO, (params) =>
   ApiService.get(`${host}/api/teacher/testPaperManage.php`, params)
 )
+
+export const getTestPaperList = createAction(CONSTANTS.GET_TEST_PAPER_LIST, params => ApiService.get(`${host}/api/teacher/testPaperManage.php`, params))
 
 export const makeTestPaper = createAction(CONSTANTS.MAKE_TEST_PAPER, (params) =>
   ApiService.post(`${host}/api/teacher/makeTestPaper.php`, params)

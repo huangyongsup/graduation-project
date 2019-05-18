@@ -6,6 +6,7 @@ const initState = {
   testPaperInfo: {},
   analysisInfo: {},
   submitAnswerDone: false,
+  gradeDone: false,
   isLoading: false,
 }
 
@@ -21,6 +22,9 @@ export default handleActions({
   },
   [`${CONSTANTS.ANALYSIS}_FULFILLED`](state, action){
     return { ...state, analysisInfo: action.payload, isLoading: false }
+  },
+  [`${CONSTANTS.GRADE}_FULFILLED`](state, action){
+    return { ...state, gradeDone: action.payload.gradeDone, isLoading: false }
   },
   [`${CONSTANTS.INITIALIZE}`](state){
     return { ...state, submitAnswerDone: false }

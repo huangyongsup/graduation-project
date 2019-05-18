@@ -44,6 +44,16 @@ function getShortAnswerQuestion(){
   }
 }
 
+function getTestPaperList(){
+  global $mysqlTools;
+  $query = "select * from submit_log natural join testpaper";
+  if($res = $mysqlTools->executeDQL($query)){
+    return json_encode($res);
+  } else {
+    return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
+  }
+}
+
 switch ($tableName){
   case 'single_choice_question':
     echo getSingleChoiceQuestion();
@@ -56,6 +66,9 @@ switch ($tableName){
     break;
   case 'short_answer_question':
     echo getShortAnswerQuestion();
+    break;
+  case 'getTestPaperList':
+    echo getTestPaperList();
     break;
   default:
     echo json_encode((object)['errorMsg' => '请求参数有误']);

@@ -19,7 +19,7 @@ class MyTestList extends React.Component {
   }
 
   render() {
-    const { testPaperList, isLoading } = this.props
+    const { testPaperList, isLoading, userInfo: { username } } = this.props
     const columns = [{
       title: '试卷名',
       dataIndex: 'testPaperTitle',
@@ -48,7 +48,7 @@ class MyTestList extends React.Component {
           return (
             <Button type={'primary'}><Link to={{
               pathname: '/student/analysis',
-              search: `${record.testPaperId}`
+              search: `${record.testPaperId}&${username}`
             }}>答案解析</Link></Button>
           )
         }

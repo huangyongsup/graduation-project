@@ -79,33 +79,43 @@ function getTestPaperInfo(){
 function analysis(){
   global $mysqlTools;
   $testPaperId = $_GET['testPaperId'];
-  $singleQuery = "select * from single_answer where testPaperId = '{$testPaperId}'";
-  $multiQuery = "select * from multi_answer where testPaperId = '{$testPaperId}'";
-  $shortQuery = "select * from short_answer where testPaperId = '{$testPaperId}'";
+  $username = $_GET['username'];
+  $singleQuery = "select * from single_answer where testPaperId = {$testPaperId} and username = '{$username}'";
+  $multiQuery = "select * from multi_answer where testPaperId = {$testPaperId} and username = '{$username}'";
+  $shortQuery = "select * from short_answer where testPaperId = {$testPaperId} and username = '{$username}'";
+  $query = "select * from class natural join user";
   $res1 = $mysqlTools->executeDQL($singleQuery);
   $res2 = $mysqlTools->executeDQL($multiQuery);
   $res3 = $mysqlTools->executeDQL($shortQuery);
+  $res4 = $mysqlTools->executeDQL($query);
   $totalScore = 0;
+  $fullMarks = 0;
   $result = (object)[];
   if($res1){
     foreach ($res1 as $key => $value) {
       $totalScore += $value['score'];
+      $fullMarks += $value['fullMarks'];
     }
     $result->singleAnswer = $res1;
   }
   if($res2){
     foreach ($res2 as $index => $item) {
       $totalScore += $item['score'];
+      $fullMarks += $item['fullMarks'];
     }
     $result->multiAnswer = $res2;
   }
   if($res3) {
     foreach ($res3 as $index => $item) {
       $totalScore += $item['score'];
+      $fullMarks += $item['fullMarks'];
     }
     $result->shortAnswer = $res3;
   }
   $result->totalScore = $totalScore;
+  $result->fullMarks = $fullMarks;
+  $result->username = $username;
+  $result->className = $res4[0]['className'];
   return json_encode($result);
 }
 

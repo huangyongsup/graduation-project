@@ -1,5 +1,5 @@
 import React from 'react'
-import { Skeleton, Icon, BackTop, Row, Col, Checkbox, Button, Card, Radio, Form } from 'antd'
+import { InputNumber, Skeleton, Icon, BackTop, Row, Col, Checkbox, Button, Card, Radio, Form } from 'antd'
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux'
 import * as actions from './action'
@@ -10,13 +10,19 @@ class TestPaper extends React.Component {
   }
 
   componentWillMount() {
+    this.refresh()
+  }
+
+  refresh = () => {
     const { analysis, getTestPaperInfo, setLoading } = this.props
     setLoading()
     const hash = location.hash
     const index = hash.lastIndexOf('?')
-    const testPaperId = hash.slice(index + 1)
+    const separator = hash.lastIndexOf('&')
+    const testPaperId = hash.slice(index + 1, separator - 1)
+    const username = hash.slice(separator + 1)
     getTestPaperInfo({ type: 'getTestPaperInfo', testPaperId })
-    analysis({ type: 'analysis', testPaperId })
+    analysis({ type: 'analysis', testPaperId, username })
   }
 
   handleClick = () => {
@@ -51,23 +57,23 @@ class TestPaper extends React.Component {
     }
   }
 
-  actionForShort = shortAnswerId => {
+  ForShort = shortAnswerId => {
     const { analysisInfo: { shortAnswer }} = this.props
     if(!shortAnswer ){
       return
     }
     const target = shortAnswer.filter(element => element.shortAnswerId === shortAnswerId )[0]
-    const choice = `这道题参考答案是：${target.correctAnswer}，你的答案是：${target.shortAnswer}`
+    const choice = `这道题参考答案是：${target.correctAnswer}${<br />}你的答案是：${target.shortAnswer}`
     return [<h3>{choice}</h3>]
   }
 
   renderTitle = () => {
-    const { userInfo, analysisInfo } = this.props
+    const {  analysisInfo } = this.props
     return (
       <Row gutter={16}>
-        <Col span={6}>{`姓名：${userInfo.username}`}</Col>
-        <Col span={6}>{`班级：${userInfo.className}`}</Col>
-        {/*<Col span={6}>{`得分：${analysisInfo.totalScore}`}</Col>*/}
+        <Col span={6}>{`姓名：${analysisInfo.username}`}</Col>
+        <Col span={6}>{`班级：${analysisInfo.className}`}</Col>
+        <Col span={6}>{`得分：${analysisInfo.totalScore / analysisInfo.fullMarks * 100 }`}</Col>
         <Col span={6}>
           <Button type={'primary'} onClick={this.handleClick}>返回</Button>
         </Col>
@@ -85,7 +91,7 @@ class TestPaper extends React.Component {
               <Card
                 hoverable={true}
                 actions={this.actionForSingle(value.singleChoiceId)}
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
                 key={value.singleChoiceId}
               >
                 <Radio.Group disabled={true}>
@@ -112,7 +118,7 @@ class TestPaper extends React.Component {
           {multiChoiceData.map((value, index) => {
             return (
               <Card
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
                 hoverable={true}
                 actions={this.actionForMulti(value.multiChoiceId)}
                 key={value.multiChoiceId}
@@ -133,6 +139,48 @@ class TestPaper extends React.Component {
     }
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { form: { validateFields, getFieldsValue }, grade, setLoading } = this.props
+    validateFields(err => {
+      if(!err){
+        const hash = location.hash
+        const index = hash.lastIndexOf('?')
+        const separator = hash.lastIndexOf('&')
+        const testPaperId = hash.slice(index + 1, separator - 1)
+        const username = hash.slice(separator + 1)
+        const score = getFieldsValue()
+        setLoading()
+        grade({ score, username, testPaperId })
+        this.refresh()
+      }
+    })
+  }
+
+  actions = () => {
+    const { form: { getFieldDecorator }, analysisInfo: { shortAnswerData } , userInfo: { userType } } = this.props
+    if(userType === 'teacher' && !parseInt(shortAnswerData.isGrade) ){
+      return [
+          <Form.Item label={'请打分'}>
+            {getFieldDecorator('score', {
+              rules: [{ required: true, message: '请先给此题打分'}]
+            })(
+              <InputNumber />
+            )}
+          </Form.Item>
+      ]
+    }
+  }
+
+  grade = () => {
+    const {userInfo: {userType}, isLoading, analysisInfo: { shortAnswerData }  } = this.props
+    if(userType === 'teacher' && !parseInt(shortAnswerData.isGrade)  ){
+      return (
+        <Button htmlType={'submit'} loading={isLoading}>提交打分</Button>
+      )
+    }
+  }
+
   renderShortAnswer = () => {
     const {testPaperInfo: { shortAnswerData }} = this.props
     if(shortAnswerData){
@@ -141,11 +189,12 @@ class TestPaper extends React.Component {
           {shortAnswerData.map((value, index) => {
             return (
               <Card
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
+                actions={this.actions()}
                 hoverable={true}
                 key={value.shortAnswerId}
               >
-                {this.actionForShort(value.shortAnswerId)}
+                {this.ForShort(value.shortAnswerId)}
               </Card>
             )
           })}
@@ -160,8 +209,8 @@ class TestPaper extends React.Component {
     const { isLoading } = this.props
     return (
       <Skeleton loading={isLoading} active={true}>
-        <Form>
-          <Card title={ this.renderTitle() } >
+        <Form onSubmit={this.handleSubmit}>
+          <Card title={ this.renderTitle() } actions={this.grade()} >
             { this.renderSingleChoice() }
             { this.renderMultiChoice() }
             { this.renderShortAnswer() }

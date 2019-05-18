@@ -10,7 +10,7 @@ if($data) {
   if($data->tableName === "short_answer_question"){
     $statement = "insert into $data->tableName values(default, $data->score, '{$data->question}', '{$data->correctAnswer}', '{$data->username}')";
   } else {
-    $statement = "insert into '{$data->tableName}' values(default, $data->score, '{$data->A}', '{$data->B}', '{$data->C}', '{$data->D}', '{$data->correctAnswer}', '{$data->username}')";
+    $statement = "insert into {$data->tableName} values(default, $data->score, '{$data->question}', '{$data->A}', '{$data->B}', '{$data->C}', '{$data->D}', '{$data->correctAnswer[0]}', '{$data->username}')";
   }
 
   if($mysqlTools->executeDML($statement)){

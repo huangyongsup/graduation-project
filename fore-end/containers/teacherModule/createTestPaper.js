@@ -83,6 +83,10 @@ class CreateTestPaper extends React.Component {
     }
   }
 
+  disabledDate = current => {
+    return current < moment().startOf('day');
+  }
+
   renderTitle = () => {
     const { classInfo, form: { getFieldDecorator } } = this.props
     return (
@@ -122,6 +126,8 @@ class CreateTestPaper extends React.Component {
               rules: [{required: true, message: '请选择作业的开始与截止日期'}]
             })(
               <DatePicker.RangePicker
+                showToday={false}
+                disabledDate={this.disabledDate}
                 format={'YYYY-MM-DD'}
                 placeholder={['作业开始日期', '作业截止日期']}
               />
@@ -143,7 +149,7 @@ class CreateTestPaper extends React.Component {
           {singleChoiceData.map((value, index) => {
             return (
               <Card
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'singleChoice')}
                   shape={'circle'} icon={'close'}
@@ -174,7 +180,7 @@ class CreateTestPaper extends React.Component {
           {multiChoiceData.map((value, index) => {
             return (
               <Card
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'multiChoice')}
                   shape={'circle'} icon={'close'}
@@ -205,7 +211,7 @@ class CreateTestPaper extends React.Component {
           {shortAnswerData.map((value, index) => {
             return (
               <Card
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'shortAnswer')}
                   shape={'circle'} icon={'close'}

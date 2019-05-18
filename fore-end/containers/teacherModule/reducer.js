@@ -10,6 +10,7 @@ const initState = {
   makeTestPaperDone: false,
   setQuestionDone: false,
   classInfo: [],
+  testPaperList: [],
   isLoading: false,
 }
 
@@ -25,6 +26,9 @@ export default handleActions({
   },
   [`${CONSTANTS.GET_CLASS_INFO}_FULFILLED`](state, action){
     return { ...state, classInfo: action.payload, isLoading: false }
+  },
+  [`${CONSTANTS.GET_TEST_PAPER_LIST}_FULFILLED`](state, action){
+    return { ...state, testPaperList: action.payload }
   },
   [`${CONSTANTS.MAKE_TEST_PAPER}_FULFILLED`](state, action){
     return { ...state, makeTestPaperDone: action.payload.makeTestPaperDone }

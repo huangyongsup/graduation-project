@@ -82,7 +82,9 @@ create table single_answer(
   singleAnswer enum('A', 'B', 'C', 'D'),
   isCorrect bool,
   correctAnswer enum('A', 'B', 'C', 'D') not null ,
-  score tinyint(1) not null
+  score tinyint(1) not null,
+  fullMarks tinyint(1) not null,
+  username varchar(16)
 );
 select * from single_answer;
 #提交多选题
@@ -92,7 +94,9 @@ create table multi_answer(
   multiAnswer varchar(4),
   isCorrect bool,
   correctAnswer varchar(4) not null ,
-  score tinyint(1) not null
+  score tinyint(1) not null,
+  fullMarks tinyint(1) not null,
+  username varchar(16)
 );
 #提交简答题
 create table short_answer(
@@ -100,12 +104,15 @@ create table short_answer(
   shortAnswerId int(8),
   shortAnswer text,
   correctAnswer text not null,
-  score tinyint(1)
+  score tinyint(1) not null ,
+  fullMarks tinyint(1) not null,
+  username varchar(16),
+  isGrade bool
 );
 select * from submit_log;
 select * from single_answer;
 select * from multi_answer;
-select * from short_answer;
+drop table short_answer;
 select * from testpaper;
 insert into class values('CS01', '计算机一班', NULL);
 insert into class values('CS02', '计算机二班', NULL);
@@ -113,7 +120,7 @@ insert into class values('CS03', '计算机三班', NULL);
 insert into class values('admin', '管理员', NULL);
 
 
-select * from class;
+select * from class natural join user;
 
 insert into user values('admin', 'admin', 'admin', 'admin');
 insert into user values('teacher', 'teacher', 'teacher', 'admin');
@@ -121,6 +128,6 @@ insert into user values('student', 'student', 'student', 'CS01');
 
 select * from user natural join class where username='student' and password='student' group by username;
 
-select * from class natural join testpaper where classNo = 'CS01';
-select * from class;
-select * from class natural join testpaper where classNo = 'admin';
+select * from single_choice_question;
+
+select * from submit_log ;

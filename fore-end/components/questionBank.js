@@ -1,5 +1,5 @@
 import React from 'react'
-import { message, Table, Button, Row, Col } from 'antd'
+import { Skeleton, message, Table, Button, Row, Col } from 'antd'
 import { SessionStorage } from '../lib/utilService'
 class QuestionBank extends React.Component {
   constructor(props) {
@@ -45,8 +45,8 @@ class QuestionBank extends React.Component {
       onChange: this.onSelectedRowKeysChange
     }
     return (
+      <Skeleton loading={isLoading} active={true}>
         <Table
-          loading={isLoading}
           rowKey={primaryKey}
           dataSource={dataSource}
           columns={columns}
@@ -55,6 +55,7 @@ class QuestionBank extends React.Component {
             onClick: () => this.selectRow(record)
           })}
         />
+      </Skeleton>
     )
   }
 }

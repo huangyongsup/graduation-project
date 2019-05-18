@@ -2,7 +2,6 @@ import React from 'react'
 import { BackTop, Row, Col, Checkbox, Button, Card, Radio, Form, Input } from 'antd'
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux'
-import moment from 'moment'
 import * as actions from './action'
 
 class TestPaper extends React.Component {
@@ -53,7 +52,7 @@ class TestPaper extends React.Component {
           {singleChoiceData.map((value, index) => {
             return (
               <Card
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
                 key={value.singleChoiceId}
               >
                 <Form.Item key={value.singleChoiceId}>
@@ -86,7 +85,7 @@ class TestPaper extends React.Component {
           {multiChoiceData.map((value, index) => {
             return (
               <Card
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
                 key={value.multiChoiceId}
               >
                 <Form.Item key={value.multiChoiceId}>
@@ -119,7 +118,7 @@ class TestPaper extends React.Component {
           {shortAnswerData.map((value, index) => {
             return (
               <Card
-                title={`${++index}、${value.question}`}
+                title={`${++index}、${value.question}（${value.score}分）`}
                 key={value.shortAnswerId}
               >
                 <Form.Item key={value.shortAnswerId}>
