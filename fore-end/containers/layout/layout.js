@@ -24,130 +24,74 @@ class RootLayout extends Component {
   }
 
   renderMenu = () => {
-    const menus = {
-      admin: {
-        key: "admin",
-        title: "管理员模块",
-        iconType: "appstore",
+    const teacher = {
+      key: "teacher",
+      title: "教师模块",
+      iconType: "appstore",
+      menuItem: [
+        {
+          key: "/teacher/correction",
+          option: "批阅作业"
+        }, {
+          key: "/teacher/buildQuestionBank",
+          option: "题库建设"
+        },
+      ],
+      subMenu: {
+        key: "createHomework",
+        title: "布置作业",
+        iconType: "setting",
         menuItem: [
           {
-            key: "/admin/testManage",
-            option: "考试管理"
+            key: "/teacher/singleChoice",
+            option: "选择单选题"
           }, {
-            key: "/admin/teacherManage",
-            option: "教师管理"
+            key: "/teacher/multiChoice",
+            option: "选择多选题"
           }, {
-            key: "/admin/studentManage",
-            option: "学生管理"
-          }
-        ],
-      },
-      teacher: {
-        key: "teacher",
-        title: "教师模块",
-        iconType: "appstore",
-        menuItem: [
-          {
-            key: "/teacher/correction",
-            option: "批阅作业"
+            key: "/teacher/shortAnswer",
+            option: "选择简答题"
           }, {
-            key: "/teacher/buildQuestionBank",
-            option: "题库建设"
+            key: "/teacher/createTestPaper",
+            option: "生成作业"
           },
-        ],
-        subMenu: {
-          key: "createHomework",
-          title: "布置作业",
-          iconType: "setting",
-          menuItem: [
-            {
-              key: "/teacher/singleChoice",
-              option: "选择单选题"
-            }, {
-              key: "/teacher/multiChoice",
-              option: "选择多选题"
-            }, {
-              key: "/teacher/shortAnswer",
-              option: "选择简答题"
-            }, {
-              key: "/teacher/createTestPaper",
-              option: "生成作业"
-            },
-          ]
-        }
-      },
-      student: {
-        key: "student",
-        title: "学生模块",
-        iconType: "appstore",
-        menuItem: [
-          {
-            key: "/student/myTestList",
-            option: "我的作业"
-          }
         ]
       }
     }
-    const arr = [menus.admin, menus.teacher, menus.student]
+
     return (
       <Menu
         mode="inline"
         theme="dark"
       >
-        {arr.map(subMenu => {
+        {teacher.menuItem.map(value => {
           return (
-            subMenu.subMenu ?
-              <SubMenu key={subMenu.key} title={
-                <span>
-                <Icon type={subMenu.iconType} />
-                <span>{subMenu.title}</span>
+            <Menu.Item key={value.key}>
+              <Icon type={teacher.iconType} />
+              <span>
+              <Link to={value.key}>
+                <span style={{color: "rgba(255, 255, 255, 0.65)"}}>{value.option}</span>
+              </Link>
               </span>
-              }>
-                <SubMenu key={subMenu.subMenu.key} title={
-                  <span>
-                        <Icon type={subMenu.subMenu.iconType} />
-                        <span>{subMenu.subMenu.title}</span>
-                      </span>
-                }>
-                  {subMenu.subMenu.menuItem.map(menuItem => {
-                      return (
-                        <Menu.Item key={menuItem.key}>
-                          <Link to={menuItem.key}>
-                            {menuItem.option}
-                          </Link>
-                        </Menu.Item>
-                      )
-                    })}
-                </SubMenu>
-                {subMenu.menuItem.map(menuItem => {
-                  return (
-                    <Menu.Item key={menuItem.key}>
-                      <Link to={menuItem.key}>
-                        {menuItem.option}
-                      </Link>
-                    </Menu.Item>
-                  )
-                })}
-              </SubMenu>
-              :
-              <SubMenu key={subMenu.key} title={
-                <span>
-                <Icon type={subMenu.iconType} />
-                <span>{subMenu.title}</span>
-              </span>
-              }>
-                {subMenu.menuItem.map(menuItem => {
-                  return (
-                    <Menu.Item key={menuItem.key}>
-                      <Link to={menuItem.key}>
-                        {menuItem.option}
-                      </Link>
-                    </Menu.Item>
-                  )
-                })}
-              </SubMenu>
+            </Menu.Item>
           )
         })}
+        <SubMenu title={
+          <span>
+            <Icon type={teacher.subMenu.iconType} />
+            <span>{teacher.subMenu.title}</span>
+          </span>
+        }>
+          {teacher.subMenu.menuItem.map(value => {
+            return (
+              <Menu.Item key={value.key}>
+                <Link to={value.key}>
+                  {value.option}
+                </Link>
+              </Menu.Item>
+            )
+          })}
+        </SubMenu>
       </Menu>
     )
   }
@@ -159,24 +103,27 @@ class RootLayout extends Component {
   }
 
   render() {
-    const { signOut, children, userInfo: { username } } = this.props
+    const { signOut, children, userInfo: { username, userType } } = this.props
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Layout>
-          <Sider
-            style={{ paddingTop: 50 }}
-            collapsible
-            collapsed={this.state.collapsed}
-            onCollapse={this.onCollapse}
-          >
-            {this.renderMenu()}
-          </Sider>
+          {userType !== 'student' ?
+            <Sider
+              style={{paddingTop: 50}}
+              collapsible
+              collapsed={this.state.collapsed}
+              onCollapse={this.onCollapse}
+            >
+              {this.renderMenu()}
+            </Sider>
+            : false
+          }
           <Layout>
             <Header style={{ background: '#49ACF1' }}>
               <div style={{ position: 'absolute', right: 32 }}>
                 <span style={{ padding: 10 }}>
                   <Icon type="user" />
-                  {` ${username}`}
+                  {username}
                 </span>
                 <Button type="danger" onClick={signOut}>
                   <Link to="/login">注销</Link>

@@ -4,8 +4,7 @@ import { CONSTANTS } from './action'
 const initState = {
   testPaperList: [],
   testPaperInfo: {},
-  analysisInfo: {singleAnswer: [], multiAnswer: [], shortAnswer: []},
-  submitAnswerDone: false,
+  analysisInfo: {},
   gradeDone: false,
   isLoading: false,
 }
@@ -24,7 +23,7 @@ export default handleActions({
     return { ...state, analysisInfo: action.payload, isLoading: false }
   },
   [`${CONSTANTS.GRADE}_FULFILLED`](state, action){
-    return { ...state, gradeDone: action.payload.gradeDone, isLoading: false }
+    return { ...state, gradeDone: action.payload.gradeDone,}
   },
   [`${CONSTANTS.INITIALIZE}`](state){
     return { ...state, submitAnswerDone: false }

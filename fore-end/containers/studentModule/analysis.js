@@ -2,6 +2,7 @@ import React from 'react'
 import { InputNumber, Skeleton, Icon, BackTop, Row, Col, Checkbox, Button, Card, Radio, Form } from 'antd'
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux'
+import moment from 'moment'
 import * as actions from './action'
 
 class TestPaper extends React.Component {
@@ -10,10 +11,6 @@ class TestPaper extends React.Component {
   }
 
   componentWillMount() {
-    this.refresh()
-  }
-
-  refresh = () => {
     const { analysis, getTestPaperInfo, setLoading } = this.props
     setLoading()
     const hash = location.hash
@@ -27,7 +24,67 @@ class TestPaper extends React.Component {
   }
 
   handleClick = () => {
-    location.hash = '#/student/myTestList'
+    const { userInfo: { userType } } = this.props
+    if(userType === 'teacher'){
+      location.hash = '#/teacher/correction'
+    }
+    if(userType === 'student'){
+      location.hash = '#/student/myTestList'
+    }
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const { analysis, form: { validateFields, getFieldsValue }, grade, setLoading } = this.props
+    validateFields(err => {
+      if(!err){
+        const hash = location.hash
+        const index = hash.lastIndexOf('?')
+        const separator = hash.lastIndexOf('&')
+        const testPaperId = hash.slice(index + 1, separator)
+        const username = hash.slice(separator + 1)
+        const score = getFieldsValue()
+        setLoading()
+        grade({ score, username, testPaperId })
+        setTimeout(() =>
+            analysis({ type: 'analysis', testPaperId, username }),
+          1000)
+      }
+    })
+  }
+
+  actions = (shortAnswerId) => {
+    const { form: { getFieldDecorator }, analysisInfo: { shortAnswer } , userInfo: { userType } } = this.props
+    if(userType !== 'teacher' || !shortAnswer){
+      return
+    }
+    const target = shortAnswer.filter(element => element.shortAnswerId === shortAnswerId )[0]
+    if(shortAnswer && !parseInt(target.isGrade) ){
+      if(moment().isBefore(moment(shortAnswer.endTime).add(7, 'days'))) {
+        return [
+          <Form.Item label={'请打分'}>
+            {getFieldDecorator(shortAnswerId, {
+              rules: [{required: true, message: '请先给此题打分'}]
+            })(
+              <InputNumber min={0} max={parseInt(target.fullMarks)}/>
+            )}
+          </Form.Item>
+        ]
+      } else {
+        return [<h3>无法进行评分，现在已经超出规定的评分期限</h3>]
+      }
+    }
+  }
+
+  grade = () => {
+    const {userInfo: {userType}, isLoading, analysisInfo: { shortAnswer }  } = this.props
+    if(userType === 'teacher' && shortAnswer && !parseInt(shortAnswer[0].isGrade)  ){
+      if(moment().isBefore(moment(shortAnswer.endTime).add(7, 'days'))) {
+        return [
+          <Button htmlType={'submit'} type={'primary'} loading={isLoading}>提交打分</Button>
+        ]
+      }
+    }
   }
 
   actionForSingle = singleChoiceId => {
@@ -70,7 +127,7 @@ class TestPaper extends React.Component {
     const target = shortAnswer.filter(element => element.shortAnswerId === shortAnswerId )[0]
     const choice = <div><p>这道题参考答案是：{target.correctAnswer}</p>
       <p>{username}的答案是：{target.shortAnswer}</p>
-    <p>{target.isGrade ? `得分：${target.score}` : false }</p></div>
+    <p>{parseInt(target.isGrade) ? `得分：${target.score}` : false }</p></div>
     return [<h3 key={shortAnswerId}>{choice}</h3>]
   }
 
@@ -80,7 +137,7 @@ class TestPaper extends React.Component {
       <Row gutter={16}>
         <Col span={6}>{`姓名：${analysisInfo.username}`}</Col>
         <Col span={6}>{`班级：${analysisInfo.className}`}</Col>
-        <Col span={6}>{`得分：${analysisInfo.totalScore / analysisInfo.fullMarks * 100 }`}</Col>
+        <Col span={6}>{`得分：${Math.round(analysisInfo.totalScore / analysisInfo.fullMarks * 100) }`}</Col>
         <Col span={6}>
           <Button type={'primary'} onClick={this.handleClick}>返回</Button>
         </Col>
@@ -145,49 +202,6 @@ class TestPaper extends React.Component {
       )
     } else {
       return false
-    }
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const { form: { validateFields, getFieldsValue }, grade, setLoading } = this.props
-    validateFields(err => {
-      if(!err){
-        const hash = location.hash
-        const index = hash.lastIndexOf('?')
-        const separator = hash.lastIndexOf('&')
-        const testPaperId = hash.slice(index + 1, separator)
-        const username = hash.slice(separator + 1)
-        const score = getFieldsValue()
-        setLoading()
-        grade({ score, username, testPaperId })
-        this.refresh()
-      }
-    })
-  }
-
-  actions = (shortAnswerId) => {
-    const { form: { getFieldDecorator }, analysisInfo: { shortAnswer } , userInfo: { userType } } = this.props
-    const target = shortAnswer.filter(element => element.shortAnswerId === shortAnswerId )[0]
-    if(userType === 'teacher' && shortAnswer && !parseInt(target.isGrade) ){
-      return [
-          <Form.Item label={'请打分'}>
-            {getFieldDecorator(shortAnswerId , {
-              rules: [{ required: true, message: '请先给此题打分'}]
-            })(
-              <InputNumber min={0} max={parseInt(target.fullMarks)}/>
-            )}
-          </Form.Item>
-      ]
-    }
-  }
-
-  grade = () => {
-    const {userInfo: {userType}, isLoading, analysisInfo: { shortAnswer }  } = this.props
-    if(userType === 'teacher' && shortAnswer[0] && !parseInt(shortAnswer[0].isGrade)  ){
-      return [
-        <Button htmlType={'submit'} type={'primary'} loading={isLoading}>提交打分</Button>
-      ]
     }
   }
 

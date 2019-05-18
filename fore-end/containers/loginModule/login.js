@@ -28,10 +28,13 @@ class Login extends Component{
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-      const { userInfo } = this.props
-      if(userInfo.userType){
-        location.hash = '#/'
-      }
+    const { userInfo: { userType } } = this.props
+    if(userType === 'student'){
+      location.hash = '#/student/myTestList'
+    }
+    if(userType === 'teacher'){
+      location.hash = '#/'
+    }
   }
 
   showModal = () => {

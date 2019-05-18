@@ -1,7 +1,7 @@
 <?php
 require_once '../MysqlTools.php';
 $mysqlTools = new MysqlTools();
-for($i = 0; $i < 10; ++$i){
+for($i = 0; $i < 5; ++$i){
   $res = $i % 4;
   $score = 2;
   switch ($res){

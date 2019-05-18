@@ -84,10 +84,12 @@ function analysis(){
   $multiQuery = "select * from multi_answer where testPaperId = {$testPaperId} and username = '{$username}'";
   $shortQuery = "select * from short_answer where testPaperId = {$testPaperId} and username = '{$username}'";
   $query = "select * from class natural join user";
+  $queryEndTime = "select endTime from testpaper where testPaperId = {$testPaperId}";
   $res1 = $mysqlTools->executeDQL($singleQuery);
   $res2 = $mysqlTools->executeDQL($multiQuery);
   $res3 = $mysqlTools->executeDQL($shortQuery);
   $res4 = $mysqlTools->executeDQL($query);
+  $endTime = $mysqlTools->executeDQL($queryEndTime);
   $totalScore = 0;
   $fullMarks = 0;
   $result = (object)[];
@@ -111,6 +113,9 @@ function analysis(){
       $fullMarks += $item['fullMarks'];
     }
     $result->shortAnswer = $res3;
+  }
+  if($endTime) {
+    $result->endTime = $endTime[0]['endTime'];
   }
   $result->totalScore = $totalScore;
   $result->fullMarks = $fullMarks;

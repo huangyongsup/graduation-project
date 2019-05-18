@@ -19,7 +19,7 @@ class ShortAnswerModal extends React.Component {
       },
     }
     return (
-      <Form onSubmit={() => handleSubmit.call(this)}>
+      <Form onSubmit={e => handleSubmit.call(this, e)}>
           <Card
             title={question.call(this)}
             extra={extra.call(this)}

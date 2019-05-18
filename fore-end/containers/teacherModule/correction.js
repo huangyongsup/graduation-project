@@ -35,12 +35,11 @@ class Correction extends React.Component {
       title: '评阅作业',
       key: 'testPaperId',
       render: (text, record, index) => {
-          const disabled = moment().isBefore(moment(record.endTime).add(7, 'days'))
           return (
-            <Button type={'primary'} disabled={!disabled}><Link to={{
+            <Button type={'primary'}><Link to={{
               pathname: '/student/analysis',
               search: `${record.testPaperId}&${record.username}`
-            }}>去答题</Link></Button>
+            }}>去评阅</Link></Button>
           )
       }
     }, ]

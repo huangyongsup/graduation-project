@@ -62,7 +62,7 @@ create table user(
   username varchar(16) primary key ,
   password varchar(16) not null ,
   userType enum('admin', 'teacher', 'student') not null ,
-  classNo varchar(8)
+  classNo varchar(8) not null
 );
 
 #答题表
@@ -107,10 +107,13 @@ create table short_answer(
   isGrade bool
 );
 
+select * from testpaper;
+
 insert into class values('CS01', '计算机一班', NULL);
 insert into class values('CS02', '计算机二班', NULL);
 insert into class values('CS03', '计算机三班', NULL);
 
-insert into user values('admin', 'admin', 'admin', NULL);
-insert into user values('teacher', 'teacher', 'teacher', NULL);
+insert into user values('admin', 'admin', 'admin', 'CS01');
+insert into user values('teacher', 'teacher', 'teacher', 'CS01');
 insert into user values('student', 'student', 'student', 'CS01');
+

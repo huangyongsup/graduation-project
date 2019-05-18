@@ -9,7 +9,7 @@ class MultiChoiceModal extends React.Component {
   render() {
     const { form: { getFieldDecorator }, question, actions, handleSubmit, extra } = this.props
     return (
-      <Form onSubmit={e => handleSubmit.call(this)}>
+      <Form onSubmit={e => handleSubmit.call(this, e)}>
           <Card
             title={question.call(this)}
             extra={extra.call(this)}
