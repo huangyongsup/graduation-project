@@ -4,7 +4,7 @@ import { CONSTANTS } from './action'
 const initState = {
   testPaperList: [],
   testPaperInfo: {},
-  analysisInfo: {},
+  analysisInfo: {singleAnswer: [], multiAnswer: [], shortAnswer: []},
   submitAnswerDone: false,
   gradeDone: false,
   isLoading: false,

@@ -35,7 +35,7 @@ function singleAnswer(){
           $isCorrect = 1;
           $score = $res[0]['score'];
         }
-       $statement = "insert into single_answer values($data->testPaperId, $arr[1], '{$value}', {$isCorrect}, '{$res[0]['correctAnswer']}', {$score}, {$res[0]['score']}, '{$data->username}')";
+        $statement = "insert into single_answer values($data->testPaperId, $arr[1], '{$value}', {$isCorrect}, '{$res[0]['correctAnswer']}', {$score}, {$res[0]['score']}, '{$data->username}')";
         if(!$mysqlTools->executeDML($statement)){
           return false;
         }

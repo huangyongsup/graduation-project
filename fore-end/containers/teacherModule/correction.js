@@ -12,47 +12,39 @@ class Correction extends React.Component {
   }
 
   componentWillMount() {
-    const { getTestPaperList, setLoading, } = this.props
+    const { getTestPaperList, setLoading, userInfo: { username } } = this.props
     setLoading()
-    getTestPaperList({ type: 'getTestPaperList', })
+    getTestPaperList({ tableName: 'getTestPaperList', username })
   }
 
   render() {
     const { testPaperList, isLoading } = this.props
     const columns = [{
-      title: '试卷名',
+      title: '试题名',
       dataIndex: 'testPaperTitle',
     }, {
       title: '命题教师',
       dataIndex: 'teacher',
     }, {
-      title: '答题',
+      title: '学生姓名',
+      dataIndex: 'username',
+    }, {
+      title: '该生所在班级',
+      dataIndex: 'className',
+    }, {
+      title: '评阅作业',
       key: 'testPaperId',
       render: (text, record, index) => {
-        if(!record.analysis){
-          const disabled = moment().isBetween(record.beginTime, record.endTime) || moment(moment().format('YYYY-MM-DD')).isSame(record.beginTime, record.endTime)
+          const disabled = moment().isBefore(moment(record.endTime).add(7, 'days'))
           return (
             <Button type={'primary'} disabled={!disabled}><Link to={{
-              pathname: '/student/myTest',
-              search: `${record.testPaperId}`
+              pathname: '/student/analysis',
+              search: `${record.testPaperId}&${record.username}`
             }}>去答题</Link></Button>
           )
-        }
       }
-    }, {
-      title: '答案解析',
-      key: 'singleChoiceId',
-      render: (text, record) => {
-        if(record.analysis) {
-          return (
-            <Button type={'primary'}><Link to={{
-              pathname: '/student/analysis',
-              search: `${record.testPaperId}`
-            }}>评阅作业</Link></Button>
-          )
-        }
-      }
-    }]
+    }, ]
+
     return (
       <Skeleton loading={isLoading} active={true}>
       <Table
@@ -65,6 +57,6 @@ class Correction extends React.Component {
   }
 }
 
-const mapStateToProps = state => state.teacherReducer
+const mapStateToProps = state => ({ ...state.loginReducer, ...state.teacherReducer })
 const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Correction)

@@ -29,7 +29,7 @@ class ShortAnswerModal extends React.Component {
               { getFieldDecorator('correctAnswer',{
                 rules: [{ required: true, message: '请填写参考答案'}]
               })(
-                <Input.TextArea />
+                <Input.TextArea  min={0} max={100} />
               )}
             </Form.Item>
           </Card>

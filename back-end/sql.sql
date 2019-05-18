@@ -1,7 +1,7 @@
 #作业报告在线管理系统
+drop database graduation_project;
 create database if not exists graduation_project;
 use graduation_project;
-drop database graduation_project;
 #单选题表
 create table single_choice_question(
   singleChoiceId int(8) auto_increment primary key ,
@@ -27,7 +27,7 @@ create table multi_choice_question(
   correctAnswer varchar(4) not null,
   teacher varchar(16)
 );
-select * from multi_choice_question;
+
 #简答题表
 create table short_answer_question(
   shortAnswerId int(8) auto_increment primary key ,
@@ -36,7 +36,7 @@ create table short_answer_question(
   correctAnswer text not null ,
   teacher varchar(16)
 );
-select * from short_answer_question;
+
 #试题表
 create table testpaper(
   testPaperId int(4) primary key ,
@@ -48,10 +48,7 @@ create table testpaper(
   beginTime date,
   endTime date
 );
-delete from testpaper where testPaperId = 3;
-select * from testpaper;
-alter table testpaper modify column endTime date not null ;
-desc testpaper;
+
 #班级表
 create table class(
   classNo varchar(8) ,
@@ -60,21 +57,20 @@ create table class(
   foreign key (testPaperId) references testpaper(testPaperId) on delete cascade on  update cascade
 );
 
-drop table user;
-drop table class;
 #用户表
 create table user(
   username varchar(16) primary key ,
   password varchar(16) not null ,
   userType enum('admin', 'teacher', 'student') not null ,
-  classNo varchar(8) not null
+  classNo varchar(8)
 );
+
 #答题表
 create table submit_log(
   username varchar(16),
   testPaperId int(4)
 );
-select * from submit_log;
+
 #提交单选题
 create table single_answer(
   testPaperId int(4),
@@ -86,7 +82,7 @@ create table single_answer(
   fullMarks tinyint(1) not null,
   username varchar(16)
 );
-select * from single_answer;
+
 #提交多选题
 create table multi_answer(
   testPaperId int(4),
@@ -98,6 +94,7 @@ create table multi_answer(
   fullMarks tinyint(1) not null,
   username varchar(16)
 );
+
 #提交简答题
 create table short_answer(
   testPaperId int(4),
@@ -109,25 +106,11 @@ create table short_answer(
   username varchar(16),
   isGrade bool
 );
-select * from submit_log;
-select * from single_answer;
-select * from multi_answer;
-drop table short_answer;
-select * from testpaper;
+
 insert into class values('CS01', '计算机一班', NULL);
 insert into class values('CS02', '计算机二班', NULL);
 insert into class values('CS03', '计算机三班', NULL);
-insert into class values('admin', '管理员', NULL);
 
-
-select * from class natural join user;
-
-insert into user values('admin', 'admin', 'admin', 'admin');
-insert into user values('teacher', 'teacher', 'teacher', 'admin');
+insert into user values('admin', 'admin', 'admin', NULL);
+insert into user values('teacher', 'teacher', 'teacher', NULL);
 insert into user values('student', 'student', 'student', 'CS01');
-
-select * from user natural join class where username='student' and password='student' group by username;
-
-select * from single_choice_question;
-
-select * from submit_log ;

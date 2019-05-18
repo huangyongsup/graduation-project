@@ -56,7 +56,8 @@ class BuildQuestionBank extends React.Component {
     ]
   }
 
-  handleSubmit(){
+  handleSubmit(e){
+    e.preventDefault()
     const { form: { validateFields, getFieldsValue }, username, setQuestion, tableName } = this.props
     validateFields(err => {
       if(!err) {

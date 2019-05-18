@@ -44,13 +44,27 @@ function getShortAnswerQuestion(){
   }
 }
 
-function getTestPaperList(){
+function getTestPaperList()
+{
   global $mysqlTools;
-  $query = "select * from submit_log natural join testpaper";
-  if($res = $mysqlTools->executeDQL($query)){
-    return json_encode($res);
-  } else {
-    return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
+  $result = (object)[];
+  $username = $_GET['username'];
+  $queryFirst = "select testPaperId from testpaper where teacher = '{$username}'";
+  if ($res1 = $mysqlTools->executeDQL($queryFirst)) {
+    foreach ($res1 as $index => $item) {
+      $querySecond = "select * from submit_log where testPaperId = {$item['testPaperId']}";
+      $res2 = $mysqlTools->executeDQL($querySecond);
+      if ($res2) {
+        foreach ($res2 as $k => $v) {
+          $queryThird = "select testPaperId, username, className, testPaperTitle, teacher, endTime from user natural join class natural join testpaper where username = '{$v['username']}'";
+          if ($res3 = $mysqlTools->executeDQL($queryThird)) {
+            return json_encode($res3);
+          } else {
+            return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
+          }
+        }
+      }
+    }
   }
 }
 

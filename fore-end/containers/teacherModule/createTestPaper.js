@@ -149,6 +149,7 @@ class CreateTestPaper extends React.Component {
           {singleChoiceData.map((value, index) => {
             return (
               <Card
+                type={'inner'}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'singleChoice')}
@@ -180,6 +181,7 @@ class CreateTestPaper extends React.Component {
           {multiChoiceData.map((value, index) => {
             return (
               <Card
+                type={'inner'}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'multiChoice')}
@@ -211,6 +213,7 @@ class CreateTestPaper extends React.Component {
           {shortAnswerData.map((value, index) => {
             return (
               <Card
+                type={'inner'}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'shortAnswer')}
@@ -218,7 +221,7 @@ class CreateTestPaper extends React.Component {
                 /></Tooltip>}
                 key={value.shortAnswerId}
               >
-                {value.correctAnswer}
+                <p>{value.correctAnswer}</p>
               </Card>
             )
           })}
@@ -251,10 +254,13 @@ class CreateTestPaper extends React.Component {
     return (
       <Skeleton loading={isLoading} active={true}>
       <Form onSubmit={ this.handleSubmit } onClick={this.handleClick}>
-        <Card title={ this.renderTitle() } loading={isLoading}>
+        <Card
+          title={ this.renderTitle() }
+          loading={isLoading}
+        >
           { this.renderSingleChoice() }
           { this.renderMultiChoice() }
-          { this.renderShortAnswer() }
+          <Card tiele={'简答题'}>{ this.renderShortAnswer() }</Card>
         </Card>
       </Form>
         <BackTop />

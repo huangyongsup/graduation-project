@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackTop, Row, Col, Checkbox, Button, Card, Radio, Form, Input } from 'antd'
+import { Skeleton, BackTop, Row, Col, Checkbox, Button, Card, Radio, Form, Input } from 'antd'
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux'
 import * as actions from './action'
@@ -10,10 +10,11 @@ class TestPaper extends React.Component {
   }
 
   componentWillMount() {
-    const { getTestPaperInfo } = this.props
+    const { getTestPaperInfo, setLoading } = this.props
     const hash = location.hash
     const index = hash.lastIndexOf('?')
     const testPaperId = hash.slice(index + 1)
+    setLoading()
     getTestPaperInfo({ type: 'getTestPaperInfo', testPaperId })
   }
 
@@ -154,17 +155,18 @@ class TestPaper extends React.Component {
   }
 
   render() {
+    const { isLoading } = this.props
     return (
-      <div>
+      <Skeleton loading={isLoading} active={true}>
         <Form onSubmit={this.handleSubmit}>
           <Card title={ this.renderTitle() }>
             { this.renderSingleChoice() }
             { this.renderMultiChoice() }
-            { this.renderShortAnswer() }
+            <Card>{ this.renderShortAnswer() }</Card>
           </Card>
         </Form>
         <BackTop />
-      </div>
+      </Skeleton>
     )
   }
 }

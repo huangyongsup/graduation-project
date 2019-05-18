@@ -28,7 +28,7 @@ export default handleActions({
     return { ...state, classInfo: action.payload, isLoading: false }
   },
   [`${CONSTANTS.GET_TEST_PAPER_LIST}_FULFILLED`](state, action){
-    return { ...state, testPaperList: action.payload }
+    return { ...state, testPaperList: action.payload, isLoading: false }
   },
   [`${CONSTANTS.MAKE_TEST_PAPER}_FULFILLED`](state, action){
     return { ...state, makeTestPaperDone: action.payload.makeTestPaperDone }
