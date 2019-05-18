@@ -93,6 +93,7 @@ class TestPaper extends React.Component {
       return
     }
     const target = singleAnswer.filter(element => element.singleChoiceId === singleChoiceId )[0]
+    if(!target) return
     const choice = <div>
       <p>这道题正确答案是：{target.correctAnswer}</p>
       <p>{username}选择的是：{target.singleAnswer}</p>
@@ -110,6 +111,7 @@ class TestPaper extends React.Component {
       return
     }
     const target = multiAnswer.filter(element => element.multiChoiceId === multiChoiceId )[0]
+    if(!target) return
     const choice = <div><p>这道题正确答案是：{target.correctAnswer}</p>
       <p>{username}选择的是：{target.multiAnswer}</p></div>
     if(parseInt(target.isCorrect)){
@@ -125,6 +127,7 @@ class TestPaper extends React.Component {
       return
     }
     const target = shortAnswer.filter(element => element.shortAnswerId === shortAnswerId )[0]
+    if(!target) return
     const choice = <div><p>这道题参考答案是：{target.correctAnswer}</p>
       <p>{username}的答案是：{target.shortAnswer}</p>
     <p>{parseInt(target.isGrade) ? `得分：${target.score}` : false }</p></div>

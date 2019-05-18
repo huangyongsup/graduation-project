@@ -56,7 +56,7 @@ function getTestPaperList()
       $res2 = $mysqlTools->executeDQL($querySecond);
       if ($res2) {
         foreach ($res2 as $k => $v) {
-          $queryThird = "select testPaperId, username, className, testPaperTitle, teacher, endTime from user natural join class natural join testpaper where username = '{$v['username']}'";
+          $queryThird = "select testPaperId, username, className, testPaperTitle, teacher, endTime from user natural join class natural join testpaper natural join submit_log where username = '{$v['username']}'";
           if ($res3 = $mysqlTools->executeDQL($queryThird)) {
             return json_encode($res3);
           } else {
