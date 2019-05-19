@@ -113,7 +113,14 @@ insert into class values('CS01', '计算机一班', NULL);
 insert into class values('CS02', '计算机二班', NULL);
 insert into class values('CS03', '计算机三班', NULL);
 
+insert into user values('计算机一班', 'cs01', 'student', 'CS01');
+insert into user values('计算机二班', 'cs02', 'student', 'CS02');
+insert into user values('cs03', 'cs03', 'student', 'CS03');
 insert into user values('admin', 'admin', 'admin', 'CS01');
 insert into user values('teacher', 'teacher', 'teacher', 'CS01');
+insert into user values('张老师', 'teacher', 'teacher', 'CS01');
 insert into user values('student', 'student', 'student', 'CS01');
 
+select * from user;
+
+select * from testpaper;

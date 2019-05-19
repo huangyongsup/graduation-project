@@ -31,13 +31,17 @@ class MyTestList extends React.Component {
       key: 'testPaperId',
       render: (text, record, index) => {
         if(!record.analysis){
-          const disabled = moment().isBetween(record.beginTime, record.endTime) || moment(moment().format('YYYY-MM-DD')).isSame(record.beginTime, record.endTime)
-          return (
-            <Button type={'primary'} disabled={!disabled}><Link to={{
-              pathname: '/student/myTest',
-              search: `${record.testPaperId}`
-            }}>去答题</Link></Button>
-          )
+          const legal = moment().isBetween(record.beginTime, record.endTime) || moment(moment().format('YYYY-MM-DD')).isSame(record.beginTime, record.endTime)
+          if(legal) {
+            return (
+              <Button type={'primary'}><Link to={{
+                pathname: '/student/myTest',
+                search: `${record.testPaperId}`
+              }}>去答题</Link></Button>
+            )
+          } else {
+            return <h3>现在不在此作业的有效作答时间内</h3>
+          }
         }
       }
     }, {

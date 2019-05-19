@@ -3,7 +3,7 @@ import { InputNumber, Skeleton, Icon, BackTop, Row, Col, Checkbox, Button, Card,
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { PDF } from '../../lib/utilService'
+// import { PDF } from '../../lib/utilService'
 import * as actions from './action'
 
 class TestPaper extends React.Component {
@@ -80,7 +80,7 @@ class TestPaper extends React.Component {
   grade = () => {
     const {userInfo: {userType}, isLoading, analysisInfo: { shortAnswer }  } = this.props
     if(userType === 'teacher' && shortAnswer && !parseInt(shortAnswer[0].isGrade)  ){
-      if(moment().isBefore(moment(shortAnswer.endTime).add(7, 'days'))) {
+      if(moment(moment().format('YYYY-MM-DD')).isBefore(moment(shortAnswer.endTime).add(7, 'days'))) {
         return [
           <Button htmlType={'submit'} type={'primary'} loading={isLoading}>提交打分</Button>
         ]
@@ -136,9 +136,10 @@ class TestPaper extends React.Component {
   }
 
   toPDF = () => {
-    const target = document.getElementsByClassName('ant-layout-content')[0]
-    const name = ''
-    PDF(target, '试卷')
+    // const { analysis: { title } } = this.props
+    // const target = document.getElementsByClassName('ant-layout-content')[0]
+    // PDF(target, title)
+    window.print()
   }
 
   renderTitle = () => {
@@ -154,7 +155,7 @@ class TestPaper extends React.Component {
         <Col span={5}>
           <Button type={'primary'} onClick={this.handleClick}>返回</Button>
         </Col>
-        <Col span={4}><Button onClick={this.toPDF}>导出为PDF</Button></Col>
+        <Col span={4}><Button onClick={this.toPDF}>打印/导出为PDF</Button></Col>
       </Row>
     )
   }

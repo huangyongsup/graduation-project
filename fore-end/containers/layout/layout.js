@@ -36,9 +36,11 @@ class RootLayout extends Component {
       iconType: "appstore",
       menuItem: [
         {
+          iconType: "edit",
           key: "/teacher/correction",
           option: "批阅作业"
         }, {
+          iconType: "appstore",
           key: "/teacher/buildQuestionBank",
           option: "题库建设"
         },
@@ -72,14 +74,19 @@ class RootLayout extends Component {
       >
         {teacher.menuItem.map(value => {
           return (
-            <Menu.Item key={value.key}>
-              <Icon type={teacher.iconType} />
-              <span>
+            <SubMenu
+              title={
+                <span>
+                <Icon type={value.iconType} />
+                <span>{value.option}</span>
+                </span>
+              }>
+              <Menu.Item key={value.key}>
               <Link to={value.key}>
-                <span style={{color: "rgba(255, 255, 255, 0.65)"}}>{value.option}</span>
+                {value.option}
               </Link>
-              </span>
-            </Menu.Item>
+              </Menu.Item>
+            </SubMenu>
           )
         })}
         <SubMenu title={
