@@ -137,6 +137,7 @@ class TestPaper extends React.Component {
 
   toPDF = () => {
     const target = document.getElementsByClassName('ant-layout-content')[0]
+    const name = ''
     PDF(target, '试卷')
   }
 
