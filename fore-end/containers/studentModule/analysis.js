@@ -3,6 +3,7 @@ import { InputNumber, Skeleton, Icon, BackTop, Row, Col, Checkbox, Button, Card,
 import {bindActionCreators} from "redux";
 import { connect } from 'react-redux'
 import moment from 'moment'
+import { PDF } from '../../lib/utilService'
 import * as actions from './action'
 
 class TestPaper extends React.Component {
@@ -71,7 +72,7 @@ class TestPaper extends React.Component {
           </Form.Item>
         ]
       } else {
-        return [<h3>无法进行评分，现在已经超出规定的评分期限</h3>]
+        return [<h3 style={{color: 'red'}}>无法进行评分，现在已经超出规定的评分期限</h3>]
       }
     }
   }
@@ -130,20 +131,29 @@ class TestPaper extends React.Component {
     if(!target) return
     const choice = <div><p>这道题参考答案是：{target.correctAnswer}</p>
       <p>{username}的答案是：{target.shortAnswer}</p>
-    <p>{parseInt(target.isGrade) ? `得分：${target.score}` : false }</p></div>
+    <p style={{color: 'red'}}>{parseInt(target.isGrade) ? `得分：${target.score}` : '此题暂未被评阅' }</p></div>
     return [<h3 key={shortAnswerId}>{choice}</h3>]
+  }
+
+  toPDF = () => {
+    const target = document.getElementsByClassName('ant-layout-content')[0]
+    PDF(target, '试卷')
   }
 
   renderTitle = () => {
     const {  analysisInfo } = this.props
+    if(!analysisInfo){
+      return
+    }
     return (
       <Row gutter={16}>
-        <Col span={6}>{`姓名：${analysisInfo.username}`}</Col>
-        <Col span={6}>{`班级：${analysisInfo.className}`}</Col>
-        <Col span={6}>{`得分：${Math.round(analysisInfo.totalScore / analysisInfo.fullMarks * 100) }`}</Col>
-        <Col span={6}>
+        <Col span={5}>{`姓名：${analysisInfo.username}`}</Col>
+        <Col span={5}>{`班级：${analysisInfo.className}`}</Col>
+        <Col span={5}>{`得分：${Math.round(analysisInfo.totalScore / analysisInfo.fullMarks * 100) }`}</Col>
+        <Col span={5}>
           <Button type={'primary'} onClick={this.handleClick}>返回</Button>
         </Col>
+        <Col span={4}><Button onClick={this.toPDF}>导出为PDF</Button></Col>
       </Row>
     )
   }
