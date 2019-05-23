@@ -75,6 +75,7 @@ class RootLayout extends Component {
         {teacher.menuItem.map(value => {
           return (
             <SubMenu
+	      key={value.key}
               title={
                 <span>
                 <Icon type={value.iconType} />

@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
 import { Form, Modal, Input } from 'antd/lib/index'
+import * as actions from "./action";
+import {connect} from "react-redux";
+import { bindActionCreators } from "redux";
 
 class Register extends Component {
   constructor(props) {
@@ -7,13 +10,20 @@ class Register extends Component {
     this.state = {
       pattern: {
         pattern: /^[0-9a-zA-Z]+$/,
-        message: '用户名只能由字母和数字组成'
+        message: '密码只能由字母和数字组成'
       }
     }
   }
 
   onOk = () => {
-
+    const { update, setLoading, form: { getFieldsValue, validateFields } } = this.props
+    validateFields(err => {
+      if(!err) {
+        const data = getFieldsValue()
+        setLoading()
+        update(data)
+      }
+    })
   }
 
   compareToFirstPassword = (rule, value, callback) => {
@@ -25,17 +35,17 @@ class Register extends Component {
   }
 
   render() {
-    const { onCancel, visible, form } = this.props
-    const { getFieldDecorator } = form
+    const { onCancel, visible, isLoading, form: { getFieldDecorator }, } = this.props
     return (
       <Modal
+        confirmLoading={isLoading}
         centered={true}
         destroyOnClose={true}
-        okText="注册"
+        okText="确认修改"
         cancelText="取消"
         style={{maxWidth: '400px'}}
         visible={visible}
-        title="注册"
+        title="修改密码"
         onOk={this.onOk}
         onCancel={onCancel}
       >
@@ -45,6 +55,13 @@ class Register extends Component {
               rules: [this.state.pattern]
             })(
               <Input autoComplete="username" allowClear={true}/>
+            )}
+          </Form.Item>
+          <Form.Item label={'当前密码'}>
+            {getFieldDecorator('currentPassword', {
+              rules: [this.state.pattern]
+            })(
+              <Input.Password autoComplete="current-password" allowClear={true} />
             )}
           </Form.Item>
           <Form.Item label={'密码'}>
@@ -69,4 +86,7 @@ class Register extends Component {
   }
 }
 
-export default Form.create()(Register)
+const mapStateToProps = state => state.loginReducer
+const mapDispatchToProps = dispatch => bindActionCreators(actions, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(Register))
+

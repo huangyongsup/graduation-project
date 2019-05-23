@@ -3,7 +3,7 @@ import { Card, Form, Icon, Input, Button, Checkbox } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import * as actions from './action'
-import RegisterModal from '../../components/register'
+import RegisterModal from './register'
 
 class Login extends Component{
   constructor(props){
@@ -81,7 +81,7 @@ class Login extends Component{
             })(
               <Checkbox>记住我</Checkbox>
             )}
-            <Button onClick={this.showModal} style={{ float: 'right' }}>点此注册</Button>
+            <Button onClick={this.showModal} style={{ float: 'right' }}>修改密码</Button>
           </Form.Item>
         </Form>
       </Card>

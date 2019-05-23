@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, Button, Skeleton } from 'antd'
+import { Tooltip, Table, Button, Skeleton } from 'antd'
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import { Link } from 'react-router-dom'
@@ -40,7 +40,7 @@ class MyTestList extends React.Component {
               }}>去答题</Link></Button>
             )
           } else {
-            return <h3>现在不在此作业的有效作答时间内</h3>
+            return <Tooltip title={'此作业不在有效作答时间内'}><Button disabled>去答题</Button></Tooltip> 
           }
         }
       }
