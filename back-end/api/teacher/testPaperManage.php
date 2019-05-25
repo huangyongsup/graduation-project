@@ -10,7 +10,7 @@ function getClassInfo(){
   if($res = $mysqlTools->executeDQL($query)){
     return json_encode($res);
   } else {
-    return json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
+    return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
   }
 }
 
@@ -20,7 +20,7 @@ function getSingleChoiceQuestion(){
   if($res = $mysqlTools->executeDQL($query)){
     return json_encode($res);
   } else {
-    return json_encode((object)['errorMsg' => '请求失败，请稍后再试']);
+    return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
   }
 }
 
@@ -47,7 +47,7 @@ function getShortAnswerQuestion(){
 function getTestPaperList()
 {
   global $mysqlTools;
-  $result = (object)[];
+  $result = [];
   $username = $_GET['username'];
   $queryFirst = "select testPaperId from testpaper where teacher = '{$username}'";
   if ($res1 = $mysqlTools->executeDQL($queryFirst)) {
@@ -56,16 +56,28 @@ function getTestPaperList()
       $res2 = $mysqlTools->executeDQL($querySecond);
       if ($res2) {
         foreach ($res2 as $k => $v) {
-          $queryThird = "select testPaperId, username, className, testPaperTitle, teacher, endTime from user natural join class natural join testpaper natural join submit_log where username = '{$v['username']}'";
-          if ($res3 = $mysqlTools->executeDQL($queryThird)) {
-            return json_encode($res3);
+          $query3 = "select username, className from user natural join class where username = '{$v['username']}' group by username";
+          $query4 = "select * from testpaper where testPaperId = {$v['testPaperId']}";
+          $query5 = "select isGrade from short_answer where username='{$v['username']}' and testPaperId = {$v['testPaperId']}";
+          $res3 = $mysqlTools->executeDQL($query3);
+          $res4 = $mysqlTools->executeDQL($query4);
+          $res5 = $mysqlTools->executeDQL($query5);
+          if ($res3 && $res4) {
+            if ($res5) {
+              array_push($result, array_merge($res3[0], $res4[0], $res5[0]));
+            } else {
+              array_push($result, array_merge($res3[0], $res4[0]));
+            }
           } else {
             return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
           }
         }
       }
     }
+  } else {
+    return json_encode((object)['errorMsg' => '请求失败，请联系管理员']);
   }
+  return json_encode($result);
 }
 
 switch ($tableName){

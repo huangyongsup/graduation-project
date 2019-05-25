@@ -11,6 +11,10 @@ class Register extends Component {
       pattern: {
         pattern: /^[0-9a-zA-Z]+$/,
         message: '密码只能由字母和数字组成'
+      },
+      notNull: {
+        required: true,
+        message: '不可为空'
       }
     }
   }
@@ -36,6 +40,7 @@ class Register extends Component {
 
   render() {
     const { onCancel, visible, isLoading, form: { getFieldDecorator }, } = this.props
+    const { pattern, notNull } = this.state
     return (
       <Modal
         confirmLoading={isLoading}
@@ -52,28 +57,28 @@ class Register extends Component {
         <Form>
           <Form.Item label="用户名">
             {getFieldDecorator('username', {
-              rules: [this.state.pattern]
+              rules: [pattern, notNull]
             })(
               <Input autoComplete="username" allowClear={true}/>
             )}
           </Form.Item>
           <Form.Item label={'当前密码'}>
             {getFieldDecorator('currentPassword', {
-              rules: [this.state.pattern]
+              rules: [pattern, notNull]
             })(
               <Input.Password autoComplete="current-password" allowClear={true} />
             )}
           </Form.Item>
           <Form.Item label={'密码'}>
             {getFieldDecorator('password', {
-              rules: [this.state.pattern]
+              rules: [pattern, notNull]
             })(
               <Input.Password autoComplete="new-password" allowClear={true} />
             )}
           </Form.Item>
           <Form.Item label={'确认密码'}>
             {getFieldDecorator('confirm', {
-              rules: [this.state.pattern, {
+              rules: [pattern, notNull, {
                 validator: this.compareToFirstPassword
               }]
             })(

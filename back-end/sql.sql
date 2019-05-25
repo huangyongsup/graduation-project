@@ -12,7 +12,7 @@ create table single_choice_question(
   answerC text not null ,
   answerD text not null ,
   correctAnswer enum('A', 'B', 'C', 'D') not null,
-  teacher varchar(16)
+  teacher varchar(16) not null
 );
 
 #多选题表
@@ -25,7 +25,7 @@ create table multi_choice_question(
   answerC text not null ,
   answerD text not null ,
   correctAnswer varchar(4) not null,
-  teacher varchar(16)
+  teacher varchar(16) not null
 );
 
 #简答题表
@@ -41,12 +41,12 @@ create table short_answer_question(
 create table testpaper(
   testPaperId int(4) primary key ,
   testPaperTitle varchar(32) not null ,
-  teacher varchar(16),
+  teacher varchar(16) not null,
   singleChoiceId varchar(128),
   multiChoiceId varchar(128),
   shortAnswerId varchar(128),
-  beginTime date,
-  endTime date
+  beginTime date not null,
+  endTime date not null
 );
 
 #班级表
@@ -73,7 +73,7 @@ create table submit_log(
 
 #提交单选题
 create table single_answer(
-  testPaperId int(4),
+  testPaperId int(4) not null,
   singleChoiceId int(8),
   singleAnswer enum('A', 'B', 'C', 'D'),
   isCorrect bool,
@@ -121,6 +121,10 @@ insert into user values('teacher', 'teacher', 'teacher', 'CS01');
 insert into user values('张老师', 'teacher', 'teacher', 'CS01');
 insert into user values('student', 'student', 'student', 'CS01');
 
-select * from user;
+select * from user natural join class where username='student' group by username;
 
 select * from testpaper;
+select * from submit_log;
+
+select * from user natural join class natural join testpaper natural join submit_log natural join short_answer where username = 'student';
+

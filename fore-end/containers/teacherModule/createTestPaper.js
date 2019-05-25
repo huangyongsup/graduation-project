@@ -29,19 +29,19 @@ class CreateTestPaper extends React.Component {
       const single = root.singleChoiceQuestionBankData
       const multi = root.multiChoiceQuestionBankData
       const shortAnswer = root.shortAnswerQuestionBankData
-      if (singleSelectedId) {
+      if (singleSelectedId && singleSelectedId.length) {
         const selectedSingleData = single.filter(value => singleSelectedId.indexOf(value.singleChoiceId) !== -1)
         this.setState({singleChoiceData: selectedSingleData})
       } else {
         message.warn('未选择任何单选题目')
       }
-      if(multiSelectedId) {
+      if(multiSelectedId && multiSelectedId.length) {
         const selectedMultiData = multi.filter(value => multiSelectedId.indexOf(value.multiChoiceId) !== -1)
         this.setState({ multiChoiceData: selectedMultiData })
       } else {
         message.warn('未选择任何多选题目')
       }
-      if (shortSelectedId) {
+      if (shortSelectedId && shortSelectedId.length) {
         const selectedShortAnswerData = shortAnswer.filter(value => shortSelectedId.indexOf(value.shortAnswerId) !== -1)
         this.setState({shortAnswerData: selectedShortAnswerData})
       } else {
@@ -100,7 +100,7 @@ class CreateTestPaper extends React.Component {
             )}
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={9}>
           <Form.Item>
             { getFieldDecorator('class', {
               rules: [{required: true, message: '请选择此试卷的目标班级'}]
@@ -134,7 +134,7 @@ class CreateTestPaper extends React.Component {
             )}
           </Form.Item>
         </Col>
-        <Col span={6}>
+        <Col span={3}>
           <Button htmlType={'submit'} type={'primary'}>提交</Button>
         </Col>
       </Row>
@@ -143,13 +143,14 @@ class CreateTestPaper extends React.Component {
 
   renderSingleChoice = () => {
     const { singleChoiceData } = this.state
-    if(singleChoiceData){
+    if(singleChoiceData && singleChoiceData.length){
       return (
         <Card title={'单选题'}>
           {singleChoiceData.map((value, index) => {
             return (
               <Card
                 type={'inner'}
+                hoverable={true}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'singleChoice')}
@@ -175,13 +176,14 @@ class CreateTestPaper extends React.Component {
 
   renderMultiChoice = () => {
     const { multiChoiceData } = this.state
-    if(multiChoiceData){
+    if(multiChoiceData && multiChoiceData.length){
       return (
         <Card title={'多选题'}>
           {multiChoiceData.map((value, index) => {
             return (
               <Card
                 type={'inner'}
+                hoverable={true}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
                   onClick={(e) => this.deleteQuestion(--index, 'multiChoice')}
@@ -207,12 +209,15 @@ class CreateTestPaper extends React.Component {
 
   renderShortAnswer = () => {
     const { shortAnswerData } = this.state
-    if(shortAnswerData){
+    const { isLoading } = this.props
+    if(shortAnswerData && shortAnswerData.length){
       return (
+        <Skeleton loading={isLoading} active={true}>
         <Card title={'简答题'}>
           {shortAnswerData.map((value, index) => {
             return (
               <Card
+                hoverable={true}
                 type={'inner'}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 extra={<Tooltip title={'点击删除此题目'}><Button
@@ -226,6 +231,7 @@ class CreateTestPaper extends React.Component {
             )
           })}
         </Card>
+        </Skeleton>
       )
     } else {
       return false
@@ -239,7 +245,6 @@ class CreateTestPaper extends React.Component {
     validateFields(err => {
       if(!err) {
         const data = getFieldsValue()
-        console.log(data);
         makeTestPaper({ ...data,
           date: {
             beginTime: moment(data.date[0]).format('YYYY-MM-DD'),
@@ -260,7 +265,7 @@ class CreateTestPaper extends React.Component {
         >
           { this.renderSingleChoice() }
           { this.renderMultiChoice() }
-          <Card tiele={'简答题'}>{ this.renderShortAnswer() }</Card>
+          <Card>{ this.renderShortAnswer() }</Card>
         </Card>
       </Form>
         <BackTop />

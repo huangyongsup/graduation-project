@@ -47,7 +47,7 @@ class TestPaper extends React.Component {
 
   renderSingleChoice = () => {
     const { testPaperInfo: { singleChoiceData }, form: { getFieldDecorator } } = this.props
-    if(singleChoiceData){
+    if(singleChoiceData && singleChoiceData.length){
       return (
         <Card title={'单选题'}>
           {singleChoiceData.map((value, index) => {
@@ -55,6 +55,8 @@ class TestPaper extends React.Component {
               <Card
                 title={`${++index}、${value.question}（${value.score}分）`}
                 key={value.singleChoiceId}
+                hoverable={true}
+                type={'inner'}
               >
                 <Form.Item key={value.singleChoiceId}>
                   { getFieldDecorator(`singleChoice-${value.singleChoiceId}`, {
@@ -80,7 +82,7 @@ class TestPaper extends React.Component {
 
   renderMultiChoice = () => {
     const {testPaperInfo: { multiChoiceData }, form: { getFieldDecorator } } = this.props
-    if(multiChoiceData){
+    if(multiChoiceData && multiChoiceData.length){
       return (
         <Card title={'多选题'}>
           {multiChoiceData.map((value, index) => {
@@ -88,6 +90,8 @@ class TestPaper extends React.Component {
               <Card
                 title={`${++index}、${value.question}（${value.score}分）`}
                 key={value.multiChoiceId}
+                hoverable={true}
+                type={'inner'}
               >
                 <Form.Item key={value.multiChoiceId}>
                   { getFieldDecorator(`multiChoice-${value.multiChoiceId}`, {
@@ -113,12 +117,14 @@ class TestPaper extends React.Component {
 
   renderShortAnswer = () => {
     const {testPaperInfo: { shortAnswerData }, form: { getFieldDecorator } } = this.props
-    if(shortAnswerData){
+    if(shortAnswerData && shortAnswerData.length){
       return (
         <Card title={'简答题'}>
           {shortAnswerData.map((value, index) => {
             return (
               <Card
+                hoverable={true}
+                type={'inner'}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 key={value.shortAnswerId}
               >

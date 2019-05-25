@@ -162,7 +162,7 @@ class TestPaper extends React.Component {
 
   renderSingleChoice = () => {
     const { testPaperInfo: { singleChoiceData }, isLoading } = this.props
-    if(singleChoiceData){
+    if(singleChoiceData && singleChoiceData.length){
       return (
         <Card title={'单选题'} loading={ isLoading}>
           {singleChoiceData.map((value, index) => {
@@ -170,6 +170,7 @@ class TestPaper extends React.Component {
               <Card
                 loading={isLoading }
                 hoverable={true}
+                type={'inner'}
                 actions={this.actionForSingle(value.singleChoiceId)}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 key={value.singleChoiceId}
@@ -192,15 +193,15 @@ class TestPaper extends React.Component {
 
   renderMultiChoice = () => {
     const {testPaperInfo: { multiChoiceData }, isLoading } = this.props
-    if(multiChoiceData){
+    if(multiChoiceData && multiChoiceData.length){
       return (
-        <Card title={'多选题'} loading={isLoading }>
-          {multiChoiceData.map((value, index) => {
+          multiChoiceData.map((value, index) => {
             return (
               <Card
                 loading={isLoading }
                 title={`${++index}、${value.question}（${value.score}分）`}
                 hoverable={true}
+                type={'inner'}
                 actions={this.actionForMulti(value.multiChoiceId)}
                 key={value.multiChoiceId}
               >
@@ -212,8 +213,7 @@ class TestPaper extends React.Component {
                 </Checkbox.Group>
               </Card>
             )
-          })}
-        </Card>
+          })
       )
     } else {
       return false
@@ -222,16 +222,16 @@ class TestPaper extends React.Component {
 
   renderShortAnswer = () => {
     const {testPaperInfo: { shortAnswerData }, isLoading } = this.props
-    if(shortAnswerData){
+    if(shortAnswerData && shortAnswerData.length){
       return (
-        <Card title={'多选题'} loading={isLoading }>
+        <Card title={'简答题'} loading={isLoading }>
           {shortAnswerData.map((value, index) => {
             return (
               <Card
-                loading={isLoading }
+                hoverable={true}
+                type={'inner'}
                 title={`${++index}、${value.question}（${value.score}分）`}
                 actions={this.actions(value.shortAnswerId)}
-                hoverable={true}
                 key={value.shortAnswerId}
               >
                 {this.ForShort(value.shortAnswerId)}
@@ -253,7 +253,7 @@ class TestPaper extends React.Component {
           <Card title={ this.renderTitle() } actions={this.grade()} >
             { this.renderSingleChoice() }
             { this.renderMultiChoice() }
-            <Card title={'简答题'} loading={isLoading }> { this.renderShortAnswer() }</Card>
+            <Card>{ this.renderShortAnswer() }</Card>
           </Card>
         </Form>
         <BackTop />
