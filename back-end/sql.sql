@@ -107,7 +107,7 @@ create table short_answer(
   isGrade bool
 );
 
-select * from testpaper;
+select * from user;
 
 insert into class values('CS01', '计算机一班', NULL);
 insert into class values('CS02', '计算机二班', NULL);

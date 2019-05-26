@@ -131,7 +131,7 @@ class TestPaper extends React.Component {
     if(!target) return
     const choice = <div><p>这道题参考答案是：{target.correctAnswer}</p>
       <p>{username}的答案是：{target.shortAnswer}</p>
-    <p style={{color: 'red'}}>{parseInt(target.isGrade) ? `得分：${target.score}` : '此题暂未被评阅' }</p></div>
+    <p style={{color: 'red'}}>{parseInt(target.isGrade) ? `得分：${target.score}` : '此题暂未被评分' }</p></div>
     return [<h3 key={shortAnswerId}>{choice}</h3>]
   }
 

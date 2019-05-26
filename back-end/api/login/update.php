@@ -8,11 +8,13 @@ if($data){
     echo json_encode((object)[
       'updateDone' => true,
       'successMsg' => '修改成功',
+      'visible' => false,
     ]);
   } else {
     echo json_encode((object)[
       'errorMsg' => '修改失败，请联系管理员',
       'updateDone' => false,
+      'visible' => true,
     ]);
   }
 }

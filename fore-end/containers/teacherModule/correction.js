@@ -20,7 +20,7 @@ class Correction extends React.Component {
   render() {
     const { testPaperList, isLoading } = this.props
     const columns = [{
-      title: '试题名',
+      title: '作业名',
       dataIndex: 'testPaperTitle',
     }, {
       title: '命题教师',
@@ -32,7 +32,7 @@ class Correction extends React.Component {
       title: '该生所在班级',
       dataIndex: 'className',
     }, {
-      title: '未评分',
+      title: '未批改',
       key: 'testPaperId',
       render: (text, record, index) => {
         if (!parseInt(text.isGrade)) {
@@ -56,7 +56,7 @@ class Correction extends React.Component {
         }
       }
     }, {
-      title: '已评分',
+      title: '已批改',
       key: 'shortAnswerId',
       render: (text, record, index) => {
         if (parseInt(text.isGrade)) {

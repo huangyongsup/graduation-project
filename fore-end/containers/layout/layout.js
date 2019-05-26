@@ -21,12 +21,14 @@ class RootLayout extends Component {
     if(!userType){
       location.hash = '#/login'
     }
-    // if(userType === 'student'){
-    //   location.hash = '#/student/myTestList'
-    // }
-    // if(userType === 'teacher'){
-    //   location.hash = '#/'
-    // }
+    if(location.hash === '#/login') {
+      if (userType === 'student') {
+        location.hash = '#/student/myTestList'
+      }
+      if (userType === 'teacher') {
+        location.hash = '#/'
+      }
+    }
   }
 
   renderMenu = () => {

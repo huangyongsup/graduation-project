@@ -39,7 +39,7 @@ class Register extends Component {
   }
 
   render() {
-    const { onCancel, visible, isLoading, form: { getFieldDecorator }, } = this.props
+    const { setInvisible, visible, isLoading, form: { getFieldDecorator }, } = this.props
     const { pattern, notNull } = this.state
     return (
       <Modal
@@ -52,7 +52,7 @@ class Register extends Component {
         visible={visible}
         title="修改密码"
         onOk={this.onOk}
-        onCancel={onCancel}
+        onCancel={setInvisible}
       >
         <Form>
           <Form.Item label="用户名">
@@ -69,7 +69,7 @@ class Register extends Component {
               <Input.Password autoComplete="current-password" allowClear={true} />
             )}
           </Form.Item>
-          <Form.Item label={'密码'}>
+          <Form.Item label={'新密码'}>
             {getFieldDecorator('password', {
               rules: [pattern, notNull]
             })(

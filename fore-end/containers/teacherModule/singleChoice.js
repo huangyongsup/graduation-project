@@ -23,6 +23,9 @@ class SingleChoice extends React.Component {
       title: '题目',
       dataIndex: 'question'
     }, {
+      title: '正确选项',
+      dataIndex: 'correctAnswer'
+    },{
       title: 'A',
       dataIndex: 'answerA'
     }, {

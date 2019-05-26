@@ -38,11 +38,8 @@ class Login extends Component{
   }
 
   showModal = () => {
-    this.setState({visible: true})
-  }
-
-  onCancel = () => {
-    this.setState({visible: false})
+    const { setVisible } = this.props
+    setVisible()
   }
 
   render(){
@@ -85,10 +82,7 @@ class Login extends Component{
           </Form.Item>
         </Form>
       </Card>
-        <RegisterModal
-          visible={this.state.visible}
-          onCancel={this.onCancel}
-        />
+        <RegisterModal />
       </div>
     )
   }
