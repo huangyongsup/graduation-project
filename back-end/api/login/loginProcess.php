@@ -8,6 +8,6 @@ $query = "select * from user natural join class where username = '{$username}' a
 if($userInfo = $mysqlTools->executeDQL($query)){
   echo json_encode($userInfo[0]);
 } else {
-  echo json_decode((object)['errorMsg' => '账号或密码错误']);
+  echo json_encode((object)['errorMsg' => '账号或密码错误']);
 }
 

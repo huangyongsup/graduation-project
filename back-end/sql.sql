@@ -62,7 +62,8 @@ create table user(
   username varchar(16) primary key ,
   password varchar(16) not null ,
   userType enum('admin', 'teacher', 'student') not null ,
-  classNo varchar(8) not null
+  classNo varchar(8) not null,
+  name varchar(16) not null
 );
 
 #答题表
@@ -113,18 +114,16 @@ insert into class values('CS01', '计算机一班', NULL);
 insert into class values('CS02', '计算机二班', NULL);
 insert into class values('CS03', '计算机三班', NULL);
 
-insert into user values('计算机一班', 'cs01', 'student', 'CS01');
-insert into user values('计算机二班', 'cs02', 'student', 'CS02');
-insert into user values('cs03', 'cs03', 'student', 'CS03');
-insert into user values('admin', 'admin', 'admin', 'CS01');
-insert into user values('teacher', 'teacher', 'teacher', 'CS01');
-insert into user values('张老师', 'teacher', 'teacher', 'CS01');
-insert into user values('student', 'student', 'student', 'CS01');
+insert into user values('cs01', 'cs01', 'student', 'CS01', '计算机一班');
+insert into user values('cs02', 'cs02', 'student', 'CS02', '计算机二班');
+insert into user values('cs03', 'cs03', 'student', 'CS03', '计算机三班');
+insert into user values('teacher', 'teacher', 'teacher', 'CS01', '教师');
+insert into user values('zhanglaoshi ', 'teacher', 'teacher', 'CS01', '张老师');
+insert into user values('student', 'student', 'student', 'CS01', '学生');
 
 select * from user natural join class where username='student' group by username;
 
-select * from testpaper;
-select * from submit_log;
+drop table user;
 
 select * from user natural join class natural join testpaper natural join submit_log natural join short_answer where username = 'student';
 

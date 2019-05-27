@@ -243,13 +243,19 @@ class CreateTestPaper extends React.Component {
     const { form: { validateFields, getFieldsValue }, makeTestPaper, userInfo: { username } } = this.props
     const { singleSelectedId, multiSelectedId, shortSelectedId } = this.getQuestionInfo()
     validateFields(err => {
+      if (singleSelectedId || multiSelectedId || shortSelectedId) {
       if(!err) {
-        const data = getFieldsValue()
-        makeTestPaper({ ...data,
-          date: {
-            beginTime: moment(data.date[0]).format('YYYY-MM-DD'),
-            endTime: moment(data.date[1]).format('YYYY-MM-DD')
-          }, singleSelectedId, multiSelectedId, shortSelectedId, username })
+          const data = getFieldsValue()
+          makeTestPaper({
+            ...data,
+            date: {
+              beginTime: moment(data.date[0]).format('YYYY-MM-DD'),
+              endTime: moment(data.date[1]).format('YYYY-MM-DD')
+            }, singleSelectedId, multiSelectedId, shortSelectedId, username
+          })
+        }
+      } else {
+        message.error('未选择任何题目，不可提交此试卷')
       }
     })
   }
