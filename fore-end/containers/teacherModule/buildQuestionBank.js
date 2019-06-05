@@ -42,7 +42,7 @@ class BuildQuestionBank extends React.Component {
         {getFieldDecorator('score', {
           rules: [{required: true, message: '分值不可为空'}]
         })(
-          <InputNumber />
+          <InputNumber min={0} max={100} />
         )}
       </Form.Item>
     )

@@ -3,8 +3,12 @@ import { DatePicker, BackTop, Skeleton, Tooltip, Button, Card, Checkbox, Col, Fo
 import { connect } from 'react-redux'
 import { bindActionCreators } from "redux";
 import moment from 'moment'
+import locale from 'antd/lib/date-picker/locale/zh_CN';
 import * as actions from './action'
 import { SessionStorage } from "../../lib/utilService";
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
+
 
 class CreateTestPaper extends React.Component {
   constructor(props) {
@@ -94,19 +98,19 @@ class CreateTestPaper extends React.Component {
         <Col span={6}>
           <Form.Item>
             { getFieldDecorator('title', {
-              rules: [{ required: true, message: '试卷名不能为空' }]
+              rules: [{ required: true, message: '作业名不能为空' }]
             })(
-              <Input placeholder={'请输入试卷名'}/>
+              <Input placeholder={'请输入作业名'}/>
             )}
           </Form.Item>
         </Col>
         <Col span={9}>
           <Form.Item>
             { getFieldDecorator('class', {
-              rules: [{required: true, message: '请选择此试卷的目标班级'}]
+              rules: [{required: true, message: '请选择此作业的目标班级'}]
             })(
               <Select
-                placeholder={'将此试卷分发给'}
+                placeholder={'将此作业分发给'}
                 mode={'multiple'}
                 showArrow={true}
                 labelInValue={true}
@@ -126,6 +130,7 @@ class CreateTestPaper extends React.Component {
               rules: [{required: true, message: '请选择作业的开始与截止日期'}]
             })(
               <DatePicker.RangePicker
+                locale={locale}
                 showToday={false}
                 disabledDate={this.disabledDate}
                 format={'YYYY-MM-DD'}

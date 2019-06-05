@@ -21,7 +21,7 @@ class MyTestList extends React.Component {
   render() {
     const { testPaperList, isLoading, userInfo: { username } } = this.props
     const columns = [{
-      title: '试卷名',
+      title: '作业名',
       dataIndex: 'testPaperTitle',
     }, {
       title: '命题教师',
@@ -31,17 +31,20 @@ class MyTestList extends React.Component {
       key: 'testPaperId',
       render: (text, record, index) => {
         if(!record.analysis){
-          const legal = moment().isBetween(record.beginTime, record.endTime) || moment(moment().format('YYYY-MM-DD')).isSame(record.beginTime, record.endTime)
-          if(legal) {
-            return (
-              <Button type={'primary'}><Link to={{
-                pathname: '/student/myTest',
-                search: `${record.testPaperId}`
-              }}>去答题</Link></Button>
-            )
-          } else {
-            return <Tooltip title={'此作业不在有效作答时间内'}><Button disabled>去答题</Button></Tooltip> 
+          const isBefore = moment(moment().format('YYYY-MM-DD')).isBefore(record.beginTime)
+          const isAfter = moment(moment().format('YYYY-MM-DD')).isAfter(record.endTime)
+          if(isBefore){
+            return <Tooltip title={`作业开始时间：${record.beginTime}`}><Button disabled>去答题</Button></Tooltip>
           }
+        if(isAfter){
+          return <Tooltip title={`此作业已于${record.endTime}过期`}><Button disabled>去答题</Button></Tooltip>
+        }
+          return (
+            <Button type={'primary'}><Link to={{
+              pathname: '/student/myTest',
+              search: `${record.testPaperId}`
+            }}>去答题</Link></Button>
+          )
         }
       }
     }, {

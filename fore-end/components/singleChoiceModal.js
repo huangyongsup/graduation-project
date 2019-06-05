@@ -28,7 +28,7 @@ class SingleChoiceModal extends React.Component {
                           {getFieldDecorator(value,{
                             rules: [{ required: true, message: '答案内容不可为空'}]
                           })(
-                            <Input.TextArea min={0} max={100} />
+                            <Input.TextArea  />
                           )}
                         </Form.Item>
                       </Radio>

@@ -60,7 +60,7 @@ class TestPaper extends React.Component {
       return
     }
     const target = shortAnswer.filter(element => element.shortAnswerId === shortAnswerId )[0]
-    if(shortAnswer && !parseInt(target.isGrade) ){
+    if(shortAnswer && target && !parseInt(target.isGrade) ){
       if(moment().isBefore(moment(shortAnswer.endTime).add(7, 'days'))) {
         return [
           <Form.Item label={'请打分'}>
